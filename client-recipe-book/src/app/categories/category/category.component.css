@@ -1,0 +1,18 @@
+.image-recipe {
+  width: 269px;
+  height: 179px;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #eb4a36 !important;
+  color: #fefefe !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  border-radius: 10px !important;
+}
+
+.uk-border-rounded-medium {
+  border-radius: 10px;
+}

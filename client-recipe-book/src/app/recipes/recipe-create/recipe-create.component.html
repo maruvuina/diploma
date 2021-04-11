@@ -1,0 +1,163 @@
+<app-nav></app-nav>
+
+<div class="uk-container">
+    <div data-uk-grid>
+        <div class="uk-width-expand@s uk-flex-middle">
+
+        	<div class="uk-margin-top uk-width-1-1">
+				<div class="uk-padding-small uk-border-rounded">
+					<form [formGroup]="recipeForm" novalidate>
+						<h4 class="uk-padding-small uk-box-shadow-medium uk-border-rounded uk-text-bold"><i uk-icon="list" class="uk-padding-small"></i>Основная информация</h4>
+						<div class="uk-margin-medium-top">
+							<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Название рецепта</label>
+							<input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="Яблочная сказка" formControlName="recipeName" />
+
+							<div class="uk-margin-small-top" *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched">
+				            	<span class="uk-margin-small-left uk-form-danger">
+				              		Что-то не так с названием рецепта :(
+				            	</span>
+				          	</div>
+						</div>
+
+						<div uk-grid class="uk-child-width-expand@s">
+							<div class="uk-margin-medium-top uk-card">	
+								<label class="uk-form-label"><i uk-icon="thumbnails" class="uk-margin-small-left uk-margin-small-right"></i>Категория</label>
+								<select class="uk-select uk-margin-top uk-border-rounded" formControlName="categoryName">
+									<option value="" selected disabled>Выберите категорию</option>
+	            					<option *ngFor="let category of categories | async">{{category.categoryName}}</option>
+	                            </select>
+
+	                            <div class="uk-margin-small-top" *ngIf="!recipeForm.get('categoryName').valid && recipeForm.get('categoryName').touched">
+				            		<span class="uk-margin-small-left uk-form-danger">
+				              			Категория не выбрана
+				            		</span>
+				          		</div>
+							</div>
+							<div class="uk-margin-medium-top uk-card">
+								<label class="uk-form-label"><i uk-icon="users" class="uk-margin-small-left uk-margin-small-right"></i>Количество порций</label>
+								<input type="text" class="uk-margin-top uk-input uk-border-rounded" id="ListingKeywords" placeholder="" formControlName="yield" />
+
+								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('yield').valid && recipeForm.get('yield').touched">
+				            		<span class="uk-margin-small-left uk-form-danger">
+				              			Поле "количество порций" не заполнено
+				            		</span>
+				          		</div>
+							</div>
+							<div class="uk-margin-medium-top uk-card">
+								<label class="uk-form-label"><i uk-icon="clock" class="uk-margin-small-left uk-margin-small-right"></i>Время приготовления</label>
+								<input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="" formControlName="cookingTime" />
+
+								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('cookingTime').valid && recipeForm.get('cookingTime').touched">
+				            		<span class="uk-margin-small-left uk-form-danger">
+				              			Поле "время приготовления" не заполнено
+				            		</span>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="uk-margin-medium-top">
+							<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Краткое описание рецепта</label>
+							<div class="uk-margin-small-top">
+                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="announce" rows="7"></textarea>
+                        	</div>
+
+							<div class="uk-margin-small-top" *ngIf="!recipeForm.get('announce').valid && recipeForm.get('announce').touched">
+				            	<span class="uk-margin-small-left uk-form-danger">
+				              		Пожалуйста заполните это поле +_+
+				            	</span>
+				          	</div>
+						</div>
+						
+
+						<div class="uk-margin-medium-top">
+							<h4 class="uk-padding-small uk-box-shadow-medium uk-border-rounded uk-text-bold"><i uk-icon="list" class="uk-padding-small"></i>Ингредиенты</h4>
+
+							<ng-container formArrayName="ingredients">
+								<div *ngFor="let _ of ingredients.controls; index as i" uk-grid class="uk-child-width-expand@s uk-margin-medium-top">
+									<ng-container [formGroupName]="i">
+										<div class="uk-width-1-2">
+											<label class="uk-form-label"><i uk-icon="file-text" class="uk-margin-small-left uk-margin-small-right"></i>Ингредиент</label>
+											<div class="ng-autocomplete">
+											    <ng-autocomplete 
+											        [data]="data" 
+											        [searchKeyword]="keyword" 
+											        (selected)='selectEvent($event)'
+											        (inputChanged)='onChangeSearch($event)' 
+											        (inputFocused)='onFocused($event)' 
+											        [itemTemplate]="itemTemplate" 
+											        (inputCleared)="searchCleared()"
+											        [notFoundTemplate]="notFoundTemplate" 
+											        [debounceTime]="600" 
+											        [isLoading]="isLoadingResult" 
+											        [minQueryLength]="2" 
+											        placeholder="Введите название ингредиента"
+											        formControlName="ingredientName"
+											    >
+											    </ng-autocomplete>
+											    <ng-template #itemTemplate let-item>
+											        <a [innerHTML]="item.ingredientName"></a>
+											    </ng-template>
+											    <ng-template #notFoundTemplate let-notFound>
+											        {{errorMsg}}
+											    </ng-template>
+											</div>     	
+										</div>
+										<div>
+											<label class="uk-form-label"><i uk-icon="more" class="uk-margin-small-left uk-margin-small-right"></i>Количество</label>
+		                                	<input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="Количество" formControlName="ingredientAmount" />
+
+										</div>
+										<div class="uk-width-1-4 uk-margin-medium-top">
+											<input type="button" class="uk-input uk-button uk-border-pill uk-button-primary input-file" value="Удалить ингредиент" (click)="removeIngredient(i)"/>
+										</div>
+								    </ng-container>
+								</div>
+							</ng-container>
+
+							<input type="button" value="Добавить ингредиент" class="uk-button uk-border-pill uk-button-secondary" (click)="addIngredient()"/>
+
+							<h4 class="uk-padding-small uk-box-shadow-medium uk-border-rounded uk-text-bold"><i uk-icon="list" class="uk-padding-small"></i>Инструкция</h4>
+
+							<ng-container formArrayName="instructions">
+								<div *ngFor="let _ of instructions.controls; index as i" uk-grid class="uk-child-width-expand@s uk-margin-medium-top">
+									<ng-container [formGroupName]="i">
+										<div class="uk-width-1-5">
+			                        		<h5 class="uk-margin-small-left uk-width-1-4 uk-text-bold">Шаг {{i + 1}}</h5>
+			                        	</div>
+			                        	<div>
+			                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="instructionStep" rows="7"></textarea>
+			                        	</div>
+
+			                        	<div class="uk-width-1-4">
+										    <input type="button" class="uk-input uk-button uk-border-pill uk-button-primary input-file" value="Удалить шаг" (click)="removeInstruction(i)"/>
+		                            	</div>
+									</ng-container>
+								</div>
+							</ng-container>
+
+							<input type="button" class="uk-button uk-border-pill uk-button-secondary" value="Добавить шаг" (click)="addInstruction()"/>
+						</div>
+
+						<div class="uk-margin-medium-top uk-column-2-1">
+							<span class="uk-form-label"><i uk-icon="image" class="uk-margin-small-left uk-margin-small-right"></i>Фотография готового блюда</span>
+							<label class="uk-form-label uk-margin-medium-left uk-border-rounded custom-file-upload">
+								<input class="uploadFile" id="file" type="file" name="file" multiple (change)="onUploadFile($event)"/>
+								<i uk-icon="upload" class="uk-margin-small-left uk-margin-small-right"></i>
+								<button id="uploadButton" class="uk-button uploadButton">Загрузить изображение</button>
+							</label>
+							<span class="uk-margin-small-left" id="fileName"></span>						    
+						</div>
+
+						<div class="uk-margin-medium-top upload-add-button-column uk-flex uk-flex-center">
+							<button [disabled]="recipeForm.invalid" (click)="addRecipe()"class="uk-button uk-border-pill uk-button-secondary">Добавить рецепт</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>		
+    	</div>
+  	</div>
+</div>
+
+<app-footer></app-footer>

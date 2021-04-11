@@ -1,0 +1,48 @@
+<app-nav></app-nav>
+
+<div class="uk-container">
+	<div uk-grid>
+	  <div class="uk-width-1-2@m uk-flex uk-flex-middle uk-card uk-card-default uk-card-body uk-border-rounded">
+	    <div>
+	      <h1 class="uk-margin-bottom">Есть вопросы, предложения...?</h1>
+	      <p>Мы всегда открыты для вас и рады: любой критике, деловым предложениям и отзывам по интернет-проекту «Книга рецептов». Для связи с нами заполните данную форму.</p>
+	    </div>
+	  </div>
+	  <div class="uk-width-1-2@m">
+	    <div class="uk-background-primary uk-border-rounded uk-light uk-padding uk-margin-top">
+	      <form class="uk-form-stacked" [formGroup]="contactForm" novalidate (ngSubmit)="sendMessage()">
+	        <div class="uk-margin-bottom">
+	          <label class="uk-form-label" for="email">Электронная почта</label>
+	          <div class="uk-form-controls">
+	            <input id="email" class="uk-input uk-border-pill" name="email" type="email" formControlName="username" pattern="^[a-z0-9._%+-]+\@[a-z0-9.-]+\.[a-z]{2,4}$">
+	          </div>
+
+	          <div class="not-valid uk-margin-small-top" *ngIf="!contactForm.get('username').valid && contactForm.get('username').touched">
+	            <span class="uk-form-danger" >
+	            Некорректный адрес электронной почты
+	            </span>
+	          </div>
+
+	        </div>
+	        <div class="uk-margin-bottom">
+	          <label class="uk-form-label" for="title">Тема</label>
+	          <div class="uk-form-controls">
+	            <input id="title" class="uk-input uk-border-pill" name="title" type="text" formControlName="title" required>
+	          </div>
+	        </div>
+	        <div class="uk-margin-bottom">
+	          <label class="uk-form-label" for="message">Сообщение</label>
+	          <div class="uk-form-controls">
+	            <textarea id="message" class="uk-textarea uk-border-rounded" name="message" rows="5" formControlName="message" required></textarea>
+	          </div>
+	        </div>
+	        <div class="uk-text-center">
+	          <button [disabled]="contactForm.invalid" class="uk-button uk-button-primary uk-button-large">Отправить</button>
+	        </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>      
+</div>
+
+<app-footer></app-footer>

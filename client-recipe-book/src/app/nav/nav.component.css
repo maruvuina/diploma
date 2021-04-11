@@ -1,0 +1,87 @@
+.uk-logo {
+    color: #eb4a36;
+}
+
+.uk-navbar-item {
+    font-size: 16px;
+    font-family: "Montserrat", san-serif;
+}
+
+.uk-button-primary {
+    background-color: #eb4a36;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.uk-button {
+    line-height: 34px;
+}
+
+.uk-navbar-container {
+    font-size: 16px;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+    background: #fff;
+}
+
+.uk-navbar-nav > li.uk-active > a {
+    color: #eb4a36;
+}
+
+.uk-navbar-nav > li > a {
+    color: #4a4a4a;
+    text-transform: none;
+    transition: 0.1s ease-in-out;
+    transition-property: color, background-color;
+    min-height: 126px;
+    padding: 0 15px;
+    font-size: 0.75rem;
+    font-family: "Montserrat", san-serif;
+    text-decoration: none;
+}
+
+.uk-navbar-nav > li:hover > a {
+    color: #eb4a36;
+}
+
+.uk-button-primary:hover, 
+.uk-button-primary:focus {
+    background-color: #e9351f;
+    color: #fff;
+}
+
+.uk-drop {
+    width: 130px;
+    background: #F8FFEB;
+    border-radius: 400px;
+    padding-left: 15px;
+}
+
+.uk-dropdown-nav > .uk-button {
+    margin-bottom: 10px;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    cursor: pointer;
+    color: #4a4a4a;
+}
+
+.uk-dropdown-nav > .uk-button:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.account-icon {
+    float: left;
+    max-height: 38px;
+    max-width: 38px;
+}
+
+.uk-dropdown-nav > .uk-button {
+    margin-bottom: 0;
+}
+
+.uk-navbar-container > .uk-container .uk-navbar-right {
+    margin-right: 0;
+}

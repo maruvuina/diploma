@@ -1,0 +1,39 @@
+.admin-list {
+	background: #faa05a;
+}
+
+.admin-list-href {
+	color: #333;
+}
+
+.admin-list-href:hover {
+	color: #333;
+}
+
+.image-user {
+	width: 250px;
+  	height: 250px;
+}
+
+.uk-button-primary {
+  background-color: #32d296;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.uk-button-primary:active {
+  background-color: #292D30;
+  color: #fff;
+}
+
+.uk-button-primary:hover, 
+.uk-button-primary:focus {
+  background-color: #292D30;
+  color: #fff;
+}
+
+.image-recipe,
+.image-follower {
+	width: 150px;
+  height: 150px;
+}

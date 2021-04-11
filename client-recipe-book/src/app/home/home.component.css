@@ -1,0 +1,77 @@
+.uk-background-cover {
+	background-image: url(../../assets/img/cookbook.jpg);
+}
+
+.uk-border-rounded-large {
+    border-radius: 20px;
+}
+
+.uk-search-default .uk-search-icon:not(.uk-search-icon-flip) ~ .uk-search-input {
+    padding-left: 50px;
+}
+
+.uk-form-large:not(textarea):not([multiple]):not([size]) {
+    height: 40px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.uk-nav-default > div > a {
+    color: #999;
+    text-decoration: none;
+}
+
+.uk-nav-default > div > a:hover {
+    color: #666;
+    text-decoration: none;
+}
+
+.ng-autocomplete {
+    width: inherit;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container {
+    border: 1px solid #e5e5e5 !important;
+    border-radius: 0 5px 5px 0 !important;
+    box-shadow: none;  
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input { 
+    background: #f8f8f8 !important;
+    color: #4a4a4a !important;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input::placeholder {
+    color: #adadad;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:focus,
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:hover {
+  color: #4a4a4a !important;
+}
+
+.icon-search {
+    background: #f8f8f8 !important;
+    padding-top: 8px;
+    padding-right: 8px;
+    border-width: 1px 0 1px 1px;
+    border-style: solid !important;
+    border-color: #e5e5e5 !important;
+    border-radius: 5px 0 0 5px !important;
+    color: #adadad;
+}
+
+.image-recipe {
+    width: 50px;
+    height: 33px;
+}

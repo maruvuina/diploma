@@ -1,0 +1,50 @@
+.uk-button-primary {
+  background-color: #4a4a4a;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.uk-button-primary:active {
+  background-color: #292D30;
+  color: #fff;
+}
+
+.uk-button-primary:hover, 
+.uk-button-primary:focus {
+  background-color: #292D30;
+  color: #fff;
+}
+
+.link-button {
+	border-radius: 20px;
+}
+
+.uk-link-muted {
+  color: #4a4a4a;
+}
+
+.uk-link-muted:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.link-edit {
+	color: #eb4a36;
+	text-decoration: none;
+}
+
+.link-edit:hover {
+	color: #4a4a4a;
+	text-decoration: none;
+}
+
+.image-recipe {
+  border-radius: 20px;
+  width: 279px;
+  height: 179px;
+}
+
+.image-user {
+  width: 150px;
+  height: 150px;
+}

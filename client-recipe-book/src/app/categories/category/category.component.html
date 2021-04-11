@@ -1,0 +1,39 @@
+<app-nav></app-nav>
+
+<div class="uk-container">
+	<div>
+		<h3>Рецепты в категории: <span class="uk-text-bold">{{categoryName}}</span>
+		</h3>
+	</div>
+	<div *ngFor="let recipe of recipes | paginate: config" class="uk-flex uk-flex-column uk-margin-top uk-border-rounded">
+	    <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+	    	<div>
+	    		<div class="uk-flex">
+	    			<div class="uk-inline uk-light uk-width-1-3">
+		    		 	<img [appRecipeImage]="[recipe.idRecipe]" class="uk-border-rounded-medium image-recipe" alt="Main Ingredient Picture" />
+				    </div>
+				    <div class="uk-margin-large-left uk-width-1-1">
+				      <div>
+				      	<h3 class="uk-text-bold uk-margin-small-bottom uk-margin-top"><a (click)="byCategory(recipe.idRecipe)" class="uk-link-muted">{{recipe.recipeName}}</a></h3>
+				      	<span>
+			      			{{recipe.announce}}
+				      	</span>
+			            <div>
+			            	<span class="uk-text-muted uk-margin-small-right" uk-icon="icon: heart"></span>
+			            	<span class="uk-text-muted">{{recipe.likesCount}}</span>
+			            	<div class="uk-flex uk-flex-right">
+			            		<span>Автор: {{recipe.authorName}}</span>
+			            	</div>
+			            </div>
+				      </div>
+				    </div>
+	    		</div>
+		    </div>
+		</div>				    
+	</div>
+	<div class="uk-margin-large-top uk-text-small uk-flex uk-flex-center">
+	  <pagination-controls previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+	</div>
+</div>
+
+<app-footer></app-footer>

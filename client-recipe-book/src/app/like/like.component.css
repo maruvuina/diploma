@@ -1,0 +1,19 @@
+.fa-heart {
+  color: #fff;
+  cursor: pointer;
+}
+
+.fa-heart {
+  transition: 0.28s;
+}
+
+.fa-heart.active {
+  color: #e2101e;
+}
+
+.icon-heart-div {
+  width: 48px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(240, 240, 240, 0.6);
+}

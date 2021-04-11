@@ -1,0 +1,90 @@
+<app-nav></app-nav>
+
+<div class="uk-container">
+  <div class="uk-border-rounded-large uk-background-top-center uk-background-cover 
+    uk-background-norepeat uk-light uk-inline uk-overflow-hidden uk-width-1-1">
+    <div class="uk-position-relative" data-uk-grid>
+      <div class="uk-width-1-2@m uk-flex uk-flex-middle">
+        <div class="uk-padding-large uk-padding-remove-right">
+          <h1 class="uk-heading-small uk-margin-remove-top">Выбирайте из тысячи рецептов</h1>
+          <p class="uk-text-secondary">
+          «Книга рецептов» – это настоящая «библиотека» маленьких и больших хитростей, все рецепты нашего портала – авторские, но они не истина в последней инстанции и всегда подразумевают кулинарные маневры для Вашей кухни.</p>
+          <a class="uk-text-secondary uk-text-600 uk-text-small" [routerLink]="['/signup']">Зарегистрироваться<span
+            class="uk-margin-small-left" data-uk-icon="arrow-right"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="uk-section uk-section-default">
+  <div class="uk-container">
+    <div data-uk-grid>
+      <div class="uk-width-1-4@m sticky-container">
+        <div data-uk-sticky="offset: 100; bottom: true; media: @m;">
+        <h2>Категории</h2>
+          <div *ngFor="let category of categories | async" class="uk-nav-default uk-nav-filter uk-margin-small-top" data-uk-nav>
+            <div>
+              <a [routerLink]="['/categories']" [queryParams]="{category:category.categoryName}">{{category.categoryName}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="uk-width-expand@m">
+        <div class="uk-flex uk-flex-left">
+          <div class="uk-width-expand@m">
+              
+
+                <div class="uk-flex uk-width-1-1">
+                  <div class="icon-search">
+                    <i uk-icon="search" class="uk-margin-small-left"></i> 
+                  </div>
+                  <div class="ng-autocomplete">         
+                    <ng-autocomplete 
+                        [data]="data" 
+                        [searchKeyword]="keyword" 
+                        (selected)='selectEvent($event)'
+                        (inputChanged)='onChangeSearch($event)' 
+                        (inputFocused)='onFocused($event)' 
+                        [itemTemplate]="itemTemplate" 
+                        (inputCleared)="searchCleared()"
+                        [notFoundTemplate]="notFoundTemplate" 
+                        [debounceTime]="600" 
+                        [isLoading]="isLoadingResult" 
+                        [minQueryLength]="1" 
+                        placeholder="Поиск"
+                    >
+                    </ng-autocomplete>
+                    <ng-template #itemTemplate let-item>
+
+                      <a [routerLink]="['recipes', item.idRecipe]">
+                        <div class="uk-flex">
+                          <div>
+                            <img [appRecipeImage]="[item.idRecipe]" class="uk-border-rounded uk-margin-small-right image-recipe" alt="Main Ingredient Picture" />
+                          </div>
+                          <div class="uk-margin-small-top">
+                            <span [innerHTML]="item.recipeName"></span>
+                          </div>
+                        </div>
+                      </a>
+
+                    </ng-template>
+                    <ng-template #notFoundTemplate let-notFound>
+                        {{errorMsg}}
+                    </ng-template>
+                  </div> 
+                </div>
+                       
+                       
+            </div>
+        </div>
+        <div class="uk-margin"> 
+          <app-recipe-list></app-recipe-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

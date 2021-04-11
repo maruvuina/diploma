@@ -1,0 +1,35 @@
+textarea {
+  resize: none;
+}
+
+.uk-button-primary {
+  background-color: #343a40;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.uk-button-primary:active {
+  background-color: #292D30;
+  color: #fff;
+}
+
+.uk-button-primary:hover, 
+.uk-button-primary:focus {
+  background-color: #292D30;
+  color: #fff;
+}
+
+@media (min-width: 960px) {
+	.uk-comment-list .uk-comment~ul {
+    	padding-left: 30px; 
+	}
+}
+
+.uk-button {
+	border: 1px solid;
+}
+
+.muted-link {
+	color: #666;
+	text-decoration: underline;
+}

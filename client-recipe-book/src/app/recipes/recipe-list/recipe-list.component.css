@@ -1,0 +1,57 @@
+.uk-card-title {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.uk-text-muted {
+  color: #787878 !important;
+}
+
+.uk-border-rounded-medium {
+  border-radius: 10px;
+}
+
+.uk-link-muted {
+  color: #4a4a4a;
+}
+
+.uk-link-muted:hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.image-recipe {
+  width: 269px;
+  height: 179px;
+}
+
+.image-recipe:hover {
+  filter: brightness(93%);
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #eb4a36 !important;
+  color: #fefefe !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  border-radius: 10px !important;
+}
+
+
+.uk-select {
+  background-color: #e9351f;
+  border-color: #eb4a36;
+  color: #fff;
+}
+
+option {
+  background-color: #fff;
+}
+
+.uk-select-light {
+  background-color: #eb4a36;
+  border-color: #eb4a36;
+}
+

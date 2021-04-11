@@ -1,0 +1,118 @@
+<hr class="uk-margin-medium-top uk-margin-large-bottom">
+<h3>Комментарии</h3>
+
+<div *ngIf="!isComments">
+	Пока нету.
+</div>
+<!-- <div *ngIf="isComments">
+	
+	<ul class="uk-comment-list uk-margin-medium-top" *ngFor="let comment of comments">
+		<li>
+			<article class="uk-comment uk-visible-toggle" tabindex="-1">
+			  <header class="uk-comment-header uk-position-relative">
+			    <div class="uk-grid-medium uk-flex-middle" data-uk-grid>
+			      <div class="uk-width-auto">
+			        <img class="uk-comment-avatar uk-border-circle" [appUserImage]="[comment.idUser]" width="50" height="50" alt="comment.username">
+			      </div>
+			      <div class="uk-width-expand">
+			        <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{comment.username}}</a></h4>
+			        <p class="uk-comment-meta uk-margin-remove"><a class="uk-link-reset" href="#">{{comment.createdDate}}</a></p>
+			      </div>
+			      <div class="uk-position-top-right uk-position-small uk-hidden-hover"><a class="uk-link-muted" [routerLink]="" (click)="reply(comment.idComment)">Ответить</a>
+			      </div>
+			    </div>
+			  </header>
+			  <div class="uk-comment-body">
+			    <p>{{comment.content}}</p>
+			  </div>
+			</article>
+			<hr class="uk-margin-medium-top">
+		
+			<div *ngIf="isReply">
+				<h3>Ответить</h3>
+				<form class="" [formGroup]="commentForm" (ngSubmit)="commentReply(comment.idComment)">
+					<div>
+					  <textarea class="uk-border-rounded uk-width-1-1" rows="5" formControlName="text"></textarea>
+					</div>
+					<div class="uk-width-1-4">
+					  <button class="uk-margin-small-top uk-input uk-button uk-border-pill uk-button-primary">
+					    Отправить
+					  </button>
+					</div>
+				</form>
+			</div>
+		</li>
+	</ul>
+</div> -->
+<div *ngIf="isComments">
+	<ng-template #recursiveList let-list>
+		<ul class="uk-comment-list uk-margin-medium-top">
+			<li *ngFor="let item of list">
+				<article class="uk-comment uk-visible-toggle" tabindex="-1">
+				  <header class="uk-comment-header uk-position-relative">
+				  	<div class="uk-grid-medium uk-flex-middle" data-uk-grid>
+				      
+				      <div class="uk-width-auto">
+				        <img class="uk-comment-avatar uk-border-circle" [appUserImage]="[item.idUser]" width="50" height="50" alt="item.username">
+				      </div>
+
+				      <div class="uk-width-expand">
+				        <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">{{item.username}}</a></h4>
+				        <p class="uk-comment-meta uk-margin-remove"><a class="uk-link-reset" href="#">{{item.createdDate}}</a></p>
+				      </div>
+
+				      <div class="uk-position-top-right uk-position-small">
+				      	<a class="uk-link-muted" [routerLink]="" (click)="reply(item.idComment)">Ответить
+				      	</a>
+				      </div>
+
+				  	</div>
+					</header>
+					<div class="uk-comment-body">
+						<p>{{item.content}}</p>
+					</div>
+					<hr class="uk-margin-medium-top">
+				</article>
+				<div *ngIf="isReply && currentIdComment == item.idComment">
+					<form class="" [formGroup]="commentForm" novalidate (ngSubmit)="addComment()">
+						<div>
+						  <textarea class="uk-border-rounded uk-width-1-1" rows="10" formControlName="text"></textarea>
+						</div>
+						<div class="uk-margin-small-top">
+						  <button [disabled]="commentForm.invalid" class="uk-button uk-button-medium uk-border-pill uk-button-secondary">
+						    Отправить
+						  </button>
+						</div>
+					</form>
+				</div>
+
+			      
+		      <ul class="uk-comment-list uk-margin-small-top" *ngIf="item.children.length > 0">
+		        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.children }"></ng-container>
+		      </ul>
+		      
+		    </li>	
+		</ul>
+	</ng-template>
+	<ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: comments }"></ng-container>
+</div>
+
+<h3>
+	<a [ngClass]="{'muted-link': visibility}" class="uk-link-muted" [routerLink]="" (click)="add()">Написать комментарий
+	</a>
+</h3>
+
+<div *ngIf="isAddComment">
+	<form class="" [formGroup]="commentForm" novalidate (ngSubmit)="addComment()">
+		<div>
+		  <textarea class="uk-border-rounded uk-width-1-1" rows="10" formControlName="text"></textarea>
+		</div>
+		<div class="uk-margin-small-top">
+		  <button [disabled]="commentForm.invalid" class="uk-button uk-button-medium uk-border-pill uk-button-secondary">
+		    Отправить
+		  </button>
+		</div>
+	</form>
+</div>
+
+

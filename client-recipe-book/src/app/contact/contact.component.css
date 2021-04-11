@@ -1,0 +1,52 @@
+.uk-background-primary {
+	background: none;
+    color: #4a4a4a;
+    border: 1px double #4a4a4a;
+}
+
+.uk-input {
+	border: 1px double #4a4a4a;
+	color: #4a4a4a;
+}
+
+.uk-input:hover {
+	background: none;
+	border: 1px double #4a4a4a;
+	color: #4a4a4a;
+}
+
+.uk-input:focus {
+	background: none;
+	border: 1px double #4a4a4a;
+	color: #4a4a4a;
+}
+
+.uk-form-label {
+	color: #4a4a4a;
+}
+
+.uk-textarea {
+	border: 1px double #4a4a4a;
+	color: #4a4a4a;
+	resize: none;
+}
+
+.uk-textarea:focus {
+	background: none;
+	border: 1px double #4a4a4a;
+	color: #4a4a4a;
+}
+
+.uk-button {
+	background: #4a4a4a;
+	color: #fff;
+}
+
+.uk-button:hover {
+	background: #262424;
+}
+
+.not-valid {
+    border: 1px double #f0506e;
+    border-radius: 10px;
+}

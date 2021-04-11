@@ -1,0 +1,56 @@
+<app-nav></app-nav>
+
+<div class="uk-container uk-margin-small-top">
+	<form [formGroup]="userEditForm">
+		<div class="uk-grid-column-small uk-grid-row-large uk-child-width-1-1@s" uk-grid>
+		    <div>
+		        <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+		        	<div class="uk-flex">
+		        		<span uk-icon="pencil"></span>
+			        	<div class="uk-margin-small-left">
+			        		<p>Изменить аватар</p>
+			        	</div>
+		        	</div>
+		        	<div>
+						<label class="uk-form-label uk-border-rounded custom-file-upload">
+							<input class="uploadFile" id="file" type="file" name="file" multiple (change)="onUploadFile($event)"/>
+							<i uk-icon="upload" class="uk-margin-small-left uk-margin-small-right"></i>
+							<button id="uploadButton" class="uk-button uploadButton">Загрузить изображение</button>
+						</label>
+						<span class="uk-margin-small-left" id="fileName"></span>
+		        	</div>
+		        </div>
+		    </div>
+		    <div>
+		        <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+		        	<div class="uk-flex">
+		        		<span uk-icon="pencil"></span>
+			        	<div class="uk-margin-small-left">
+			        		<p>Изменить личную информацию</p>
+			        	</div>
+		        	</div>
+		        	<div class="">
+						<label class="uk-form-label">
+							<span uk-icon="user" class="uk-margin-small-right uk-margin-small-bottom"></span>
+						Имя Фамилия
+						</label>
+						<input type="text" class="uk-input uk-border-rounded" placeholder="Иван Иванов" formControlName="username" />
+
+						<!-- <div class="uk-margin-small-top" *ngIf="!userEditForm.get('username').valid && userEditForm.get('username').touched">
+		            		<span class="uk-margin-small-left uk-form-danger">
+		              			Проверьте введенные имя и фамилию
+		            		</span>
+						</div> -->
+					</div>
+		        </div>
+		    </div>
+		    <div class="uk-flex uk-flex-center">
+		    	<div>
+					<button (click)="edit()" class="uk-input uk-button uk-border-pill uk-button-primary">Отправить</button>
+				</div>
+		    </div>
+		</div>
+	</form>
+</div>
+
+<app-footer></app-footer>

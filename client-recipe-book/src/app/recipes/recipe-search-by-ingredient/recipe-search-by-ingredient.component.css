@@ -1,0 +1,84 @@
+.uk-input {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #292D30;
+}
+
+.change-search {
+	text-decoration: underline;
+	text-decoration-color: #292D30;
+}
+
+h3 {
+  color: #999;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.currentSearch { 
+  color: #292D30;
+}
+
+.image-recipe {
+  width: 269px;
+  height: 179px;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #eb4a36 !important;
+  color: #fefefe !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  border-radius: 10px !important;
+}
+
+.uk-border-rounded-medium {
+  border-radius: 10px;
+}
+
+.uk-button {
+  border: 1px solid;
+}
+
+.ng-autocomplete {
+  width: inherit;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container {
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 5px !important;
+  box-shadow: none;  
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input { 
+  background: #fff!important;
+  color: #4a4a4a !important;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input::placeholder {
+  color: #adadad;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:focus,
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:hover {
+  color: #4a4a4a !important;
+}
+
+.image-recipe-small {
+  width: 100px;
+  height: 60px;
+}

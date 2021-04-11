@@ -1,0 +1,21 @@
+ a {
+    color: #4a4a4a;
+    font-family: "Montserrat", san-serif;
+    text-decoration: none;
+}
+
+ a:hover {
+    color: #eb4a36;
+    text-decoration: none;
+}
+
+.uk-logo {
+    font-family: "Leckerli One", cursive;
+    color: #eb4a36;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.logo-text > a {
+    color: #eb4a36;
+}

@@ -1,0 +1,78 @@
+textarea {
+  resize: none;
+}
+
+.instruction-steps {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.step-number, .description {
+  margin-bottom: 20px;
+}
+
+.description {
+  margin: 0 8% 20px 8%;
+  width: 700px;
+}
+
+.uk-button-primary.input-file {
+	background-color: #eb4a36;
+  color: #fff;
+}
+
+.uk-button-primary.input-file:active {
+  background-color: #e9351f;
+  color: #fff;
+}
+
+.uk-button-primary.input-file:hover, 
+.uk-button-primary.input-file:focus {
+  background-color: #e9351f;
+  color: #fff;
+}
+
+.uk-input, 
+.uk-select, 
+.uk-textarea {
+	background-color: #f5f5f5;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.uploadButton,
+.uk-button.uploadButton:hover,
+.uk-button.uploadButton:focus {
+  background-color: #fff;
+  border: none;
+  color: #292D30;
+}
+
+.ng-autocomplete ::ng-deep .autocomplete-container {
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
+  margin-top: 20px;
+  margin-right: 40px;
+}
+
+.ng-autocomplete ::ng-deep .autocomplete-container .input-container input {
+
+}
+
+.uk-button {
+  border: 1px solid;
+}
+
+#uploadButton {
+  border: none;
+}
