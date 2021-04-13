@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class CommentMapper {
-
     @Mapping(target = "content", source = "commentDto.content")
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     @Mapping(target = "user", source = "user")

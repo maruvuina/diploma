@@ -16,4 +16,6 @@ public class UserGetDto {
     private String fullName;
     private List<RecipeDetailsDto> recipeList = new ArrayList<>();
     private String registrationDate;
+    private List<UserDetailsDto> followers = new ArrayList<>();
+    private List<UserDetailsDto> followings = new ArrayList<>();
 }

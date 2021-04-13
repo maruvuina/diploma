@@ -8,6 +8,7 @@ import by.bsu.recipebook.entity.*;
 import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.mapper.CommentMapper;
 import by.bsu.recipebook.mapper.JsonMapper;
+import by.bsu.recipebook.mapper.MapResponse;
 import by.bsu.recipebook.mapper.RecipeMapper;
 import by.bsu.recipebook.repository.*;
 import by.bsu.recipebook.validator.SortType;
@@ -52,6 +53,8 @@ public class RecipeService {
     private final JsonMapper jsonMapper;
 
     private final CategoryRepository categoryRepository;
+
+    private final UserRepository userRepository;
 
     @Transactional
     public RecipeGetDto save(String jsonRecipeDto, MultipartFile file) {
@@ -142,16 +145,7 @@ public class RecipeService {
         List<RecipeGetDto> recipeGetDtoList = pageTuts.getContent().stream()
                 .map(recipeMapper::mapToRecipeGetDto)
                 .collect(Collectors.toList());
-        return getRecipeResponseAsMap(recipeGetDtoList, pageTuts);
-    }
-
-    private Map<String, Object> getRecipeResponseAsMap(Object object, Page<Recipe> pageTuts) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("recipes", object);
-        response.put("currentPage", pageTuts.getNumber());
-        response.put("totalItems", pageTuts.getTotalElements());
-        response.put("totalPages", pageTuts.getTotalPages());
-        return response;
+        return MapResponse.getResponseAsMap("recipes", recipeGetDtoList, pageTuts);
     }
 
     @Transactional(readOnly = true)
@@ -266,7 +260,7 @@ public class RecipeService {
         Page<Recipe> pageTuts = recipeRepository
                 .findRecipesByIngredients(ingredients, PageRequest.of(page, size));
         List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
-        return getRecipeResponseAsMap(recipeDetailsDtoList, pageTuts);
+        return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
     }
 
     private List<RecipeDetailsDto> getRecipeDetailsDto(Page<Recipe> pageTuts) {
@@ -283,6 +277,15 @@ public class RecipeService {
         Page<Recipe> pageTuts = recipeRepository
                 .findRecipesByCategory(category, PageRequest.of(page, size));
         List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
-        return getRecipeResponseAsMap(recipeDetailsDtoList, pageTuts);
+        return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getRecipesByAuthor(Integer idAuthor, int page, int size) throws ServiceException {
+        User author = userRepository.findById(idAuthor)
+                .orElseThrow(() -> new ServiceException("Error while get user with " + idAuthor + " id"));
+        Page<Recipe> pageTuts = recipeRepository.findRecipesByAuthor(author, PageRequest.of(page, size));
+        List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
+        return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
     }
 }

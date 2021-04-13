@@ -18,6 +18,9 @@ public abstract class UserMapper {
     @Autowired
     private RecipeMapper recipeMapper;
 
+    @Autowired
+    private FollowersMapper followersMapper;
+
     @Mapping(target = "email", source = "registerRequest.email")
     @Mapping(target = "password", source = "registerRequest.password")
     @Mapping(target = "fullName", source = "registerRequest.fullName")
@@ -30,7 +33,23 @@ public abstract class UserMapper {
     @Mapping(target = "fullName", source = "user.fullName")
     @Mapping(target = "recipeList", expression = "java(getRecipeList(user))")
     @Mapping(target = "registrationDate", expression = "java(getRegistrationDate(user))")
+    @Mapping(target = "followers", expression = "java(getFollowers(user))")
+    @Mapping(target = "followings", expression = "java(getFollowings(user))")
     public abstract UserGetDto mapToUserGetDto(User user);
+
+    List<UserDetailsDto> getFollowers(User user) {
+        return user.getFollowers()
+                .stream()
+                .map(followersMapper::mapToFollower)
+                .collect(Collectors.toList());
+    }
+
+    List<UserDetailsDto> getFollowings(User user) {
+        return user.getFollowing()
+                .stream()
+                .map(followersMapper::mapToFollowing)
+                .collect(Collectors.toList());
+    }
 
     List<RecipeDetailsDto> getRecipeList(User user) {
         return user.getRecipes()

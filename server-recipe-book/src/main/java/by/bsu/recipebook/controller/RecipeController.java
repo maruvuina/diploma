@@ -132,7 +132,7 @@ public class RecipeController {
                 .getRecipesByIngredients(ingredientDtoList, page, size), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/categories")
+    @GetMapping("/categories")
     @JsonView({Details.class})
     public ResponseEntity<Map<String, Object>> getRecipesByCategory(
             @RequestParam(value = "categoryName") String categoryName,
@@ -142,5 +142,12 @@ public class RecipeController {
                 .getRecipesByCategory(categoryName, page, size), HttpStatus.OK);
     }
 
-
+    @GetMapping("/authors/{idAuthor}")
+    public ResponseEntity<Map<String, Object>> getRecipesByAuthor(
+            @PathVariable("idAuthor") int idAuthor,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) throws ServiceException {
+        return new ResponseEntity<>(recipeService
+                .getRecipesByAuthor(idAuthor, page, size), HttpStatus.OK);
+    }
 }

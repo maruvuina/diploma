@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
-
     @Mapping(target = "categoryName", source = "category.categoryName")
     CategoryDto mapToCategoryDto(Category category);
 }

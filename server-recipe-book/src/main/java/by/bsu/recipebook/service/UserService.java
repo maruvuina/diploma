@@ -1,19 +1,24 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.constants.Constants;
+import by.bsu.recipebook.dto.recipe.RecipeDetailsDto;
 import by.bsu.recipebook.dto.user.UserDetailsDto;
 import by.bsu.recipebook.dto.user.UserGetDto;
 import by.bsu.recipebook.dto.user.UserUpdateDto;
 import by.bsu.recipebook.entity.Followers;
 import by.bsu.recipebook.entity.NotificationEmail;
+import by.bsu.recipebook.entity.Recipe;
 import by.bsu.recipebook.entity.User;
 import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.mapper.JsonMapper;
+import by.bsu.recipebook.mapper.MapResponse;
 import by.bsu.recipebook.mapper.UserMapper;
 import by.bsu.recipebook.repository.FollowersRepository;
 import by.bsu.recipebook.repository.UserRepository;
 import by.bsu.recipebook.util.FormatterPattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -85,8 +90,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserDetailsDto> getFollowings(int idUser) {
-        return followersRepository.findFollowings(idUser)
+    public Map<String, Object> getFollowings(int idUser, int page, int size) {
+        Page<Followers> followingsPage = followersRepository.findFollowings(idUser, PageRequest.of(page, size));
+        List<UserDetailsDto> userDetailsDtoList = getFollowingsDetailsDto(followingsPage);
+        return MapResponse.getResponseAsMap("followings", userDetailsDtoList, followingsPage);
+    }
+
+    private List<UserDetailsDto> getFollowingsDetailsDto(Page<Followers> pageTuts) {
+        return pageTuts
+                .getContent()
                 .stream()
                 .map(followers ->
                         userMapper
@@ -95,8 +107,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserDetailsDto> getFollowers(int idUser) {
-        return followersRepository.findFollowers(idUser)
+    public Map<String, Object> getFollowers(int idUser, int page, int size) {
+        Page<Followers> followersPage = followersRepository.findFollowers(idUser, PageRequest.of(page, size));
+        List<UserDetailsDto> userDetailsDtoList = getFollowersDetailsDto(followersPage);
+        return MapResponse.getResponseAsMap("followers", userDetailsDtoList, followersPage);
+    }
+
+    private List<UserDetailsDto> getFollowersDetailsDto(Page<Followers> pageTuts) {
+        return pageTuts
+                .getContent()
                 .stream()
                 .map(followers ->
                         userMapper
