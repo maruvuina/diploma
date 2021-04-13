@@ -1,0 +1,14 @@
+.image-follower {
+  width: 150px;
+  height: 150px;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #eb4a36 !important;
+  color: #fefefe !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  border-radius: 10px !important;
+}

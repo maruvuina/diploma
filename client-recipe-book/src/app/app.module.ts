@@ -40,6 +40,10 @@ import { UserShowComponent } from './users/user-show/user-show.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { AdminProfileComponent } from './users/admin-profile/admin-profile.component';
 import { RecipeAdminListComponent } from './recipes/recipe-admin-list/recipe-admin-list.component';
+import { FollowersComponent } from './users/followers/followers.component';
+import { FollowingsComponent } from './users/followings/followings.component';
+import { RecipeDetailsListComponent } from './recipes/recipe-details-list/recipe-details-list.component';
+import { SubscribeComponent } from './users/subscribe/subscribe.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -58,7 +62,8 @@ const appRoutes: Routes = [
   { path: 'users/:id', component: UserShowComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'user-list', component: UserListComponent },
-  { path: 'categories', component: CategoryComponent }
+  { path: 'categories', component: CategoryComponent },
+  { path: 'qwerty', component: FollowingsComponent}
 ]
 
 @NgModule({
@@ -88,7 +93,11 @@ const appRoutes: Routes = [
     UserShowComponent,
     UserListComponent,
     AdminProfileComponent,
-    RecipeAdminListComponent
+    RecipeAdminListComponent,
+    FollowersComponent,
+    FollowingsComponent,
+    RecipeDetailsListComponent,
+    SubscribeComponent
   ],
   imports: [
     BrowserModule, 

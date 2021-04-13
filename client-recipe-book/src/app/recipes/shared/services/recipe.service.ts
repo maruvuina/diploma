@@ -46,4 +46,8 @@ export class RecipeService {
     return this.httpClient.get<any>(API_RECIPES + 'categories', { params });
   }
 
+  getRecipesByAuthor(idAuthor: number, params: any): Observable<any> {
+    return this.httpClient.get<any>(API_RECIPES + 'authors/' + idAuthor, { params });
+  }
+
 }

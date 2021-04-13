@@ -18,20 +18,20 @@ export class UserService {
   	return this.httpClient.get<UserModel>(API_USER + id);
   }
 
-  subscribe(id: number, userModel: UserModel): Observable<any> {
-    return this.httpClient.post(API_USER + 'subscribe/' + id, userModel);
+  subscribe(id: number, userDetails: UserDetails): Observable<any> {
+    return this.httpClient.post(API_USER + 'subscribe/' + id, userDetails);
   }
 
   unsubscribe(id: number): Observable<any> {
     return this.httpClient.delete(API_USER + 'unsubscribe/' + id);
   }
 
-  getFollowings(id: number): Observable<Array<UserDetails>> {
-  	return this.httpClient.get<Array<UserDetails>>(API_USER + 'following/' + id);
+  getFollowings(id: number, params: any): Observable<any> {
+  	return this.httpClient.get<any>(API_USER + 'followings/' + id, { params });
   }
 
-  getFollowers(id: number): Observable<Array<UserDetails>> {
-  	return this.httpClient.get<Array<UserDetails>>(API_USER + 'follower/' + id);
+  getFollowers(id: number, params: any): Observable<any> {
+  	return this.httpClient.get<any>(API_USER + 'followers/' + id, { params });
   }
 
   update(id: number, formData: FormData): Observable<any> {
