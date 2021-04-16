@@ -1,7 +1,6 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.entity.RefreshToken;
-import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,8 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
-    public void validateRefreshToken(String token) throws ServiceException {
-        refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ServiceException("Invalid refresh Token"));
+    public boolean validateRefreshToken(String token) {
+        return refreshTokenRepository.existsByToken(token);
     }
 
     public void deleteRefreshToken(String token) {
