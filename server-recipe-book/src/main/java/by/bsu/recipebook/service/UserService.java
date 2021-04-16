@@ -1,13 +1,11 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.constants.Constants;
-import by.bsu.recipebook.dto.recipe.RecipeDetailsDto;
 import by.bsu.recipebook.dto.user.UserDetailsDto;
 import by.bsu.recipebook.dto.user.UserGetDto;
 import by.bsu.recipebook.dto.user.UserUpdateDto;
 import by.bsu.recipebook.entity.Followers;
 import by.bsu.recipebook.entity.NotificationEmail;
-import by.bsu.recipebook.entity.Recipe;
 import by.bsu.recipebook.entity.User;
 import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.mapper.JsonMapper;
@@ -15,6 +13,7 @@ import by.bsu.recipebook.mapper.MapResponse;
 import by.bsu.recipebook.mapper.UserMapper;
 import by.bsu.recipebook.repository.FollowersRepository;
 import by.bsu.recipebook.repository.UserRepository;
+import by.bsu.recipebook.service.email.MailService;
 import by.bsu.recipebook.util.FormatterPattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -135,9 +134,9 @@ public class UserService {
     public void update(String jsonUserDto, MultipartFile file, int id) throws ServiceException {
         User user = getUserById(id);
         UserUpdateDto userUpdateDto = jsonMapper.mapDto(jsonUserDto, UserUpdateDto.class);
-        String fullname = userUpdateDto.getFullName();
-        if (!fullname.isBlank()) {
-            user.setFullName(fullname);
+        String fullName = userUpdateDto.getFullName();
+        if (!fullName.isBlank()) {
+            user.setFullName(fullName);
         }
         if (file != null) {
             String avatarLocation = ImageService.save(file, Constants.USER_UPLOAD_IMAGES_DIR);

@@ -15,6 +15,7 @@ import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.repository.RoleRepository;
 import by.bsu.recipebook.repository.UserRepository;
 import by.bsu.recipebook.repository.VerificationTokenRepository;
+import by.bsu.recipebook.service.email.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -133,11 +134,14 @@ public class AuthService {
     }
 
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws ServiceException {
-        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        String requestToken = refreshTokenRequest.getRefreshToken();
+        if (!refreshTokenService.validateRefreshToken(requestToken)) {
+            throw new ServiceException("Invalid refresh Token");
+        }
         String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
-                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .refreshToken(requestToken)
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getUsername())
                 .build();

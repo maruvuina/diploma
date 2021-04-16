@@ -24,5 +24,4 @@ public class CategoryService {
                 .map(categoryMapper::mapToCategoryDto)
                 .collect(Collectors.toList());
     }
-
 }
