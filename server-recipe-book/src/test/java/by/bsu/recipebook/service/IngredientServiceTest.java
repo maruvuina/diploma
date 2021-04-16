@@ -4,8 +4,8 @@ import by.bsu.recipebook.dto.IngredientDto;
 import by.bsu.recipebook.entity.Ingredient;
 import by.bsu.recipebook.mapper.IngredientMapper;
 import by.bsu.recipebook.repository.IngredientRepository;
-import org.assertj.core.api.Assertions;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -13,23 +13,31 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 public class IngredientServiceTest {
-    private final IngredientRepository ingredientRepository = mock(IngredientRepository.class);
+    private AutoCloseable closeable;
 
-    private final IngredientMapper ingredientMapper = mock(IngredientMapper.class);
+    @Mock
+    private IngredientRepository ingredientRepository;
+
+    @Mock
+    private IngredientMapper ingredientMapper;
 
     private IngredientService ingredientService;
 
     @BeforeMethod
     public void setUp() {
+        closeable = MockitoAnnotations.openMocks(this);
         ingredientService = new IngredientService(ingredientRepository, ingredientMapper);
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test
@@ -38,32 +46,26 @@ public class IngredientServiceTest {
                 new Ingredient(null, "Закуски", null);
         IngredientDto expectedIngredientDto =
                 new IngredientDto(null, "Закуски", null);
-        Mockito.when(ingredientRepository.findByIngredientName("Закуски")).thenReturn(ingredient);
-        Mockito.when(ingredientMapper.mapToIngredientDto(Mockito.any(Ingredient.class)))
+        when(ingredientRepository.findByIngredientName("Закуски")).thenReturn(ingredient);
+        when(ingredientMapper.mapToIngredientDto(any(Ingredient.class)))
                 .thenReturn(expectedIngredientDto);
-        IngredientDto actualIngredientResponse =
+        IngredientDto actualIngredient =
                 ingredientService.getIngredientByName("Закуски");
-        Assertions.assertThat(actualIngredientResponse.getIngredientName())
+        assertThat(actualIngredient.getIngredientName())
                 .isEqualTo(expectedIngredientDto.getIngredientName());
     }
 
     @Test
     public void shouldFindByIngredientNamePattern() {
-//        List<Ingredient> ingredientList = new ArrayList<>();
-//        ingredientList.add(new Ingredient(null, "Кукурузная мука", null));
-//        ingredientList.add(new Ingredient(null, "Пшеничная мука", null));
-//        ingredientList.add(new Ingredient(null, "Рисовая мука", null));
-//
-//        List<IngredientDto> expectedIngredientDtoList = new ArrayList<>();
-//        expectedIngredientDtoList.add(new IngredientDto(null, "Кукурузная мука", null));
-//        expectedIngredientDtoList.add(new IngredientDto(null, "Пшеничная мука", null));
-//        expectedIngredientDtoList.add(new IngredientDto(null, "Рисовая мука", null));
-//
-//        Mockito.when(ingredientRepository.searchByIngredientNamePattern("Мука"))
-//                .thenReturn(ingredientList);
-//        Mockito.when(ingredientMapper.mapToIngredientDto(Mockito.any(Ingredient.class)))
-//                .thenReturn(new IngredientDto(null, "Кукурузная мука", null));
-//        List<IngredientDto> actualIngredientDtoList = ingredientService.getByIngredientNamePattern("Мука");
-//        Assertions.assertThat(actualIngredientDtoList).isEqualTo(expectedIngredientDtoList);
+        List<Ingredient> ingredientList = new ArrayList<>();
+        ingredientList.add(new Ingredient(null, "Кукурузная мука", null));
+        List<IngredientDto> expectedIngredientDtoList = new ArrayList<>();
+        expectedIngredientDtoList.add(new IngredientDto(null, "Кукурузная мука", null));
+        when(ingredientRepository.searchByIngredientNamePattern("Мука"))
+                .thenReturn(ingredientList);
+        when(ingredientMapper.mapToIngredientDto(any(Ingredient.class)))
+                .thenReturn(new IngredientDto(null, "Кукурузная мука", null));
+        List<IngredientDto> actualIngredientDtoList = ingredientService.getByIngredientNamePattern("Мука");
+        assertThat(actualIngredientDtoList).isEqualTo(expectedIngredientDtoList);
     }
 }
