@@ -1,4 +1,4 @@
-package by.bsu.recipebook.service;
+package by.bsu.recipebook.service.email;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.context.IContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
