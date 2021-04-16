@@ -1,4 +1,4 @@
-package by.bsu.recipebook.service;
+package by.bsu.recipebook.service.email;
 
 import by.bsu.recipebook.dto.EmailDto;
 import by.bsu.recipebook.mapper.EmailMapper;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+public class GmailService {
     private final EmailMapper emailMapper;
 
     public void sendMessageToCompany(EmailDto emailDto) {

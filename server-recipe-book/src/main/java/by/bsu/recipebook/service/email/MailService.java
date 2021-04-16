@@ -1,4 +1,4 @@
-package by.bsu.recipebook.service;
+package by.bsu.recipebook.service.email;
 
 import by.bsu.recipebook.entity.NotificationEmail;
 import by.bsu.recipebook.exception.ServiceException;
@@ -26,7 +26,7 @@ public class MailService {
     private final MailContentBuilder mailContentBuilder;
 
     @Async
-    void sendMail(NotificationEmail notificationEmail) throws ServiceException {
+    public void sendMail(NotificationEmail notificationEmail) throws ServiceException {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(COMPANY_EMAIL);
