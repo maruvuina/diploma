@@ -1,7 +1,7 @@
 package by.bsu.recipebook.controller;
 
 import by.bsu.recipebook.dto.EmailDto;
-import by.bsu.recipebook.service.EmailService;
+import by.bsu.recipebook.service.email.GmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class EmailController {
-    private final EmailService emailService;
+    private final GmailService gmailService;
 
     @PostMapping
     public ResponseEntity<Void> sendMessage(@RequestBody @Valid EmailDto emailDto) {
-        emailService.sendMessageToCompany(emailDto);
+        gmailService.sendMessageToCompany(emailDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
