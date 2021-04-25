@@ -77,7 +77,7 @@ public class RecipeController {
     }
 
     @GetMapping("/random")
-    public ResponseEntity<RecipeGetDto> getRandomRecipe() throws ServiceException {
+    public ResponseEntity<RecipeGetDto> getRandomRecipe() {
         return new ResponseEntity<>(recipeService.getRandomRecipe(), HttpStatus.OK);
     }
 
