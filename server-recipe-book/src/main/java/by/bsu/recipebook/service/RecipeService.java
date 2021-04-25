@@ -60,9 +60,9 @@ public class RecipeService {
     public RecipeGetDto save(String jsonRecipeDto, MultipartFile file) {
         String filePath = ImageService.save(file, Constants.RECIPE_UPLOAD_IMAGES_DIR);
         User user = authService.getCurrentUser();
-        Recipe savedRecipe = recipeRepository
-                .save(recipeMapper.mapToRecipe(
-                        jsonMapper.mapDto(jsonRecipeDto, RecipePostDto.class), user, filePath));
+        RecipePostDto recipePostDto = jsonMapper.mapDto(jsonRecipeDto, RecipePostDto.class);
+        Recipe recipe = recipeMapper.mapToRecipe(recipePostDto, user, filePath);
+        Recipe savedRecipe = recipeRepository.save(recipe);
         return recipeMapper.mapToRecipeGetDto(savedRecipe);
     }
 
@@ -82,9 +82,6 @@ public class RecipeService {
     public Map<String, Object> getAll(int page, int size, SortType sortType) {
         Page<Recipe> pageTuts;
         switch (sortType) {
-            case BY_DATE_ASC:
-                pageTuts = getSortedRecipes(page, size, Sort.Direction.ASC, "createdDate");
-                break;
             case BY_DATE_DESC:
                 pageTuts = getSortedRecipes(page, size, Sort.Direction.DESC, "createdDate");
                 break;
@@ -92,7 +89,8 @@ public class RecipeService {
                 pageTuts = getSortedRecipes(page, size, Sort.Direction.ASC, "recipeName");
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + sortType);
+                pageTuts = getSortedRecipes(page, size, Sort.Direction.ASC, "createdDate");
+                break;
         }
         return getSortedData(pageTuts);
     }
@@ -118,26 +116,26 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public String getRecipeMainPicture(int id) throws ServiceException {
-        String recipeMainPicture = getRecipeById(id).getMainPicture();
+        String recipeMainPictureLocation = getRecipeById(id).getMainPicture();
+        String recipeMainPicture = null;
         try {
-            return DatatypeConverter
-                    .printBase64Binary(Files
-                            .readAllBytes(Paths.get(recipeMainPicture)));
+            recipeMainPicture =
+                    DatatypeConverter
+                            .printBase64Binary(
+                                    Files.readAllBytes(
+                                            Paths.get(recipeMainPictureLocation)));
         } catch (IOException e) {
             logger.log(Level.ERROR, "Error while get recipe main picture: ", e);
         }
-        return null;
+        return recipeMainPicture;
     }
 
     @Transactional(readOnly = true)
-    public RecipeGetDto getRandomRecipe() throws ServiceException {
+    public RecipeGetDto getRandomRecipe() {
         long count = recipeRepository.count();
         int randomNumber = (int)(Math.random() * count);
-        Page<Recipe> recipePage = recipeRepository
-                .findAll(PageRequest.of(randomNumber, 1));
-        Recipe recipe = recipePage.stream()
-                .findFirst()
-                .orElseThrow(() -> new ServiceException("Error occurs while get random recipe"));
+        Page<Recipe> recipePage = recipeRepository.findAll(PageRequest.of(randomNumber, 1));
+        Recipe recipe = recipePage.stream().findFirst().orElseGet(Recipe::new);
         return recipeMapper.mapToRecipeGetDto(recipe);
     }
 
@@ -158,13 +156,10 @@ public class RecipeService {
 
     @Transactional
     public CommentDto saveComment(int id, CommentDto commentDto) throws ServiceException {
-        System.out.println(commentDto.toString());
         User user = authService.getCurrentUser();
         Recipe recipe = getRecipeById(id);
-        Comment comment = commentMapper
-                .mapToComment(commentDto, user, recipe);
-        return commentMapper
-                .mapToCommentDto(commentRepository.save(comment));
+        Comment comment = commentMapper.mapToComment(commentDto, user, recipe);
+        return commentMapper.mapToCommentDto(commentRepository.save(comment));
     }
 
     @Transactional(readOnly = true)
@@ -208,7 +203,7 @@ public class RecipeService {
         }
     }
 
-    private Recipe getRecipeById(int id) throws ServiceException {
+    private Recipe getRecipeById(Integer id) throws ServiceException {
         return recipeRepository
                 .findById(id)
                 .orElseThrow(
@@ -237,8 +232,10 @@ public class RecipeService {
         User user = authService.getCurrentUser();
         Recipe recipe = getRecipeById(id);
         Comment comment = commentMapper.mapToComment(commentDto, user, recipe);
-        Optional<Comment> parentOptional = commentRepository
-                .findById(commentDto.getIdParent());
+        Optional<Comment> parentOptional = Optional.empty();
+        if (commentDto.getIdParent() != null) {
+            parentOptional = commentRepository.findById(commentDto.getIdParent());
+        }
         Comment parent = null;
         if (parentOptional.isPresent()) {
             parent = parentOptional.get();
