@@ -40,10 +40,10 @@ public class RefreshTokenServiceTest {
     @Test
     public void shouldGenerateRefreshToken() {
         RefreshToken refreshToken = new RefreshToken(null, token, null);
-        RefreshToken expectedRefreshToken = new RefreshToken(1, token, Instant.now());
+        RefreshToken expected = new RefreshToken(1, token, Instant.now());
         when(refreshTokenRepository.save(any(RefreshToken.class))).thenReturn(refreshToken);
         RefreshToken actualRefreshToken = refreshTokenService.generateRefreshToken();
-        assertThat(actualRefreshToken.getToken()).isEqualTo(expectedRefreshToken.getToken());
+        assertThat(actualRefreshToken.getToken()).isEqualTo(expected.getToken());
     }
 
     @Test()
