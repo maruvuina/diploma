@@ -7,18 +7,7 @@
       <div class="uk-text-center uk-margin-medium-bottom">
         <h1 class="uk-h2 uk-letter-spacing-small">Авторизация</h1>
       </div>
-      <div data-uk-grid class="uk-child-width-auto uk-grid-small uk-flex uk-flex-center uk-margin">
-        <div>
-          <a href="#" data-uk-icon="icon: facebook" class="uk-icon-button uk-icon-button-large facebook"></a>
-        </div>
-        <div>
-          <a href="#" data-uk-icon="icon: google-plus" class="uk-icon-button uk-icon-button-large google-plus"></a>
-        </div>
-        <div>
-          <a href="#" data-uk-icon="icon: linkedin" class="uk-icon-button uk-icon-button-large linkedin"></a>
-        </div>
-      </div>    
-
+    
       <form class="uk-text-center" [formGroup]="loginForm" novalidate (ngSubmit)="login()" >
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="email">Электронная почта</label>
@@ -45,16 +34,18 @@
         </div>
         
         <div class="uk-width-1-1 uk-text-center">
-          <button [disabled]="loginForm.invalid" class="uk-button uk-button-primary uk-button-large">Войти</button>
+          <button [disabled]="loginForm.invalid" class="uk-button uk-border-pill uk-button-secondary uk-button-large button-login">Войти</button>
         </div>
         
         <div class="uk-width-1-1 uk-margin uk-text-center">
           <p class="uk-text-small uk-margin-remove">Вернуться на <a class="uk-link-border" [routerLink]="['/']">главную</a></p>
         </div>
+
         <div class="uk-form-danger" *ngIf='this.isError'>
-             <p class="uk-text-small uk-link-muted">Возникла ошибка. Пожалуйста, проверьте введенны данные и попробуйте еще раз.</p>   
+          <p class="uk-text-small uk-link-muted">Возникла ошибка. Пожалуйста, проверьте введенны данные и попробуйте еще раз.</p>   
         </div> 
       </form>
+
     </div>
   </div>
   <div class="uk-width-1-2@m uk-padding-large uk-flex uk-flex-middle uk-flex-center uk-light" data-uk-height-viewport>
@@ -65,10 +56,10 @@
           <h2 class="uk-letter-spacing-small">Присоединяйтесь к нам!</h2>
         </div>
         <div class="uk-margin-top uk-margin-medium-bottom uk-text-center">
-          <p>Заполните форму и вступайте в ряды кулинаров</p>
+          <p>Заполните форму и вступите в ряды кулинаров</p>
         </div>
         <div class="uk-width-1-1 uk-text-center">
-          <a [routerLink]="['/signup']" class="uk-button uk-button-primary uk-button-large">Зарегистрироваться</a>
+          <a [routerLink]="['/signup']" class="uk-button uk-button-primary uk-button-large uk-border-pill">Зарегистрироваться</a>
         </div>
       </div>
     </div>

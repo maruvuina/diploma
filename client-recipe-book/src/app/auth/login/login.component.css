@@ -22,30 +22,6 @@
     text-transform: none;
 }
 
-
-.uk-button {
-    margin: 0;
-    border: none;
-    overflow: visible;
-    font: inherit;
-    color: inherit;
-    text-transform: none;
-    -webkit-appearance: none;
-    border-radius: 0;
-    display: inline-block;
-    box-sizing: border-box;
-    padding: 0 30px;
-    vertical-align: middle;
-    font-size: 0.75rem;
-    line-height: 34px;
-    text-align: center;
-    text-decoration: none;
-    text-transform: none;
-    transition: 0.1s ease-in-out;
-    transition-property: color, background-color, border-color;
-    border-radius: 500px;
-}
-
 .uk-button-large {
     padding: 0 40px;
     line-height: 46px;
@@ -63,12 +39,6 @@
     color: #fff;
 }
 
-.uk-button-primary:hover, 
-.uk-button-primary:focus {
-    /*background-color: #e9351f;
-    color: #fff;*/
-}
-
 .uk-form-label {
     color: #333;
     font-size: 0.875rem;
@@ -77,10 +47,6 @@
 .uk-form-large {
     border-width: 2px;
     font-size: 0.875rem;
-}
-
-.uk-border-pill {
-    border-radius: 500px;
 }
 
 .uk-form-large:not(textarea):not([multiple]):not([size]) {
@@ -92,7 +58,6 @@
 .uk-input {
     max-width: 100%;
     width: 100%;
-    border: 0 none;
     padding: 0 10px;
     background: #fff;
     color: #4a4a4a;
@@ -107,50 +72,6 @@
 
 .uk-border-rounded-large {
     border-radius: 20px;
-}
-
-.uk-icon-button-large {
-    height: 42px;
-    width: 42px;
-}    
-
-.facebook:hover,
-.google-plus:hover, 
-.linkedin:hover {
-    color: #fff;
-}
-
-.facebook, 
-.google-plus, 
-.linkedin {
-    background: #fff;
-}
-
-.facebook {
-    color: #3b5998;
-    border: solid 1px #3b5998;
-}
-
-.facebook:hover {
-    background: #3b5998;
-}
-
-.google-plus {
-    color: #CC3333;
-    border: solid 1px #CC3333; 
-}
-
-.google-plus:hover {
-    background: #CC3333;
-}
-
-.linkedin {
-    color: #0e76a8;
-    border: solid 1px #0e76a8;
-}
-
-.linkedin:hover {
-    background: #0e76a8;
 }
 
 .uk-link-border {
@@ -171,13 +92,17 @@
 }
 
 .uk-input:focus {
-  outline: none;
-  background-color: #fff;
-  color: #4a4a4a;
-  border-color: #eb4a36;
+    outline: none;
+    background-color: #fff;
+    color: #4a4a4a;
+    border-color: #eb4a36;
 }
 
 .not-valid {
     border: 1px double #f0506e;
     border-radius: 10px;
+}
+
+.button-login {
+  border: 1px solid;
 }
