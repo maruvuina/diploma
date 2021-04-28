@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -23,18 +24,21 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody @Valid RegisterRequest registerRequest)
+    public ResponseEntity<Boolean> signup(@RequestBody @Valid RegisterRequest registerRequest)
             throws ServiceException {
-        authService.signup(registerRequest);
-        return new ResponseEntity<>("User Registration Successful",
-                HttpStatus.OK);
+        return new ResponseEntity<>(authService.signup(registerRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) throws ServiceException {
-        System.out.println("token--> " + token);
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<Boolean> isUserActive(
+            @RequestParam(value = "username") @NotBlank String username) {
+        return new ResponseEntity<>(authService.isUserActive(username), HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -54,5 +58,4 @@ public class AuthController {
         return new ResponseEntity<>("Refresh Token Deleted Successfully.",
                 HttpStatus.OK);
     }
-
 }

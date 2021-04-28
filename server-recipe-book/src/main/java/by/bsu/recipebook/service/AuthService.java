@@ -59,15 +59,16 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
 
     @Transactional
-    public void signup(RegisterRequest registerRequest) throws ServiceException {
+    public boolean signup(RegisterRequest registerRequest) throws ServiceException {
         String email = registerRequest.getEmail();
+        boolean isActive;
         if (!userRepository.existsByEmail(email)) {
             registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             Set<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByRoleName("ROLE_USER"));
             registerRequest.setRoles(roles);
             User user = userMapper.mapToUser(registerRequest);
-            userRepository.save(user);
+            isActive = userRepository.save(user).isActive();
             String token = generateVerificationToken(user);
             String message = "Thank you for signing up to Recipe Book, please click on the below url to activate your account:\n " +
                     API_ACTIVATION_EMAIL + "/" + token;
@@ -76,6 +77,7 @@ public class AuthService {
         } else {
             throw new ServiceException("User with '" + email + "' already exists.");
         }
+        return isActive;
     }
 
     private String generateVerificationToken(User user) {
@@ -103,10 +105,14 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    public boolean isUserActive(String username) {
+        return userRepository.findByEmail(username).isActive();
+    }
+
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-                loginRequest.getPassword()));
+                        loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
         CustomUserDetails customUserDetails = (CustomUserDetails) authenticate.getPrincipal();
