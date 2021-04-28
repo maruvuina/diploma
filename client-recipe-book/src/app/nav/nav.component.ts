@@ -22,8 +22,8 @@ export class NavComponent implements OnInit {
   	this.isLoggedIn = this.authService.isLoggedIn();
     this.username = this.authService.getUserName();
     this.idUser = this.authService.getIdUser();
-    this.authService.loggedIn.subscribe((data: boolean) => this.isLoggedIn = data);
-    this.authService.username.subscribe((data: string) => this.username = data);
+    this.authService.loggedIn.subscribe(data => this.isLoggedIn = data);
+    this.authService.username.subscribe(data => this.username = data);
   }
 
   goToUserProfile() {
@@ -36,5 +36,4 @@ export class NavComponent implements OnInit {
       window.location.reload();
     })
   }
-
 }
