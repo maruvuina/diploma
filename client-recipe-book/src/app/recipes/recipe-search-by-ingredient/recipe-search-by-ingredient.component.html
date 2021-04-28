@@ -80,27 +80,7 @@
 		                </div>
 		            </div>
 		        </div>
-
-			    <!-- <form *ngIf="!isSearch" [formGroup]="searchByNameForm" novalidate (ngSubmit)="searchRecipe()">
-					<div>
-						<label class="uk-form-label"><i uk-icon="list" class="uk-margin-small-left uk-margin-small-right"></i>Название рецепта</label>
-					
-						<input type="text" class="uk-margin-small-top uk-input uk-border-rounded" placeholder="" formControlName="searchedName" />
-					</div>
-					<div class="uk-margin-small-top uk-flex uk-flex-center uk-margin-medium-top">
-				    	<div>
-							<button [disabled]="searchByNameForm.invalid" class="uk-button uk-border-pill uk-button-secondary">Найти рецепты</button>
-						</div>
-				    </div>	
-				</form> -->
-
 			</div>
-
-			
-				
-			
-
-			
 
 			<div *ngIf="isRecipesFounded">
 				<div *ngFor="let recipe of recipes | paginate: config" class="uk-flex uk-flex-column uk-margin-top uk-border-rounded">
