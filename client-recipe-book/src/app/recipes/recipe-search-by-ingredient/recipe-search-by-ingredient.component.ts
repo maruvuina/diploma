@@ -67,7 +67,7 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
   }
 
   getAllIngredients() {
-    this.ingredientService.getAllIngredients()
+    this.ingredientService.getAll()
     .pipe(takeUntil(this.destroy))
     .subscribe(ingredientList => {
       this.ingredientList = ingredientList;
@@ -128,7 +128,6 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
   }
 
   onChangeSearch(event: string) {
-    console.log("onChangeSearch");
     this.isLoadingResult = true;
     if (event != '' && event != undefined && event != null) {
       this.recipeService.getRecipeByRecipeNamePattern(event)

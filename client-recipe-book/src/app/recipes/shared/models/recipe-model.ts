@@ -1,6 +1,7 @@
 import { IngredientModel } from './ingredient-model';
 import { InstructionModel } from './instruction-model';
 import { CommentModel } from '../../../comment/shared/models/comment-model';
+import { TagModel } from '../../shared/models/tag-model';
 
 export class RecipeModel {
     idRecipe: number;
@@ -14,5 +15,6 @@ export class RecipeModel {
     ingredients: IngredientModel[];
     instructions: InstructionModel[];
     comments: CommentModel[];
+    tags: TagModel[];
     likesCount: number;
 }

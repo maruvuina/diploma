@@ -76,3 +76,7 @@ textarea {
 .fa-heart.active {
   color: deeppink;
 }
+
+.uk-label {
+  background: #403e56;
+}

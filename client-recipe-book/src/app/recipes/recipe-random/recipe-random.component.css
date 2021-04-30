@@ -46,3 +46,7 @@ a:hover {
     width: 540px;
     height: 300px;
 }
+
+.uk-label {
+  background: #403e56;
+}

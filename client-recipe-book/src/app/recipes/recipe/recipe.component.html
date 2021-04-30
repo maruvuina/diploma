@@ -69,6 +69,13 @@
           <div>{{ingredient.ingredientName}} <p class="uk-text-bold">{{ingredient.measureAmount}}</p></div>
           <hr class="uk-divider-small">
         </div>
+
+        <h3 class="uk-margin-large-top">Теги</h3>
+        <div class="uk-grid-column-small uk-grid-row-small" uk-grid>
+          <div *ngFor="let tag of recipe.tags">
+            <div class="uk-label uk-label-light">{{tag.tagName}}</div>
+          </div>
+        </div>
       </div>
 
     </div>

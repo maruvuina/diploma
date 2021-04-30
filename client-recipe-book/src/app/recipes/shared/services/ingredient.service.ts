@@ -12,7 +12,7 @@ export class IngredientService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllIngredients(): Observable<Array<IngredientModel>> {
+  getAll(): Observable<Array<IngredientModel>> {
     return this.httpClient.get<Array<IngredientModel>>(API_INGREDIENTS);
   }
 
