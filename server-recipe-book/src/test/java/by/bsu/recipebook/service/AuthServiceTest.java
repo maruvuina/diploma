@@ -117,11 +117,12 @@ public class AuthServiceTest {
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
         when(passwordEncoder.encode(anyString())).thenReturn("pass");
         when(userMapper.mapToUser(any(RegisterRequest.class))).thenReturn(user);
-        PowerMockito.when(authService, method(AuthService.class, PRIVATE_METHOD_GENERATE_VERIFICATION_TOKEN, User.class))
+        AuthService spy = PowerMockito.spy(authService);
+        PowerMockito.when(spy, method(AuthService.class, PRIVATE_METHOD_GENERATE_VERIFICATION_TOKEN, User.class))
                 .withArguments(any(User.class))
                 .thenReturn("Some string");
         doNothing().when(mailService).sendMail(any(NotificationEmail.class));
-        authService.signup(registerRequest);
+        spy.signup(registerRequest);
         verify(userRepository, times(1)).save(userArgumentCaptor.capture());
         assertThat(userArgumentCaptor.getValue().getIdUser()).isEqualTo(1);
         assertThat(userArgumentCaptor.getValue().getFullName()).isEqualTo(fullName);
