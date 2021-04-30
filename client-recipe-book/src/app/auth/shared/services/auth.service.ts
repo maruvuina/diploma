@@ -17,13 +17,18 @@ export class AuthService {
   idUser: number;
 
   @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+
   @Output() username: EventEmitter<string> = new EventEmitter();
 
   constructor(private httpClient: HttpClient, 
   	private localStorage: LocalStorageService) { }
 
-  signup(signupRequestPayload: SignupRequestPayload): Observable<any> {
-    return this.httpClient.post(API_AUTH + 'signup', signupRequestPayload, { responseType: 'text' });
+  signup(signupRequestPayload: SignupRequestPayload): Observable<boolean> {
+    return this.httpClient.post<boolean>(API_AUTH + 'signup', signupRequestPayload);
+  }
+
+  isUserActive(username: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(API_AUTH + 'active/?username=' + username);
   }
 
   login(loginRequestPayload: LoginRequestPayload): Observable<boolean> {
@@ -35,7 +40,6 @@ export class AuthService {
         this.localStorage.store('expiresAt', data.expiresAt);
         this.localStorage.store('idUser', data.idUser);
         this.localStorage.store('roles', JSON.stringify(data.roles));
-
         this.loggedIn.emit(true);
         this.username.emit(data.username);
         return true;
@@ -59,6 +63,10 @@ export class AuthService {
 
   getRoles() {
     return this.localStorage.retrieve('roles');
+  }
+
+  isActive() {
+    return this.localStorage.retrieve('isActive');
   }
 
   getIdUser() {

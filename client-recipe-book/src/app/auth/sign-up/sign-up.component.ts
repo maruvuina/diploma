@@ -1,20 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SignupRequestPayload } from '../shared/models/signup-request.payload';
 import { AuthService } from '../../auth/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { throwError, ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
 
   signupForm: FormGroup;
 
   signupRequestPayload: SignupRequestPayload;
+
+  destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private authService: AuthService, 
     private router: Router, 
@@ -38,12 +42,23 @@ export class SignUpComponent implements OnInit {
   	this.signupRequestPayload.fullname = this.signupForm.get('fullname').value;
     this.signupRequestPayload.email = this.signupForm.get('email').value;
     this.signupRequestPayload.password = this.signupForm.get('password').value;
+    
     this.authService.signup(this.signupRequestPayload)
-      .subscribe(() => {
-        this.router.navigate(['/login'], { queryParams: { registered: 'true' } });
-      }, () => {
-        this.toastr.error('Регистрация прошла неудачно. Пожалуйста попробуйте ещё раз.');
-      });
+    .pipe(takeUntil(this.destroy))
+    .subscribe(response => {
+      if (!response) {
+        this.toastr.info('Пожалуйста, проверьте свою почту, чтобы активировать учетную запись.');
+      }
+      this.router.navigate(['/login'], { queryParams: { registered: 'true' } });
+    }, error => {
+      this.toastr.error('Регистрация прошла неудачно. Пожалуйста попробуйте ещё раз.');
+      throwError(error);
+    });
+    this.signupForm.reset();
   }
 
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
+  }
 }

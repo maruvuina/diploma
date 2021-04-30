@@ -1,25 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginRequestPayload } from '../shared/models/login-request.payload';
 import { AuthService } from '../../auth/shared/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { throwError } from 'rxjs';
+import { Observable, throwError, ReplaySubject } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
 
   loginRequestPayload: LoginRequestPayload;
-
-  registerSuccessMessage: string;
   
   isError: boolean;
+
+  active: boolean;
+
+  destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private authService: AuthService, 
   	private activatedRoute: ActivatedRoute,
@@ -38,24 +41,44 @@ export class LoginComponent implements OnInit {
     });
 
     this.activatedRoute.queryParams
-      .subscribe(params => {
-        if (params.registered !== undefined && params.registered === 'true') {
-          this.toastr.success('Вы успешно зарегистрировались');
-          this.registerSuccessMessage = 'Пожалуйста, проверьте свою почту, чтобы активировать учетную запись!';
-        }
-      });
+    .pipe(takeUntil(this.destroy))
+    .subscribe(params => {
+      if (params.registered !== undefined && params.registered === 'true') {
+        this.toastr.success('Вы успешно зарегистрировались');
+      }
+    });
   }
 
   login() {
-    this.loginRequestPayload.username = this.loginForm.get('username').value;
+    let username = this.loginForm.get('username').value;
+    this.loginRequestPayload.username = username;
     this.loginRequestPayload.password = this.loginForm.get('password').value;
-    this.authService.login(this.loginRequestPayload).subscribe(data => {
-      this.isError = false;
-      this.toastr.success('Вы успешно авторизовались');
-      this.router.navigateByUrl('');
+
+    this.authService.isUserActive(username)
+    .pipe(takeUntil(this.destroy))
+    .subscribe(response => {
+      if (response) {
+        this.authService.login(this.loginRequestPayload)
+        .pipe(takeUntil(this.destroy))
+        .subscribe(() => {
+          this.isError = false;
+          this.toastr.success('Вы успешно авторизовались');
+          this.router.navigateByUrl('');
+        }, error => {
+          this.isError = true;
+          throwError(error);
+        });
+        this.loginForm.reset();
+      } else {
+        this.toastr.info('Пожалуйста, проверьте свою почту, чтобы активировать учетную запись.');
+      }
     }, error => {
-      this.isError = true;
-      throwError(error);
-    });
+        throwError(error);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 }
