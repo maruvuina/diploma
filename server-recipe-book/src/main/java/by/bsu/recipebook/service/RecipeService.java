@@ -206,8 +206,7 @@ public class RecipeService {
     private Recipe getRecipeById(Integer id) throws ServiceException {
         return recipeRepository
                 .findById(id)
-                .orElseThrow(
-                        () -> new ServiceException(
+                .orElseThrow(() -> new ServiceException(
                                 "Error occurs while trying to get recipe with such " + id));
     }
 

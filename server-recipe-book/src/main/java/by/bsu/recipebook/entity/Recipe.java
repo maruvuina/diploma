@@ -124,6 +124,26 @@ public class Recipe {
         recipeLike.setRecipe(null);
     }
 
+    @ManyToMany (cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "recipe_tag",
+            joinColumns = @JoinColumn(name = "id_recipe_fk"),
+            inverseJoinColumns = @JoinColumn(name = "id_tag_fk")
+    )
+    private Set<Tag> tagSet = new HashSet<>();
+
+    public void addTag(Tag tag) {
+        this.tagSet.add(tag);
+        tag.getRecipes().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tagSet.remove(tag);
+        tag.getRecipes().remove(this);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Recipe{");

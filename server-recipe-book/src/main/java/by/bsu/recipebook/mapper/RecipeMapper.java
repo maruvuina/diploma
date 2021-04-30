@@ -3,11 +3,13 @@ package by.bsu.recipebook.mapper;
 import by.bsu.recipebook.dto.CommentDto;
 import by.bsu.recipebook.dto.IngredientDto;
 import by.bsu.recipebook.dto.InstructionDto;
+import by.bsu.recipebook.dto.TagDto;
 import by.bsu.recipebook.dto.recipe.*;
 import by.bsu.recipebook.entity.*;
 import by.bsu.recipebook.repository.CategoryRepository;
 import by.bsu.recipebook.repository.IngredientAmountRepository;
 import by.bsu.recipebook.repository.IngredientRepository;
+import by.bsu.recipebook.repository.TagRepository;
 import by.bsu.recipebook.util.JsonNullableUtils;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import org.mapstruct.AfterMapping;
@@ -41,6 +43,12 @@ public abstract class RecipeMapper {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private TagMapper tagMapper;
+
+    @Autowired
+    private TagRepository tagRepository;
+
     @Mapping(target = "recipeName", source = "recipePostDto.recipeName")
     @Mapping(target = "cookingTime", source = "recipePostDto.cookingTime")
     @Mapping(target = "yield", source = "recipePostDto.yield")
@@ -51,6 +59,7 @@ public abstract class RecipeMapper {
     @Mapping(target = "announce", source = "recipePostDto.announce")
     @Mapping(target = "instructions", ignore = true)
     @Mapping(target = "ingredientAmountSet", ignore = true)
+    @Mapping(target = "tagSet", ignore = true)
     public abstract Recipe mapToRecipe(RecipePostDto recipePostDto, User user, String recipeMainPictureLocation);
 
     Category getCategory(RecipePostDto recipePostDto) {
@@ -69,14 +78,17 @@ public abstract class RecipeMapper {
     void setRecipeIngredients(RecipePostDto recipePostDto, @MappingTarget Recipe recipe) {
         recipePostDto.getIngredients()
                 .forEach(o -> {
-                    Ingredient ingredient =
-                            ingredientRepository
-                                    .findByIngredientName(o.getIngredientName());
+                    Ingredient ingredient = ingredientRepository.findByIngredientName(o.getIngredientName());
                     IngredientAmount ingredientAmount = new IngredientAmount();
                     ingredientAmount.setIngredient(ingredient);
                     ingredientAmount.setMeasureAmount(o.getMeasureAmount());
                     recipe.addIngredientAmount(ingredientAmountRepository.save(ingredientAmount));
                 });
+    }
+
+    @AfterMapping
+    void setRecipeTags(RecipePostDto recipePostDto, @MappingTarget Recipe recipe) {
+        recipePostDto.getTags().forEach(o -> recipe.addTag(tagRepository.findByTagName(o.getTagName())));
     }
 
     @Mapping(target = "idRecipe", source = "recipe.idRecipe")
@@ -90,11 +102,30 @@ public abstract class RecipeMapper {
     @Mapping(target = "ingredients", ignore = true)
     @Mapping(target = "instructions", ignore = true)
     @Mapping(target = "comments", ignore = true)
+    @Mapping(target = "tags", ignore = true)
     @Mapping(target = "likesCount", source = "recipe.likeCount")
     public abstract RecipeGetDto mapToRecipeGetDto(Recipe recipe);
 
     String getCreatedDate(Recipe recipe) {
         return TimeAgo.using(recipe.getCreatedDate().toEpochMilli());
+    }
+
+    @AfterMapping
+    void setRecipeGetDtoTags(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
+        List<TagDto> tagDtoList = recipe.getTagSet()
+                .stream()
+                .map(tagMapper::mapToTagDto)
+                .collect(Collectors.toList());
+        recipeGetDto.setTags(tagDtoList);
+    }
+
+    @AfterMapping
+    void setRecipeGetDtoComments(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
+        List<CommentDto> commentDtoList = recipe.getComments()
+                .stream()
+                .map(commentMapper::mapToCommentDto)
+                .collect(Collectors.toList());
+        recipeGetDto.setComments(commentDtoList);
     }
 
     @AfterMapping
@@ -113,15 +144,6 @@ public abstract class RecipeMapper {
                 .map(ingredientMapper::mapToIngredientDto)
                 .collect(Collectors.toList());
         recipeGetDto.setIngredients(ingredientDtoList);
-    }
-
-    @AfterMapping
-    void setRecipeGetDtoComments(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
-        List<CommentDto> commentDtoList = recipe.getComments()
-                .stream()
-                .map(commentMapper::mapToCommentDto)
-                .collect(Collectors.toList());
-        recipeGetDto.setComments(commentDtoList);
     }
 
     @Mapping(target = "idRecipe", source = "recipe.idRecipe")

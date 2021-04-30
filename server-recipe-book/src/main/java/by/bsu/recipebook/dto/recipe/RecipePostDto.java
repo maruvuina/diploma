@@ -2,6 +2,7 @@ package by.bsu.recipebook.dto.recipe;
 
 import by.bsu.recipebook.dto.IngredientDto;
 import by.bsu.recipebook.dto.InstructionDto;
+import by.bsu.recipebook.dto.TagDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,4 +37,7 @@ public class RecipePostDto {
 
     @Valid
     private List<InstructionDto> instructions = new ArrayList<>();
+
+    @Valid
+    private List<TagDto> tags = new ArrayList<>();
 }

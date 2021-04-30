@@ -91,6 +91,8 @@ public class SpringWebSecurityApplicationConfigure extends WebSecurityConfigurer
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/ingredients/**")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/tags/**")
+                .permitAll()
                 .antMatchers("/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
