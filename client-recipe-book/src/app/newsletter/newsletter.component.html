@@ -1,0 +1,24 @@
+<div class="uk-container">
+  <div class="newsletter uk-background-primary uk-border-rounded-large uk-light">
+    <div class="uk-width-3-4@m uk-margin-auto uk-padding-large">
+      <div class="uk-text-center">
+        <h2 class="uk-h2 uk-margin-remove">Раз в неделю наш дайджест — у вас в почте!</h2>
+        <h3 class="uk-h3 uk-margin-remove">Собираем всё то, что обидно пропустить: полезности, вкусности и самые обсуждаемые темы.</h3>
+      </div>
+      <div class="uk-margin-medium-top">
+        <div data-uk-scrollspy="cls: uk-animation-slide-bottom; repeat: true">
+          <form [formGroup]="mailingForm" (ngSubmit)="mailing()">
+            <div class="uk-grid-small" data-uk-grid>
+              <div class="uk-width-1-1 uk-width-expand@s uk-first-column">
+                <input type="email" placeholder="Электронная почта" class="uk-input uk-width-1-1 uk-border-pill" formControlName="email" />
+              </div>
+              <div class="uk-width-1-1 uk-width-auto@s">
+                <button [disabled]="mailingForm.invalid" class="uk-button uk-border-pill">Подписаться</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

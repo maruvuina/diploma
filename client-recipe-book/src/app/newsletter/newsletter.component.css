@@ -1,0 +1,23 @@
+.newsletter {
+	background: #eb4a36;
+}
+
+.uk-border-rounded-large {
+    border-radius: 20px;
+}
+
+.uk-input {
+    padding: 0 10px;
+    color: #fff;
+    border: 2px solid #eaecf0;
+    transition: 0.2s ease-in-out;
+    transition-property: color, background-color, border;
+}
+
+.uk-h2 {
+    font-size: 1.75rem;
+}
+
+.uk-button {
+    color: #333;
+}
