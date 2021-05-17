@@ -13,9 +13,6 @@ import by.bsu.recipebook.mapper.RecipeMapper;
 import by.bsu.recipebook.repository.*;
 import by.bsu.recipebook.validator.SortType;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,10 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,8 +27,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
-    private static final Logger logger = LogManager.getLogger(RecipeService.class);
-
     private final RecipeRepository recipeRepository;
 
     private final AuthService authService;
@@ -56,6 +47,10 @@ public class RecipeService {
 
     private final UserRepository userRepository;
 
+    private final TagRepository tagRepository;
+
+    private final CuisineRepository cuisineRepository;
+
     @Transactional
     public RecipeGetDto save(String jsonRecipeDto, MultipartFile file) {
         String filePath = ImageService.save(file, Constants.RECIPE_UPLOAD_IMAGES_DIR);
@@ -74,8 +69,8 @@ public class RecipeService {
     @Transactional
     public RecipeGetDto update(RecipeUpdateDto recipeUpdateDto, int id) throws ServiceException {
         Recipe recipe = getRecipeById(id);
-        Recipe updatedRecipe = recipeMapper.mapFromRecipeUpdateDto(recipeUpdateDto, recipe);
-        return recipeMapper.mapToRecipeGetDto(recipeRepository.save(updatedRecipe));
+        recipeMapper.updateRecipe(recipeUpdateDto, recipe);
+        return recipeMapper.mapToRecipeGetDto(recipeRepository.save(recipe));
     }
 
     @Transactional(readOnly = true)
@@ -97,16 +92,13 @@ public class RecipeService {
 
     private Page<Recipe> getSortedRecipes(int page, int size,
         Sort.Direction direction, String property) {
-        return recipeRepository
-                        .findAll(PageRequest.of(page, size,
-                                Sort.by(direction, property)));
+        return recipeRepository.findAll(PageRequest.of(page, size, Sort.by(direction, property)));
 
     }
 
     @Transactional(readOnly = true)
     public RecipeGetDto getByRecipeName(String recipeName) {
-        return recipeMapper.mapToRecipeGetDto(recipeRepository
-                        .findByRecipeName(recipeName));
+        return recipeMapper.mapToRecipeGetDto(recipeRepository.findByRecipeName(recipeName));
     }
 
     @Transactional(readOnly = true)
@@ -116,18 +108,8 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public String getRecipeMainPicture(int id) throws ServiceException {
-        String recipeMainPictureLocation = getRecipeById(id).getMainPicture();
-        String recipeMainPicture = null;
-        try {
-            recipeMainPicture =
-                    DatatypeConverter
-                            .printBase64Binary(
-                                    Files.readAllBytes(
-                                            Paths.get(recipeMainPictureLocation)));
-        } catch (IOException e) {
-            logger.log(Level.ERROR, "Error while get recipe main picture: ", e);
-        }
-        return recipeMainPicture;
+        String recipePictureLocation = getRecipeById(id).getMainPicture();
+        return ImageService.get(recipePictureLocation);
     }
 
     @Transactional(readOnly = true)
@@ -181,8 +163,7 @@ public class RecipeService {
             User currentUser = authService.getCurrentUser();
             LikeType likeType = recipeLikeDto.getLikeType();
             RecipeLike recipeLike;
-            Optional<RecipeLike> recipeLikeOptional =
-                    getRecipeLikeByRecipeAndUser(recipe, currentUser);
+            Optional<RecipeLike> recipeLikeOptional = getRecipeLikeByRecipeAndUser(recipe, currentUser);
             if (recipeLikeOptional.isEmpty()) {
                 recipeLike = recipeMapper.mapToRecipeLike(recipeLikeDto, currentUser, recipe);
             } else {
@@ -281,6 +262,26 @@ public class RecipeService {
         User author = userRepository.findById(idAuthor)
                 .orElseThrow(() -> new ServiceException("Error while get user with " + idAuthor + " id"));
         Page<Recipe> pageTuts = recipeRepository.findRecipesByAuthor(author, PageRequest.of(page, size));
+        List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
+        return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getRecipesByTag(String tagName, int page, int size) {
+        Tag tag = tagRepository.findByTagName(tagName);
+        List<Integer> tags = new ArrayList<>();
+        tags.add(tag.getIdTag());
+        Page<Recipe> pageTuts = recipeRepository.findRecipesByTag(tags, PageRequest.of(page, size));
+        List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
+        return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getRecipesByCuisine(String cuisineName, int page, int size) {
+        Cuisine cuisine = cuisineRepository.findByCuisineName(cuisineName);
+        List<Integer> cuisines = new ArrayList<>();
+        cuisines.add(cuisine.getIdCuisine());
+        Page<Recipe> pageTuts = recipeRepository.findRecipesByCuisine(cuisines, PageRequest.of(page, size));
         List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
         return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
     }

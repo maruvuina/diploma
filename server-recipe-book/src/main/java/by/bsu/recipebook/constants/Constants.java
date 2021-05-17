@@ -21,4 +21,12 @@ public class Constants {
     public static final String DEFAULT_AVATAR_LOCATION =
             "d:" + File.separator + "uploaded-files" + File.separator + "recipe-system" +
                     File.separator + "user-images" + File.separator + "default-avatar.png";
+
+    public final static String SECURITY_USER_CONSTRAINT = "CONFIDENTIAL";
+
+    public final static String REDIRECT_PATTERN = "/*";
+
+    public final static String CONNECTOR_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
+
+    public final static String CONNECTOR_SCHEME = "http";
 }

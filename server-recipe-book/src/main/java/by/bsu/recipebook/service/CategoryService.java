@@ -24,4 +24,8 @@ public class CategoryService {
                 .map(categoryMapper::mapToCategoryDto)
                 .collect(Collectors.toList());
     }
+
+    public void save(CategoryDto categoryDto) {
+        categoryRepository.save(categoryRepository.findByCategoryName(categoryDto.getCategoryName()));
+    }
 }

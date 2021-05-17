@@ -1,27 +1,20 @@
 package by.bsu.recipebook.dto.recipe;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.openapitools.jackson.nullable.JsonNullable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-@Getter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class RecipeUpdateDto {
-    @NotNull
-    private final JsonNullable<String> recipeName = JsonNullable.undefined();
+    private String recipeName;
 
-    @NotNull
-    private final JsonNullable<Integer> cookingTime = JsonNullable.undefined();
+    private Integer cookingTime;
 
-    @NotNull
-    private final JsonNullable<Integer> yield = JsonNullable.undefined();
+    private Integer yield;
 
-    @NotBlank
-    private final JsonNullable<String> announce = JsonNullable.undefined();
+    private String categoryName;
 
-    @NotNull
-    private final JsonNullable<String> categoryName = JsonNullable.undefined();
+    private String announce;
 }

@@ -45,7 +45,7 @@ public class IngredientServiceTest {
         Ingredient ingredient =
                 new Ingredient(null, "Закуски", null);
         IngredientDto expectedIngredientDto =
-                new IngredientDto(null, "Закуски", null);
+                new IngredientDto("Закуски", null);
         when(ingredientRepository.findByIngredientName("Закуски")).thenReturn(ingredient);
         when(ingredientMapper.mapToIngredientDto(any(Ingredient.class)))
                 .thenReturn(expectedIngredientDto);
@@ -60,11 +60,11 @@ public class IngredientServiceTest {
         List<Ingredient> ingredientList = new ArrayList<>();
         ingredientList.add(new Ingredient(null, "Кукурузная мука", null));
         List<IngredientDto> expectedIngredientDtoList = new ArrayList<>();
-        expectedIngredientDtoList.add(new IngredientDto(null, "Кукурузная мука", null));
+        expectedIngredientDtoList.add(new IngredientDto("Кукурузная мука", null));
         when(ingredientRepository.searchByIngredientNamePattern("Мука"))
                 .thenReturn(ingredientList);
         when(ingredientMapper.mapToIngredientDto(any(Ingredient.class)))
-                .thenReturn(new IngredientDto(null, "Кукурузная мука", null));
+                .thenReturn(new IngredientDto("Кукурузная мука", null));
         List<IngredientDto> actualIngredientDtoList = ingredientService.getByIngredientNamePattern("Мука");
         assertThat(actualIngredientDtoList).isEqualTo(expectedIngredientDtoList);
     }

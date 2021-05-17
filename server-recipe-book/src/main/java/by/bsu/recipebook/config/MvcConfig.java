@@ -9,10 +9,14 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vavr.jackson.datatype.VavrModule;
 import lombok.val;
+import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -21,6 +25,8 @@ import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static by.bsu.recipebook.constants.Constants.*;
 
 @EnableWebMvc
 @Configuration
@@ -49,7 +55,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(1000000);
+        multipartResolver.setMaxUploadSize(100000000);
         return multipartResolver;
     }
 
@@ -80,5 +86,32 @@ public class MvcConfig implements WebMvcConfigurer {
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
+    }
+
+//    @Bean
+//    public TomcatServletWebServerFactory servletContainer() {
+//        TomcatServletWebServerFactory tomcat =
+//          new TomcatServletWebServerFactory() {
+//            @Override
+//            protected void postProcessContext(Context context) {
+//              SecurityConstraint securityConstraint = new SecurityConstraint();
+//              securityConstraint.setUserConstraint(SECURITY_USER_CONSTRAINT);
+//              SecurityCollection collection = new SecurityCollection();
+//              collection.addPattern(REDIRECT_PATTERN);
+//              securityConstraint.addCollection(collection);
+//              context.addConstraint(securityConstraint);
+//            }
+//          };
+//        tomcat.addAdditionalTomcatConnectors(createHttpConnector());
+//        return tomcat;
+//    }
+     
+    private Connector createHttpConnector() {
+        Connector connector = new Connector(CONNECTOR_PROTOCOL);
+        connector.setScheme(CONNECTOR_SCHEME);
+        connector.setSecure(false);
+        connector.setPort(8899);
+        connector.setRedirectPort(8899);
+        return connector;
     }
 }

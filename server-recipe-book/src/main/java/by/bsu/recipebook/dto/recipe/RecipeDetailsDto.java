@@ -22,4 +22,7 @@ public class RecipeDetailsDto {
 
     @NonNull
     private Integer likesCount;
+
+    @NonNull
+    private Integer idAuthor;
 }

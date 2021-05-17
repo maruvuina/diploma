@@ -75,6 +75,12 @@ public class RecipeServiceTest extends PowerMockTestCase {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private TagRepository tagRepository;
+
+    @Mock
+    private CuisineRepository cuisineRepository;
+
     private RecipeService recipeService;
 
     private static final String PRIVATE_METHOD_GET_BY_ID = "getRecipeById";
@@ -103,8 +109,8 @@ public class RecipeServiceTest extends PowerMockTestCase {
     public void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
         recipeService = new RecipeService(recipeRepository, authService, recipeMapper,
-                commentRepository, commentMapper, ingredientRepository,
-                recipeLikeRepository, jsonMapper, categoryRepository, userRepository);
+                commentRepository, commentMapper, ingredientRepository, recipeLikeRepository,
+                jsonMapper, categoryRepository, userRepository, tagRepository, cuisineRepository);
         recipe = new Recipe();
         recipe.setIdRecipe(1);
         recipe.setRecipeName("RecipeName");
@@ -161,8 +167,10 @@ public class RecipeServiceTest extends PowerMockTestCase {
                 .when(spy,
                         method(RecipeService.class, PRIVATE_METHOD_GET_BY_ID, Integer.class))
                 .withArguments(any(Integer.class));
-        when(recipeMapper.mapFromRecipeUpdateDto(any(RecipeUpdateDto.class), any(Recipe.class)))
-                .thenReturn(recipe);
+        PowerMockito
+                .doNothing()
+                .when(spy, method(RecipeService.class, "update", RecipeUpdateDto.class, Recipe.class))
+                .withArguments(any(RecipeUpdateDto.class), any(Recipe.class));
         when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
         when(recipeMapper.mapToRecipeGetDto(any(Recipe.class))).thenReturn(expectedRecipeGetDto);
         RecipeGetDto actual = spy.update(new RecipeUpdateDto(), eq(anyInt()));

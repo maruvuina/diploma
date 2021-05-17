@@ -49,6 +49,7 @@ public class AuthController {
     @PostMapping("/refresh/token")
     public ResponseEntity<AuthenticationResponse> refreshTokens(
             @Valid @RequestBody RefreshTokenRequest refreshTokenRequest) throws ServiceException {
+        System.out.println("refreshTokenRequest---> " + refreshTokenRequest.toString());
         return new ResponseEntity<>(authService.refreshToken(refreshTokenRequest), HttpStatus.OK);
     }
 

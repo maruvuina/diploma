@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNullApi;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,9 +22,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
     void deleteById(@Param("id") Integer id);
 
     @Override
-    @NotNull
     @Query("select r from Recipe r where r.isDelete=false")
-    List<Recipe> findAll();
+    Page<Recipe> findAll(Pageable pageable);
 
     @Override
     @Query("select count(r) from Recipe r")
@@ -39,7 +36,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
             "inner join r.ingredientAmountSet as ingSet " +
             "inner join ingSet.ingredient as ing " +
             "where ing.idIngredient in (:ingredients) " +
-            "order by r.recipeName")
+            "group by r.recipeName")
     Page<Recipe> findRecipesByIngredients(@Param("ingredients") Collection<Integer> ingredients,
                                           Pageable pageable);
 
@@ -48,4 +45,16 @@ public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 
     @Query("select r from Recipe as r where r.author = :author order by r.recipeName")
     Page<Recipe> findRecipesByAuthor(@Param("author") User author, Pageable pageable);
+
+    @Query("select r from Recipe as r " +
+            "inner join r.tagSet as tSet " +
+            "where tSet.idTag in (:tags) " +
+            "group by r.recipeName")
+    Page<Recipe> findRecipesByTag(@Param("tags") Collection<Integer> tags, Pageable pageable);
+
+    @Query("select r from Recipe as r " +
+            "inner join r.cuisineSet as cSet " +
+            "where cSet.idCuisine in (:cuisines) " +
+            "group by r.recipeName")
+    Page<Recipe> findRecipesByCuisine(@Param("cuisines") Collection<Integer> cuisines, Pageable pageable);
 }

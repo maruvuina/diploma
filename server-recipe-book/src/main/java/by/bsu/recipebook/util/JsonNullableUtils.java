@@ -10,6 +10,7 @@ public class JsonNullableUtils {
 
     public static <T> void changeIfPresent(JsonNullable<T> nullable, Consumer<T> consumer) {
         if (nullable.isPresent()) {
+            System.out.println("nullable.get()---> " + nullable.get());
             consumer.accept(nullable.get());
         }
     }

@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
-
     private Integer idUser;
 
     private String username;

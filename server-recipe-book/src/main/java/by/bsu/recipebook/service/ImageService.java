@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,5 +33,15 @@ public class ImageService {
             logger.log(Level.ERROR, "Error while saving picture: ", e);
         }
         return filePath;
+    }
+
+    public static String get(String location) {
+        String picture = null;
+        try {
+            picture = DatatypeConverter.printBase64Binary(Files.readAllBytes(Paths.get(location)));
+        } catch (IOException e) {
+            logger.log(Level.ERROR, "Error while get picture: ", e);
+        }
+        return picture;
     }
 }

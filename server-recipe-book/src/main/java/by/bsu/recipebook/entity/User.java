@@ -50,6 +50,9 @@ public class User {
     @Column(name = "registration_date")
     private Instant registrationDate;
 
+    @Column(name = "is_mailing")
+    private boolean isMailing;
+
     @ManyToMany (fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE

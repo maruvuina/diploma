@@ -12,28 +12,28 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "tag")
+@Table(name = "cuisine")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class Cuisine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tag")
-    private Integer idTag;
+    @Column(name = "id_cuisine")
+    private Integer idCuisine;
 
-    @NotBlank
-    @Column(name = "tag_name")
-    private String tagName;
+    @NotBlank(message = "Please check cuisine name.")
+    @Column(name = "cuisine_name")
+    private String cuisineName;
 
-    @ManyToMany(mappedBy = "tagSet")
+    @ManyToMany(mappedBy = "cuisineSet")
     private Set<Recipe> recipes = new HashSet<>();
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Tag{");
-        sb.append("idTag=").append(idTag);
-        sb.append(", tagName='").append(tagName).append('\'');
+        final StringBuilder sb = new StringBuilder("Cuisine{");
+        sb.append("idCuisine=").append(idCuisine);
+        sb.append(", cuisineName='").append(cuisineName).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -46,16 +46,16 @@ public class Tag {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Tag that = (Tag) o;
+        Cuisine that = (Cuisine) o;
         return new EqualsBuilder()
-                .append(tagName, that.tagName)
+                .append(cuisineName, that.cuisineName)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31)
-                .append(tagName)
+                .append(cuisineName)
                 .toHashCode();
     }
 }

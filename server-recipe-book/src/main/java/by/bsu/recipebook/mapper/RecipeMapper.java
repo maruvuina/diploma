@@ -1,25 +1,13 @@
 package by.bsu.recipebook.mapper;
 
-import by.bsu.recipebook.dto.CommentDto;
-import by.bsu.recipebook.dto.IngredientDto;
-import by.bsu.recipebook.dto.InstructionDto;
-import by.bsu.recipebook.dto.TagDto;
+import by.bsu.recipebook.dto.*;
 import by.bsu.recipebook.dto.recipe.*;
 import by.bsu.recipebook.entity.*;
-import by.bsu.recipebook.repository.CategoryRepository;
-import by.bsu.recipebook.repository.IngredientAmountRepository;
-import by.bsu.recipebook.repository.IngredientRepository;
-import by.bsu.recipebook.repository.TagRepository;
-import by.bsu.recipebook.util.JsonNullableUtils;
+import by.bsu.recipebook.repository.*;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.openapitools.jackson.nullable.JsonNullable;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +37,12 @@ public abstract class RecipeMapper {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private CuisineRepository cuisineRepository;
+
+    @Autowired
+    private CuisineMapper cuisineMapper;
+
     @Mapping(target = "recipeName", source = "recipePostDto.recipeName")
     @Mapping(target = "cookingTime", source = "recipePostDto.cookingTime")
     @Mapping(target = "yield", source = "recipePostDto.yield")
@@ -60,6 +54,7 @@ public abstract class RecipeMapper {
     @Mapping(target = "instructions", ignore = true)
     @Mapping(target = "ingredientAmountSet", ignore = true)
     @Mapping(target = "tagSet", ignore = true)
+    @Mapping(target = "cuisineSet", ignore = true)
     public abstract Recipe mapToRecipe(RecipePostDto recipePostDto, User user, String recipeMainPictureLocation);
 
     Category getCategory(RecipePostDto recipePostDto) {
@@ -91,6 +86,13 @@ public abstract class RecipeMapper {
         recipePostDto.getTags().forEach(o -> recipe.addTag(tagRepository.findByTagName(o.getTagName())));
     }
 
+    @AfterMapping
+    void setRecipeCuisines(RecipePostDto recipePostDto, @MappingTarget Recipe recipe) {
+        recipePostDto.getCuisines()
+                .forEach(o ->
+                        recipe.addCuisine(cuisineRepository.findByCuisineName(o.getCuisineName())));
+    }
+
     @Mapping(target = "idRecipe", source = "recipe.idRecipe")
     @Mapping(target = "recipeName", source = "recipe.recipeName")
     @Mapping(target = "cookingTime", source = "recipe.cookingTime")
@@ -104,28 +106,12 @@ public abstract class RecipeMapper {
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "likesCount", source = "recipe.likeCount")
+    @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())")
+    @Mapping(target = "cuisines", ignore = true)
     public abstract RecipeGetDto mapToRecipeGetDto(Recipe recipe);
 
     String getCreatedDate(Recipe recipe) {
         return TimeAgo.using(recipe.getCreatedDate().toEpochMilli());
-    }
-
-    @AfterMapping
-    void setRecipeGetDtoTags(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
-        List<TagDto> tagDtoList = recipe.getTagSet()
-                .stream()
-                .map(tagMapper::mapToTagDto)
-                .collect(Collectors.toList());
-        recipeGetDto.setTags(tagDtoList);
-    }
-
-    @AfterMapping
-    void setRecipeGetDtoComments(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
-        List<CommentDto> commentDtoList = recipe.getComments()
-                .stream()
-                .map(commentMapper::mapToCommentDto)
-                .collect(Collectors.toList());
-        recipeGetDto.setComments(commentDtoList);
     }
 
     @AfterMapping
@@ -146,30 +132,43 @@ public abstract class RecipeMapper {
         recipeGetDto.setIngredients(ingredientDtoList);
     }
 
+    @AfterMapping
+    void setRecipeGetDtoComments(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
+        List<CommentDto> commentDtoList = recipe.getComments()
+                .stream()
+                .map(commentMapper::mapToCommentDto)
+                .collect(Collectors.toList());
+        recipeGetDto.setComments(commentDtoList);
+    }
+
+    @AfterMapping
+    void setRecipeGetDtoTags(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
+        List<TagDto> tagDtoList = recipe.getTagSet()
+                .stream()
+                .map(tagMapper::mapToTagDto)
+                .collect(Collectors.toList());
+        recipeGetDto.setTags(tagDtoList);
+    }
+
+    @AfterMapping
+    void setRecipeGetDtoCuisines(Recipe recipe, @MappingTarget RecipeGetDto recipeGetDto) {
+        List<CuisineDto> cuisineDtoList = recipe.getCuisineSet()
+                .stream()
+                .map(cuisineMapper::mapToCuisineDto)
+                .collect(Collectors.toList());
+        recipeGetDto.setCuisines(cuisineDtoList);
+    }
+
     @Mapping(target = "idRecipe", source = "recipe.idRecipe")
     @Mapping(target = "recipeName", source = "recipe.recipeName")
     @Mapping(target = "announce", source = "recipe.announce")
     @Mapping(target = "authorName", expression = "java(recipe.getAuthor().getFullName())")
     @Mapping(target = "likesCount", source = "recipe.likeCount")
+    @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())")
     public abstract RecipeDetailsDto mapToRecipeDetailsDto(Recipe recipe);
 
-    public Recipe mapFromRecipeUpdateDto(RecipeUpdateDto recipeUpdateDto, Recipe recipe) {
-        JsonNullableUtils.changeIfPresent(recipeUpdateDto.getRecipeName(),
-                recipe::setRecipeName);
-        JsonNullableUtils.changeIfPresent(recipeUpdateDto.getCookingTime(),
-                recipe::setCookingTime);
-        JsonNullableUtils.changeIfPresent(recipeUpdateDto.getYield(),
-                recipe::setYield);
-        JsonNullableUtils.changeIfPresent(recipeUpdateDto.getAnnounce(),
-                recipe::setAnnounce);
-        @NotNull JsonNullable<String> categoryName = recipeUpdateDto.getCategoryName();
-        if (categoryName.isPresent()) {
-            Category category = categoryRepository
-                    .findByCategoryName(categoryName.get());
-            recipe.setCategory(category);
-        }
-        return recipe;
-    }
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public abstract void updateRecipe(RecipeUpdateDto recipeUpdateDto, @MappingTarget Recipe recipe);
 
     @Mapping(target = "likeType", source = "recipeLikeDto.likeType")
     @Mapping(target = "user", source = "user")

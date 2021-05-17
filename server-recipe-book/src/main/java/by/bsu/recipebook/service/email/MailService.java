@@ -1,7 +1,9 @@
 package by.bsu.recipebook.service.email;
 
+import by.bsu.recipebook.dto.EmailDto;
 import by.bsu.recipebook.entity.NotificationEmail;
 import by.bsu.recipebook.exception.ServiceException;
+import by.bsu.recipebook.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,16 @@ public class MailService {
     private final JavaMailSender mailSender;
 
     private final MailContentBuilder mailContentBuilder;
+
+    private final UserRepository userRepository;
+
+    public void subscribeToNewsletter(EmailDto emailDto) {
+        userRepository.subscribeToNewsletter(emailDto.getFromEmail());
+    }
+
+    public void unsubscribeToNewsletter(EmailDto emailDto) {
+        userRepository.unsubscribeToNewsletter(emailDto.getFromEmail());
+    }
 
     @Async
     public void sendMail(NotificationEmail notificationEmail) throws ServiceException {

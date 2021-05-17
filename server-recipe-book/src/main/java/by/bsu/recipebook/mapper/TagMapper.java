@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TagMapper {
-    @Mapping(target = "idTag", source = "tag.idTag")
     @Mapping(target = "tagName", source = "tag.tagName")
     TagDto mapToTagDto(Tag tag);
 }

@@ -24,4 +24,8 @@ public class TagService {
                 .map(tagMapper::mapToTagDto)
                 .collect(Collectors.toList());
     }
+
+    public void save(TagDto tagDto) {
+        tagRepository.save(tagRepository.findByTagName(tagDto.getTagName()));
+    }
 }

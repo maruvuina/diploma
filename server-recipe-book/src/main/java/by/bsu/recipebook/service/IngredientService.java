@@ -39,4 +39,8 @@ public class IngredientService {
                 .map(ingredientMapper::mapToIngredientDto)
                 .collect(Collectors.toList());
     }
+
+    public void save(IngredientDto ingredientDto) {
+        ingredientRepository.save(ingredientRepository.findByIngredientName(ingredientDto.getIngredientName()));
+    }
 }

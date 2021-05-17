@@ -2,7 +2,6 @@ package by.bsu.recipebook.dto.recipe;
 
 import by.bsu.recipebook.entity.LikeType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

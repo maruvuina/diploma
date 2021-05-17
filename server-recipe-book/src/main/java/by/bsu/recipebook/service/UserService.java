@@ -4,9 +4,7 @@ import by.bsu.recipebook.constants.Constants;
 import by.bsu.recipebook.dto.user.UserDetailsDto;
 import by.bsu.recipebook.dto.user.UserGetDto;
 import by.bsu.recipebook.dto.user.UserUpdateDto;
-import by.bsu.recipebook.entity.Followers;
-import by.bsu.recipebook.entity.NotificationEmail;
-import by.bsu.recipebook.entity.User;
+import by.bsu.recipebook.entity.*;
 import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.mapper.JsonMapper;
 import by.bsu.recipebook.mapper.MapResponse;
@@ -20,26 +18,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.xml.bind.DatatypeConverter;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
-    private static final Logger logger = LogManager.getLogger(UserService.class);
-
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
@@ -50,19 +38,16 @@ public class UserService {
 
     private final MailService mailService;
 
+    private final AuthService authService;
+
     public String getUserAvatar(int id) {
+        String userAvatar = null;
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            String userAvatar = userOptional.get().getAvatarLocation();
-            try {
-                return DatatypeConverter
-                        .printBase64Binary(Files
-                                .readAllBytes(Paths.get(userAvatar)));
-            } catch (IOException e) {
-                logger.log(Level.ERROR, "Error while get user avatar: ", e);
-            }
+            String avatarLocation = userOptional.get().getAvatarLocation();
+            userAvatar = ImageService.get(avatarLocation);
         }
-        return null;
+        return userAvatar;
     }
 
     @Transactional(readOnly = true)
@@ -72,20 +57,23 @@ public class UserService {
     }
 
     @Transactional
-    public void subscribe(int idUser, int idFollowing) throws ServiceException {
+    public void subscribe(int idUser, UserDetailsDto userDetailsDto) throws ServiceException {
         User user = getUserById(idUser);
-        User following = getUserById(idFollowing);
-        followersRepository.save(new Followers(user, following));
-        String message = FormatterPattern
-                .getFormatterPatternToDisplay()
-                .format(Instant.now()) + " " + user.getFullName() + " became your follower.";
-        mailService.sendMail(new NotificationEmail("New follower on Recipe Book",
-                following.getEmail(), message));
-    }
-
-    @Transactional
-    public void unsubscribe(int idUser) {
-        followersRepository.unsubscribe(idUser);
+        User following = getUserById(userDetailsDto.getId());
+        Optional<Followers> followersOptional =
+                followersRepository.findByFromAndTo(user, following);
+        if (followersOptional.isEmpty()) {
+            followersRepository.save(new Followers(user, following));
+            String message = FormatterPattern
+                    .getFormatterPatternToDisplay()
+                    .format(Instant.now()) + " " + user.getFullName() + " became your follower.";
+            mailService.sendMail(new NotificationEmail("New follower on Recipe Book",
+                    following.getEmail(), message));
+        } else {
+            Followers followers = followersOptional.get();
+            followers.setSubscribed(!followers.isSubscribed());
+            followersRepository.save(followers);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -99,9 +87,7 @@ public class UserService {
         return pageTuts
                 .getContent()
                 .stream()
-                .map(followers ->
-                        userMapper
-                                .mapToUserDetailsDto(followers.getTo()))
+                .map(followers -> userMapper.mapToUserDetailsDto(followers.getTo()))
                 .collect(Collectors.toList());
     }
 
@@ -116,9 +102,7 @@ public class UserService {
         return pageTuts
                 .getContent()
                 .stream()
-                .map(followers ->
-                        userMapper
-                                .mapToUserDetailsDto(followers.getFrom()))
+                .map(followers -> userMapper.mapToUserDetailsDto(followers.getFrom()))
                 .collect(Collectors.toList());
     }
 
@@ -143,5 +127,15 @@ public class UserService {
             user.setAvatarLocation(avatarLocation);
         }
         userRepository.save(user);
+    }
+
+    @Transactional
+    public boolean isSubscribed(int idFollowing) throws ServiceException {
+        User following = getUserById(idFollowing);
+        Followers followers = followersRepository
+                .isSubscribed(authService.getCurrentUser().getIdUser(),
+                        following.getIdUser());
+        System.out.println(followers);
+        return followers != null;
     }
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagDto {
+public class CuisineDto {
     @NotBlank
-    private String tagName;
+    private String cuisineName;
 }

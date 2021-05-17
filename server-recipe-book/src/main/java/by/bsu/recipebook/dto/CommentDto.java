@@ -1,9 +1,6 @@
 package by.bsu.recipebook.dto;
 
-import by.bsu.recipebook.validator.transfer.Details;
-import by.bsu.recipebook.validator.transfer.Request;
-import by.bsu.recipebook.validator.transfer.Response;
-import com.fasterxml.jackson.annotation.JsonView;
+import by.bsu.recipebook.validator.transfer.Marker;
 import lombok.*;
 
 import javax.annotation.Nullable;
@@ -18,36 +15,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDto {
-    @Null(groups = {Request.class})
-    @NotNull(groups = {Response.class})
-    @JsonView({Details.class})
+    @Null(groups = {Marker.Request.class})
+    @NotNull(groups = {Marker.Response.class})
     private Integer idComment;
 
-    @Null(groups = {Request.class})
-    @NotNull(groups = {Response.class})
-    @JsonView({Details.class})
+    @Null(groups = {Marker.Request.class})
+    @NotNull(groups = {Marker.Response.class})
     private Integer idUser;
 
-    @Null(groups = {Request.class})
-    @NotBlank(groups = {Response.class})
-    @JsonView({Details.class})
+    @Null(groups = {Marker.Request.class})
+    @NotBlank(groups = {Marker.Response.class})
     private String username;
 
-    @Null(groups = {Request.class})
-    @NotBlank(groups = {Response.class})
-    @JsonView({Details.class})
+    @Null(groups = {Marker.Request.class})
+    @NotBlank(groups = {Marker.Response.class})
     private String createdDate;
 
-    @Null(groups = {Request.class})
-    @NotBlank(groups = {Request.class, Response.class})
-    @JsonView({Details.class})
+    @NotBlank(groups = {Marker.Request.class, Marker.Response.class})
     private String content;
 
     @Nullable
-    @JsonView({Details.class})
     private Integer idParent;
 
     @Valid
-    @JsonView({Details.class})
     private List<CommentDto> children = new ArrayList<>();
 }

@@ -1,13 +1,15 @@
 package by.bsu.recipebook.controller;
 
-import by.bsu.recipebook.dto.user.UserDto;
+import by.bsu.recipebook.dto.user.UserDetailsDto;
 import by.bsu.recipebook.dto.user.UserGetDto;
 import by.bsu.recipebook.exception.ServiceException;
 import by.bsu.recipebook.service.UserService;
+import by.bsu.recipebook.validator.transfer.Marker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -34,16 +37,10 @@ public class UserController {
 
     @PostMapping("/subscribe/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> subscribe(@PathVariable("id") int idUser,
-        @RequestBody @Valid UserDto userDto) throws ServiceException {
-        userService.subscribe(idUser, userDto.getId());
-        return new ResponseEntity<>("OK", HttpStatus.OK);
-    }
-
-    @DeleteMapping("/unsubscribe/{id}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> unsubscribe(@PathVariable("id") int idUser) {
-        userService.unsubscribe(idUser);
+    @Validated({Marker.Request.class})
+    public ResponseEntity<Void> subscribe(@PathVariable("id") int idUser,
+        @RequestBody @Valid UserDetailsDto userDetailsDto) throws ServiceException {
+        userService.subscribe(idUser, userDetailsDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -73,5 +70,12 @@ public class UserController {
         @PathVariable("id") int id) throws ServiceException {
         userService.update(jsonUserDto, file, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping("/subscribe/{idFollowing}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Boolean> isSubscribed(@PathVariable("idFollowing") int idFollowing) throws ServiceException {
+        return new ResponseEntity<>(userService.isSubscribed(idFollowing), HttpStatus.OK);
     }
 }

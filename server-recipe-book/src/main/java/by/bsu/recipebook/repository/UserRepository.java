@@ -10,10 +10,13 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByEmail(String email);
 
-    @Modifying
-    @Query("update User as u set u.email = ?1, u.fullName = ?2 where u.idUser = ?3")
-    boolean updateUserById(String email, String fullName, Integer userId);
-
     boolean existsByEmail(String email);
 
+    @Modifying
+    @Query("update User as u set u.isMailing = true where u.email = ?1")
+    void subscribeToNewsletter(String email);
+
+    @Modifying
+    @Query("update User as u set u.isMailing = false where u.email = ?1")
+    void unsubscribeToNewsletter(String email);
 }

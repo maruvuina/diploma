@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserGetDto {
+    @NotNull
     private Integer id;
+
+    @NotBlank
     private String fullName;
+
+    @Valid
     private List<RecipeDetailsDto> recipeList = new ArrayList<>();
+
+    @NotBlank
     private String registrationDate;
+
+    @Valid
     private List<UserDetailsDto> followers = new ArrayList<>();
+
+    @Valid
     private List<UserDetailsDto> followings = new ArrayList<>();
 }

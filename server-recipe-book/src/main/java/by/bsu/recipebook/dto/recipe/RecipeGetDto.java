@@ -1,9 +1,6 @@
 package by.bsu.recipebook.dto.recipe;
 
-import by.bsu.recipebook.dto.CommentDto;
-import by.bsu.recipebook.dto.IngredientDto;
-import by.bsu.recipebook.dto.InstructionDto;
-import by.bsu.recipebook.dto.TagDto;
+import by.bsu.recipebook.dto.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,4 +54,10 @@ public class RecipeGetDto {
 
     @NotNull
     private Integer likesCount;
+
+    @NotNull
+    private Integer idAuthor;
+
+    @Valid
+    private List<CuisineDto> cuisines = new ArrayList<>();
 }

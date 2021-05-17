@@ -1,5 +1,6 @@
 package by.bsu.recipebook.dto.recipe;
 
+import by.bsu.recipebook.dto.CuisineDto;
 import by.bsu.recipebook.dto.IngredientDto;
 import by.bsu.recipebook.dto.InstructionDto;
 import by.bsu.recipebook.dto.TagDto;
@@ -40,4 +41,7 @@ public class RecipePostDto {
 
     @Valid
     private List<TagDto> tags = new ArrayList<>();
+
+    @Valid
+    private List<CuisineDto> cuisines = new ArrayList<>();
 }

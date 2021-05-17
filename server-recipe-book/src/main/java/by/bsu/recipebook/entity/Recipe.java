@@ -47,9 +47,8 @@ public class Recipe {
     @Column(name = "created_date")
     private Instant createdDate;
 
-    @NotNull
     @Column(name = "like_count")
-    private Integer likeCount = 0;
+    private int likeCount = 0;
 
     @NotNull
     @Column(name = "announce")
@@ -142,6 +141,26 @@ public class Recipe {
     public void removeTag(Tag tag) {
         this.tagSet.remove(tag);
         tag.getRecipes().remove(this);
+    }
+
+    @ManyToMany (cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "recipe_cuisine",
+            joinColumns = @JoinColumn(name = "id_recipe_fk"),
+            inverseJoinColumns = @JoinColumn(name = "id_cuisine_fk")
+    )
+    private Set<Cuisine> cuisineSet = new HashSet<>();
+
+    public void addCuisine(Cuisine cuisine) {
+        this.cuisineSet.add(cuisine);
+        cuisine.getRecipes().add(this);
+    }
+
+    public void removeCuisine(Cuisine cuisine) {
+        this.cuisineSet.remove(cuisine);
+        cuisine.getRecipes().remove(this);
     }
 
     @Override

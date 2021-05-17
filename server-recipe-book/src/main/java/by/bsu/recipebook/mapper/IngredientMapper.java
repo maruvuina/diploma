@@ -8,11 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface IngredientMapper {
-    @Mapping(target = "idIngredient", source = "ingredientDto.idIngredient")
-    @Mapping(target = "ingredientName", source = "ingredientDto.ingredientName")
-    Ingredient mapToIngredient(IngredientDto ingredientDto);
-
-    @Mapping(target = "idIngredient", source = "ingredient.idIngredient")
     @Mapping(target = "ingredientName", source = "ingredient.ingredientName")
     IngredientDto mapToIngredientDto(Ingredient ingredient);
 

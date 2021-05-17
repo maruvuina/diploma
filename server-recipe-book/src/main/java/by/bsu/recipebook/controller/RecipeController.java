@@ -150,4 +150,22 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService
                 .getRecipesByAuthor(idAuthor, page, size), HttpStatus.OK);
     }
+
+    @GetMapping("/tags")
+    public ResponseEntity<Map<String, Object>> getRecipesByTag(
+            @RequestParam(value = "tagName") String tagName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return new ResponseEntity<>(recipeService
+                .getRecipesByTag(tagName, page, size), HttpStatus.OK);
+    }
+
+    @GetMapping("/cuisines")
+    public ResponseEntity<Map<String, Object>> getRecipesByCuisine(
+            @RequestParam(value = "cuisineName") String cuisineName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return new ResponseEntity<>(recipeService
+                .getRecipesByCuisine(cuisineName, page, size), HttpStatus.OK);
+    }
 }
