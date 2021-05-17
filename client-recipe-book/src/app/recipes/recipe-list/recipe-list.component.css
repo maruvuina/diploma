@@ -55,3 +55,13 @@ option {
   border-color: #eb4a36;
 }
 
+a {
+  color: #eb4a36;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: none;
+}

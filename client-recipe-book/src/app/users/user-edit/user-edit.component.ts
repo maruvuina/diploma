@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { UserService } from '../shared/services/user.service';
 import { UserUpdate } from '../shared/models/user-update';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { throwError } from 'rxjs';
 
 function fileUploaded() {
   document.getElementById("uploadButton").addEventListener("click", function(){
@@ -31,13 +32,13 @@ export class UserEditComponent implements OnInit {
   id: number;
 
   constructor(private userService: UserService, 
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute, 
+    private router: Router) { 
     this.id = +this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
   	fileUploaded();
-
     this.userEditForm = new FormGroup({
       username: new FormControl('', Validators.required)
     });
@@ -53,9 +54,11 @@ export class UserEditComponent implements OnInit {
     let formData = new FormData();
     formData.append("file", this.selectedFile);
     formData.append("userDto", JSON.stringify(userUpdate));
+    this.userEditForm.reset();
     this.userService.update(this.id, formData).subscribe(data => {
-      console.log("GGGG");
+      this.router.navigate(['/users/account/user', this.id]);
+    }, error => {
+      throwError(error);
     });
   }
-
 }

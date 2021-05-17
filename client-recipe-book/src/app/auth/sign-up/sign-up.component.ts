@@ -34,7 +34,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
   	this.signupForm = new FormGroup({
       fullname: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required)
+      password: new FormControl('', [Validators.required, 
+        Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}")])
     });
   }
 
@@ -42,7 +43,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   	this.signupRequestPayload.fullname = this.signupForm.get('fullname').value;
     this.signupRequestPayload.email = this.signupForm.get('email').value;
     this.signupRequestPayload.password = this.signupForm.get('password').value;
-    
     this.authService.signup(this.signupRequestPayload)
     .pipe(takeUntil(this.destroy))
     .subscribe(response => {

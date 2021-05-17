@@ -1,68 +1,73 @@
 <div class="uk-margin-medium-top uk-margin-medium-bottom uk-margin-medium-left uk-margin-medium-right">
-	
 	<div class="uk-margin-medium-bottom">
-	    <form class="uk-search uk-search-default uk-width-1-1">
-	        <span uk-search-icon></span>
-	        <input class="uk-search-input uk-border-rounded" type="search" placeholder="Search">        
-	    </form>
+        <div class="uk-flex uk-width-1-1">
+        	<div class="icon-search">
+		    	<i uk-icon="search" class="uk-margin-small-left"></i> 
+		  	</div>
+		  	<div class="ng-autocomplete">         
+		    	<ng-autocomplete 
+			        [data]="data" 
+			        [searchKeyword]="keyword" 
+			        (selected)='selectEvent($event)'
+			        (inputChanged)='onChangeSearch($event)' 
+			        (inputFocused)='onFocused($event)' 
+			        [itemTemplate]="itemTemplate" 
+			        (inputCleared)="searchCleared()"
+			        [notFoundTemplate]="notFoundTemplate" 
+			        [debounceTime]="600" 
+			        [isLoading]="isLoadingResult" 
+			        [minQueryLength]="1" 
+			        placeholder="Поиск">
+		    	</ng-autocomplete>
+			    <ng-template #itemTemplate let-item>
+			      <a (click)="goToRecipe(item.idRecipe)">
+			        <div class="uk-flex">
+			          <div>
+			            <img [appRecipeImage]="[item.idRecipe]" class="uk-border-rounded uk-margin-small-right image-recipe-search" alt="Main Ingredient Picture" />
+			          </div>
+			          <div class="uk-margin-small-top">
+			            <span [innerHTML]="item.recipeName"></span>
+			          </div>
+			        </div>
+			      </a>
+			    </ng-template>
+			    <ng-template #notFoundTemplate let-notFound>
+			        {{errorMsg}}
+			    </ng-template>
+  			</div> 
+		</div>
 	</div>
-	
-
-	<div class="">
+	<div>
 		<div class="uk-overflow-auto">
 		    <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
 		        <thead>
 		            <tr>
-		            	
-		                <th class="uk-table-shrink">Image</th>
-		                <th class="uk-table-expand">Name</th>
-		                <th class="uk-table-expand">Author</th>
-		                <th class="uk-width-small">Created date</th>
-		                <th class="uk-table-shrink">Action</th>
-
+		                <th class="uk-table-shrink">Фотография готового блюда</th>
+		                <th class="uk-table-expand">Название</th>
+		                <th class="uk-table-small">Автор</th>
+		                <th class="uk-width-small">Дата создания</th>
+		                <th class="uk-table-shrink">Удалить</th>
 		            </tr>
 		        </thead>
-		        <tbody>
+		        <tbody *ngFor="let recipe of recipes | paginate: config">
 		        	<tr>
-		                
-		                <td><img class="image-recipe uk-preserve-width uk-border-circle" src="/assets/img/about-pic2.jpg"  alt=""></td>
-		                <td class="uk-table-nowrap">Name</td>
-		                <td class="uk-text-nowrap">Name Surname</td>
-		                <td class="uk-text-nowrap">16 jan 2021</td>
-		                <td><button class="uk-button uk-button-default" type="button">Button</button></td>
-   
-		            </tr>
-		            <tr>
-		                
-		                <td><img class="image-recipe uk-preserve-width uk-border-circle" src="/assets/img/about-pic2.jpg"  alt=""></td>
-		                <td class="uk-table-nowrap">Name</td>
-		                <td class="uk-text-nowrap">Name Surname</td>
-		                <td class="uk-text-nowrap">16 jan 2021</td>
-		                <td><button class="uk-button uk-button-default" type="button">Button</button></td>
-
-		            </tr>
-		            <tr>
-		               
-		                <td><img class="image-recipe uk-preserve-width uk-border-circle" src="/assets/img/about-pic2.jpg"  alt=""></td>
-		                <td class="uk-table-nowrap">Name</td>
-		                <td class="uk-text-nowrap">Name Surname</td>
-		                <td class="uk-text-nowrap">16 jan 2021</td>
-		                <td><button class="uk-button uk-button-default" type="button">Button</button></td>
-
-		            </tr>
-		            <tr>
-		                
-		                <td><img class="image-recipe uk-preserve-width uk-border-circle" src="/assets/img/about-pic2.jpg"  alt=""></td>
-		                <td class="uk-table-nowrap">Name</td>
-		                <td class="uk-text-nowrap">Name Surname</td>
-		                <td class="uk-text-nowrap">16 jan 2021</td>
-		                <td><button class="uk-button uk-button-default" type="button">Button</button></td>
-
+		                <td>
+		                	<a (click)="goToRecipe(recipe.idRecipe)"><img [appRecipeImage]="[recipe.idRecipe]" class="image-recipe uk-preserve-width uk-border-rounded" alt="Main Ingredient Picture"/></a>
+		                	</td>
+		                <td class="uk-table-nowrap">
+		                	<a class="uk-link-muted" (click)="goToRecipe(recipe.idRecipe)">{{recipe.recipeName}}</a>
+		                </td>
+		                <td class="uk-table-nowrap">
+		                	<a class="uk-link-muted" (click)="goToAuthor(recipe.idAuthor)">{{recipe.authorName}}</a>
+		                </td>
+		                <td class="uk-table-nowrap">{{recipe.createdDate}}</td>
+		                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button">Удалить</button></td>
 		            </tr>
 		        </tbody>
 		    </table>
+		    <div class="uk-margin-large-top uk-text-small uk-flex uk-flex-center">
+			  <pagination-controls previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+			</div>
 		</div>
 	</div>
 </div>
-
-

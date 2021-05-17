@@ -1,4 +1,64 @@
 .image-recipe {
-	width: 40px;
-	height: 40px;
+	width: 160px;
+	height: 110px;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: #eb4a36 !important;
+  color: #fefefe !important;
+  border-radius: 10px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  border-radius: 10px !important;
+}
+
+.ng-autocomplete {
+  width: inherit;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container {
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 0 5px 5px 0 !important;
+  box-shadow: none;  
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input { 
+  background: #f8f8f8 !important;
+  color: #4a4a4a !important;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input::placeholder {
+  color: #adadad;
+}
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:focus,
+
+.ng-autocomplete ::ng-deep 
+.autocomplete-container 
+.input-container input:hover {
+  color: #4a4a4a !important;
+}
+
+.icon-search {
+  background: #f8f8f8 !important;
+  padding-top: 8px;
+  padding-right: 8px;
+  border-width: 1px 0 1px 1px;
+  border-style: solid !important;
+  border-color: #e5e5e5 !important;
+  border-radius: 5px 0 0 5px !important;
+  color: #adadad;
+}
+
+.image-recipe-search {
+  width: 50px;
+  height: 33px;
 }

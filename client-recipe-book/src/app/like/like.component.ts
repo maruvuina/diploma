@@ -40,15 +40,12 @@ export class LikeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    //this.isLiked();
+    this.isLiked();
   }
 
   isLiked() {
-    console.log(this.authService.isLoggedIn());
     let now = new Date().getTime();
-    console.log(this.authService.isLoggedIn() + "$$$$$$$$$$$---> " + !(now >= this.authService.getExpirationTime()));
     if (this.authService.isLoggedIn() && !(now >= this.authService.getExpirationTime())) {
-      console.log("this.recipe.idRecipe--> " + this.recipe.idRecipe);
       this.likeService.isLiked(this.recipe.idRecipe)
       .pipe(takeUntil(this.destroy))
       .subscribe(isLiked => {
@@ -58,8 +55,6 @@ export class LikeComponent implements OnInit, OnDestroy {
           this.isActive = false;
         }
       });
-    } else {
-      console.log("********************************%%%%%%%%%%%%%%%%%%%%");
     }
   }
 
@@ -74,7 +69,7 @@ export class LikeComponent implements OnInit, OnDestroy {
         this.unlikeRecipe();
       }
     } else {
-      this.toastr.warning("Зарегистрируйтесь, чтобы поставить лайк");
+      this.toastr.warning("Зарегистрируйтесь, чтобы поставить лайк.");
     }
   }
 
@@ -113,5 +108,4 @@ export class LikeComponent implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

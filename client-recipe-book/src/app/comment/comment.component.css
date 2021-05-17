@@ -21,7 +21,7 @@ textarea {
 
 @media (min-width: 960px) {
 	.uk-comment-list .uk-comment~ul {
-    	padding-left: 30px; 
+    padding-left: 30px; 
 	}
 }
 
@@ -32,4 +32,12 @@ textarea {
 .muted-link {
 	color: #666;
 	text-decoration: underline;
+}
+
+.image-user {
+  height: 50px;
+  width: 50px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

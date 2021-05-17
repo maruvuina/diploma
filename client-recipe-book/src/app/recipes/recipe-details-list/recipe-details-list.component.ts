@@ -3,6 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject, throwError } from 'rxjs';
 import { RecipeDetails } from '../../recipes/shared/models/recipe-details';
 import { RecipeService } from '../../recipes/shared/services/recipe.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-details-list',
@@ -23,9 +24,10 @@ export class RecipeDetailsListComponent implements OnInit, OnDestroy {
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  constructor(private recipeService: RecipeService) {
+  constructor(private recipeService: RecipeService, 
+    private router: Router) {
     this.config = {
-      itemsPerPage: 3,
+      itemsPerPage: 5,
       currentPage: 1,
       totalItems: 0
     };
@@ -68,6 +70,10 @@ export class RecipeDetailsListComponent implements OnInit, OnDestroy {
   handlePageChangeRecipes(event: number): void {
     this.config.currentPage = event;
     this.getUserRecipes(); 
+  }
+
+  goToRecipe(idRecipe: number) {
+    this.router.navigate(['/recipes', idRecipe]);
   }
 
   ngOnDestroy(): void {

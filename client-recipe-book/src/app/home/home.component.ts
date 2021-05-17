@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CategoryService } from '../categories/shared/services/category.service';
 import { CategoryModel } from '../categories/shared/category-model';
 import { RecipeService } from '../recipes/shared/services/recipe.service';
+import { CuisineModel } from '../cuisines/shared/models/cuisine-model';
+import { CuisineService } from '../cuisines/shared/services/cuisine.service';
 import { throwError, Observable, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -15,6 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   categories: Observable<Array<CategoryModel>>;
 
+  cuisines: Observable<Array<CuisineModel>>;
+
   keyword = 'recipeName';
 
   data: any;
@@ -26,19 +30,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
   
   constructor(private categoryService: CategoryService, 
-  	private recipeService: RecipeService) {
+  	private recipeService: RecipeService, 
+    private cuisineService: CuisineService) {
   }
 
   ngOnInit(): void {
     this.categories = this.getAllCategories();
+    this.cuisines = this.getAllCuisines();
   }
 
   getAllCategories() {
-    return this.categoryService.getAllCategories();
+    return this.categoryService.getAll();
+  }
+
+  getAllCuisines() {
+    return this.cuisineService.getAll();
   }
 
   onChangeSearch(event: string) {
-    console.log("onChangeSearch");
     this.isLoadingResult = true;
     if (event != '' && event != undefined && event != null) {
       this.recipeService.getRecipeByRecipeNamePattern(event)
@@ -52,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     } else {
         this.data = [];
-        this.errorMsg = "Поле пустое.";
+        this.errorMsg = "";
       } 
   }
 
@@ -69,5 +78,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

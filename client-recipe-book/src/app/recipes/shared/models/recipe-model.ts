@@ -2,6 +2,7 @@ import { IngredientModel } from './ingredient-model';
 import { InstructionModel } from './instruction-model';
 import { CommentModel } from '../../../comment/shared/models/comment-model';
 import { TagModel } from '../../shared/models/tag-model';
+import { CuisineModel } from '../../../cuisines/shared/models/cuisine-model';
 
 export class RecipeModel {
     idRecipe: number;
@@ -17,4 +18,6 @@ export class RecipeModel {
     comments: CommentModel[];
     tags: TagModel[];
     likesCount: number;
+    idAuthor: number;
+    cuisines: CuisineModel[];
 }

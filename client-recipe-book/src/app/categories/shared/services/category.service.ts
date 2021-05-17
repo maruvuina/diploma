@@ -12,8 +12,7 @@ export class CategoryService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllCategories(): Observable<Array<CategoryModel>> {
+  getAll(): Observable<Array<CategoryModel>> {
     return this.httpClient.get<Array<CategoryModel>>(API_CATEGORIES);
   }
-
 }

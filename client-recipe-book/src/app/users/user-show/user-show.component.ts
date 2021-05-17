@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@ang
 import { UserModel } from '../shared/models/user-model';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { ReplaySubject, throwError } from 'rxjs';
 
 @Component({
@@ -23,14 +23,20 @@ export class UserShowComponent implements OnInit, OnDestroy {
 
   followingsCount: number = 0;
 
+  recipeCount: number = 0;
+
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private userService: UserService, 
     private route: ActivatedRoute) {
-    this.id = +this.route.snapshot.paramMap.get('id');
+    //this.id = +this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
+    this.route.paramMap.pipe(
+      switchMap(params => params.getAll('id'))
+    )
+    .subscribe(data=> this.id = +data);
     this.getUserById();
   }
 
@@ -40,6 +46,10 @@ export class UserShowComponent implements OnInit, OnDestroy {
     .subscribe(user => {
       this.userLoaded = true;
       this.user = user;
+      let recipeCount = user.recipeList.length;
+      if (recipeCount != 0) {
+        this.recipeCount = recipeCount;
+      }
       let followersCount = user.followers.length;
       if (followersCount != 0) {
         this.followersCount = followersCount;

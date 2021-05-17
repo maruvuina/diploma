@@ -10,12 +10,10 @@
 <div class="uk-child-width-1-3@s" uk-grid>
   <div *ngFor="let recipe of recipes | paginate: config">
     <div class="uk-inline uk-light">
-      <img [appRecipeImage]="[recipe.idRecipe]" class="uk-border-rounded-medium image-recipe" alt="Main Ingredient Picture" />
-
+      <a [routerLink]="['recipes', recipe.idRecipe]"><img [appRecipeImage]="[recipe.idRecipe]" class="uk-border-rounded-medium image-recipe" alt="{{recipe.recipeName}}"/></a>
       <div class="uk-position-xsmall uk-position-top-right">         
         <app-like [recipe]="recipe"></app-like>  
       </div>
-
     </div>
     <div>
       <h5 class="uk-text-bold uk-margin-small-bottom uk-margin-top"><a [routerLink]="['recipes', recipe.idRecipe]" class="uk-link-muted">{{recipe.recipeName}}</a></h5>
@@ -23,7 +21,7 @@
         <div class="uk-width-auto uk-flex uk-flex-middle">
           <span>{{recipe.createdDate}}</span>
         </div>
-        <div class="uk-width-expand uk-text-right">{{recipe.authorName}}</div>
+        <div class="uk-width-expand uk-text-right"><a (click)="goToAuthor(recipe.idAuthor)">{{recipe.authorName}}</a></div>
       </div>
     </div>
   </div>

@@ -1,13 +1,10 @@
 .fa-heart {
   color: #fff;
   cursor: pointer;
-}
-
-.fa-heart {
   transition: 0.28s;
 }
 
-.fa-heart.active {
+.fa-heart .active {
   color: #e2101e;
 }
 

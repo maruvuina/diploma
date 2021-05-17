@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RecipeModel } from '../shared/models/recipe-model';
 import { RecipeService } from '../shared/services/recipe.service';
 import { throwError, ReplaySubject } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -19,7 +19,8 @@ export class RecipeRandomComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private recipeService: RecipeService, 
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, 
+    private router: Router) {
     this.recipe = new RecipeModel();
     this.isRecipeLoaded = false;  
   }
@@ -37,9 +38,12 @@ export class RecipeRandomComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
+  }
+
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

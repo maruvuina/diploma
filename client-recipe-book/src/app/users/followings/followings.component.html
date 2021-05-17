@@ -8,15 +8,16 @@
 			<div class="uk-flex uk-flex-center">
 				<div class="uk-card uk-card-body">
     				<div class="uk-light">
-                    	<img [appUserImage]="[following.id]" class="image-follower uk-border-circle" alt="{{following.fullName}}">
+                        <a (click)="goToAuthor(following.id)">
+                    	   <img [appUserImage]="[following.id]" class="image-follower uk-border-circle" alt="{{following.fullName}}">
+                        </a>
                 	</div>
-                    <div class="">
+                    <div>
                     	<div class="uk-margin-small-left uk-margin-medium-right">
                     		<h5 class="uk-text-bold uk-text-500 uk-margin-small-bottom uk-margin-small-top uk-margin-small-left">
-                        		<a class="uk-link-muted" [routerLink]="['/users', following.id]">{{following.fullName}}</a>
+                        		<a class="uk-link-muted" (click)="goToAuthor(following.id)">{{following.fullName}}</a>
                         	</h5>
                     	</div>
-                        
                         <div class="uk-text-small" uk-grid>
                             <div class="uk-width-auto uk-flex uk-flex-middle">
                                 <app-subscribe [idFollowing]="following.id"></app-subscribe>

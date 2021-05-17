@@ -31,13 +31,13 @@ h3 {
   color: #000;
 }
 
-a {
+.author {
   color: #eb4a36;
   text-decoration: none;
   cursor: pointer;
 }
 
-a:hover {
+.author:hover {
   color: #000;
   text-decoration: none;
 }
@@ -79,4 +79,15 @@ textarea {
 
 .uk-label {
   background: #403e56;
+}
+
+.tag { 
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tag:hover {
+  color: #ff;
+  text-decoration: none;
 }

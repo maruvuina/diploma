@@ -33,7 +33,7 @@ export class RecipeListComponent implements OnInit {
     private route: ActivatedRoute, 
     private recipeService: RecipeService) { 
     this.config = {
-      itemsPerPage: 2,
+      itemsPerPage: 9,
       currentPage: 1,
       totalItems: 0
     };
@@ -111,4 +111,7 @@ export class RecipeListComponent implements OnInit {
     }
   }
 
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
+  }
 }

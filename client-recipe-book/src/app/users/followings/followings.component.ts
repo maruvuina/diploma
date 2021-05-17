@@ -3,6 +3,7 @@ import { UserDetails } from '../shared/models/user-details';
 import { UserService } from '../shared/services/user.service';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-followings',
@@ -23,7 +24,8 @@ export class FollowingsComponent implements OnInit, OnDestroy {
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, 
+    private router: Router) {
   	this.config = {
       itemsPerPage: 3,
       currentPage: 1,
@@ -69,9 +71,14 @@ export class FollowingsComponent implements OnInit, OnDestroy {
     this.getFollowings(); 
   }
 
+  goToAuthor(idAuthor: number) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/users/' + idAuthor]);
+  }
+
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

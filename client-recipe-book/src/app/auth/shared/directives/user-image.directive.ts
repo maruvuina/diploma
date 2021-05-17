@@ -1,32 +1,31 @@
-import { Directive, OnInit, Input } from '@angular/core';
+import { Directive, OnInit, Input, HostBinding } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-
-const API_GET_AVATAR = 'http://localhost:8080/api/users/image/';
+import { UserService } from '../../../users/shared/services/user.service';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Directive({
-  selector: '[appUserImage]',
-  host: {
-    '[src]': 'sanitizedImageData'
-  }
+  selector: '[appUserImage]'
 })
 export class UserImageDirective implements OnInit {
 
-  imageData: any;
+  imageData: string;
 
-  sanitizedImageData: any;
+  @HostBinding('src')
+  sanitizedImageData: SafeResourceUrl;
   
   @Input('appUserImage') userId: number;
 
   constructor(private httpClient: HttpClient, 
-  	private sanitizer: DomSanitizer) { }
+  	private sanitizer: DomSanitizer, 
+    private userService: UserService) { }
 
   ngOnInit() {
     this.getUserAvatar();
   }
 
   getUserAvatar() {
-    this.httpClient.get(API_GET_AVATAR + this.userId)
+    this.userService.getUserAvatar(this.userId)
       .pipe()
       .subscribe(
         data => {

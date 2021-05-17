@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   	this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required)
+      password: new FormControl('', [Validators.required, 
+        Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}")])
     });
-
     this.activatedRoute.queryParams
     .pipe(takeUntil(this.destroy))
     .subscribe(params => {
@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     let username = this.loginForm.get('username').value;
     this.loginRequestPayload.username = username;
     this.loginRequestPayload.password = this.loginForm.get('password').value;
-
     this.authService.isUserActive(username)
     .pipe(takeUntil(this.destroy))
     .subscribe(response => {

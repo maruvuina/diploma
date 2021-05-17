@@ -1,7 +1,7 @@
 <app-nav></app-nav>
 
 <div class="uk-container uk-margin-small-top">
-	<form [formGroup]="recipeForm" (ngSubmit)="updateRecipe()">
+	<form [formGroup]="recipeForm">
 		<div class="uk-grid-column-small uk-grid-row-large uk-child-width-1-1@s" uk-grid>
 		    <div>
 		        <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
@@ -17,63 +17,45 @@
 							Название рецепта
 						</label>
 						<input type="text" class="uk-input uk-border-rounded" placeholder="Яблочная сказка" formControlName="recipeName" />
-
-						<div class="uk-margin-small-top" *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched">
-			            	<span class="uk-margin-small-left uk-form-danger">
-			              		Что-то не так с названием рецепта :(
-			            	</span>
-			          	</div>
 					</div>
 					<div class="uk-child-width-expand@s uk-margin-medium-top" uk-grid>
 					    <div>
-					        <div class="">
+					        <div>
 					        	<span uk-icon="thumbnails" class="uk-margin-small-right uk-margin-small-bottom"></span>Категория
 								<select class="uk-select uk-border-rounded" formControlName="categoryName">
 									<option value="" selected disabled>Выберите категорию</option>
-	            					<option *ngFor="let category of categories | async">{{category.categoryName}}</option>
+	            					<option [ngValue]="category.categoryName" *ngFor="let category of categories | async">{{category.categoryName}}</option>
 	                            </select>
-
-	                            <div class="uk-margin-small-top" *ngIf="!recipeForm.get('categoryName').valid && recipeForm.get('categoryName').touched">
-				            		<span class="uk-margin-small-left uk-form-danger">
-				              			Категория не выбрана
-				            		</span>
-				          		</div>
 					        </div>
 					    </div>
 					    <div>
-					        <div class="">
+					        <div>
 					        	<label class="uk-form-label">
 									<span uk-icon="users" class="uk-margin-small-right uk-margin-small-bottom"></span>Количество порций
 								</label>
 								<input type="text" class="uk-input uk-border-rounded" placeholder="" formControlName="yield" />
-
-								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('yield').valid && recipeForm.get('yield').touched">
-				            		<span class="uk-margin-small-left uk-form-danger">
-				              			Поле "rоличество порций" не заполнено
-				            		</span>
-				          		</div>
 					        </div>
 					    </div>
 					    <div>
-					        <div class="">
+					        <div>
 					        	<label class="uk-form-label">
 									<span uk-icon="clock" class="uk-margin-small-right uk-margin-small-bottom"></span>
 								Время приготовления
 								</label>
 								<input type="text" class="uk-input uk-border-rounded" placeholder="" formControlName="cookingTime" />
-
-								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('cookingTime').valid && recipeForm.get('cookingTime').touched">
-				            		<span class="uk-margin-small-left uk-form-danger">
-				              			Поле "время приготовления" не заполнено
-				            		</span>
-								</div>
 					        </div>
 					    </div>
+					</div>
+				 	<div class="uk-margin-medium-top">
+						<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Краткое описание рецепта</label>
+						<div class="uk-margin-small-top">
+                    		<textarea class="uk-border-rounded uk-width-1-1" formControlName="announce" rows="7"></textarea>
+                    	</div>
 					</div>
 		        </div>
 		        <div class="uk-flex uk-flex-center uk-margin-medium-top">
 			    	<div>
-						<button class="uk-input uk-button uk-border-pill uk-button-primary">Отправить</button>
+						<button (click)="updateRecipe()" class="uk-button uk-border-pill uk-button-secondary">Отправить</button>
 					</div>
 			    </div>
 		    </div>

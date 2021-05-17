@@ -42,8 +42,7 @@
 }
 
 .uk-button:hover {
-	color: #fff;
-	background: #262424;
+	border: 1px double #4a4a4a;
 }
 
 .not-valid {

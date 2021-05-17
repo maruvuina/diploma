@@ -78,11 +78,11 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
 
   change() {
     this.isSearch = !this.isSearch;
-    this.isSearchByIngredients = true;
   }
 
   searchRecipe() {
     if (this.isSearch) {
+      this.isSearchByIngredients = true;
       this.searchedIngredients = [];
       for (var i = 0; i < this.searchByIngredientsForm.get('searchedIngredients').value.length; i++) {
         let ingredient = new IngredientModel();
@@ -91,9 +91,7 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
       }
       this.getRecipesByIngredients();
       this.searchByIngredientsForm.reset();
-    } else {
-
-    }  
+    } 
   }
 
   getRequestParams(page: number, pageSize: number): any {
@@ -114,9 +112,13 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe(response => {
       const { recipes, totalItems } = response;
-      this.recipes = recipes;
-      this.config.totalItems = totalItems;
-      this.isRecipesFounded = true;
+      if (recipes.length > 0) {
+        this.recipes = recipes;
+        this.config.totalItems = totalItems;
+        this.isRecipesFounded = true;
+      } else {
+        this.isRecipesFounded = false;
+      }
     }, error => {
       throwError(error);
     });
@@ -154,8 +156,12 @@ export class RecipeSearchByIngredientComponent implements OnInit, OnDestroy {
 
   onFocused(e) {}
 
-  byId(idRecipe: number) {
+  goToRecipe(idRecipe: number) {
     this.router.navigate(['/recipes', idRecipe]);
+  }
+
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
   }
 
   ngOnDestroy(): void {

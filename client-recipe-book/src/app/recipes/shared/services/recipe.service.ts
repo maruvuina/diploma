@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RecipeModel } from '../models/recipe-model';
 import { IngredientModel } from '../models/ingredient-model';
+import { RecipePayload } from '../models/recipe-payload';
 
 const API_RECIPES = 'http://localhost:8080/api/recipes/';
 
@@ -48,5 +49,17 @@ export class RecipeService {
 
   getRecipesByAuthor(idAuthor: number, params: any): Observable<any> {
     return this.httpClient.get<any>(API_RECIPES + 'authors/' + idAuthor, { params });
+  }
+
+  getRecipesByTag(params: any): Observable<any> {
+    return this.httpClient.get<any>(API_RECIPES + 'tags', { params });
+  }
+
+  getRecipesByCuisine(params: any): Observable<any> {
+    return this.httpClient.get<any>(API_RECIPES + 'cuisines', { params });
+  }
+
+  update(id: number, recipePayload: RecipePayload): Observable<RecipeModel> {
+    return this.httpClient.patch<RecipeModel>(API_RECIPES + id, recipePayload);
   }
 }

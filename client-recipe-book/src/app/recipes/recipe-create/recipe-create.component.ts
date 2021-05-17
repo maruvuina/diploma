@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { RecipeModel } from '../shared/models/recipe-model';
 import { TagService } from '../shared/services/tag.service';
 import { TagModel } from '../shared/models/tag-model';
+import { CuisineService } from '../../cuisines/shared/services/cuisine.service';
+import { CuisineModel } from '../../cuisines/shared/models/cuisine-model';
 import { IngredientService } from '../shared/services/ingredient.service';
 import { throwError, Observable, of, ReplaySubject } from 'rxjs';
 import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
@@ -56,13 +58,17 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
 
   tagList: Array<TagModel> = [];
 
+  cuisineList: Array<CuisineModel> = [];
+
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private recipeService: RecipeService,
     private categoryService: CategoryService, 
-    private formBuilder: FormBuilder, private router: Router, 
+    private formBuilder: FormBuilder, 
+    private router: Router, 
     private ingredientService: IngredientService, 
-    private tagService: TagService) { 
+    private tagService: TagService, 
+    private cuisineService: CuisineService) { 
     this.recipePayload = {
       recipeName: '',
       cookingTime: 0,
@@ -71,7 +77,8 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
       categoryName: '',
       ingredients: [],
       instructions: [],
-      tags: []
+      tags: [],
+      cuisines: []
     }
   }
 
@@ -85,15 +92,17 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
       categoryName: new FormControl('', Validators.required),
       ingredients: new FormArray([]),
       instructions: new FormArray([]),
-      tags: new FormControl('', Validators.required)
+      tags: new FormControl('', Validators.required),
+      cuisines: new FormControl('', Validators.required)
     });
     this.categories = this.getAllCategories();
     this.getAllIngredients();
     this.getAllTags();
+    this.getAllCuisines();
   }
 
   getAllCategories() {
-    return this.categoryService.getAllCategories();
+    return this.categoryService.getAll();
   }
 
   getAllIngredients() {
@@ -111,6 +120,16 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.destroy))
     .subscribe(tagList => {
       this.tagList = tagList;
+    }, error => {
+      throwError(error);
+    });
+  }
+
+  getAllCuisines() {
+    this.cuisineService.getAll()
+    .pipe(takeUntil(this.destroy))
+    .subscribe(cuisineList => {
+      this.cuisineList = cuisineList;
     }, error => {
       throwError(error);
     });
@@ -179,6 +198,7 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
     this.setIngredients();
     this.setInstructions();
     this.setTags();
+    this.setCuisines();
     
     let formData = new FormData();
     formData.append("file", this.selectedFile, this.selectedFile.name);
@@ -186,7 +206,7 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
 
     this.recipeService.create(formData)
     .pipe(takeUntil(this.destroy))
-    .subscribe((recipe: RecipeModel) => {
+    .subscribe(recipe => {
       this.router.navigate(['/recipes', recipe.idRecipe]);
     }, error => {
       throwError(error);
@@ -231,6 +251,14 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  private setCuisines() {
+    for (var i = 0; i < this.recipeForm.get('cuisines').value.length; i++) {
+      let cuisine = new CuisineModel();
+      cuisine.cuisineName = this.recipeForm.get('cuisines').value[i];
+      this.recipePayload.cuisines.push(cuisine);
+    }
+  }
+
   onUploadFile(event) {
     this.selectedFile = <File>event.target.files[0];
   }
@@ -272,5 +300,4 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

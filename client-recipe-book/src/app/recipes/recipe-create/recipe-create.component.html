@@ -3,7 +3,6 @@
 <div class="uk-container">
     <div data-uk-grid>
         <div class="uk-width-expand@s uk-flex-middle">
-
         	<div class="uk-margin-top uk-width-1-1">
 				<div class="uk-padding-small uk-border-rounded">
 					<form [formGroup]="recipeForm" novalidate>
@@ -35,7 +34,7 @@
 							</div>
 							<div class="uk-margin-medium-top uk-card">
 								<label class="uk-form-label"><i uk-icon="users" class="uk-margin-small-left uk-margin-small-right"></i>Количество порций</label>
-								<input type="text" class="uk-margin-top uk-input uk-border-rounded" id="ListingKeywords" placeholder="" formControlName="yield" />
+								<input type="number" min="1" class="uk-margin-top uk-input uk-border-rounded" id="ListingKeywords" placeholder="Например: 4" formControlName="yield" />
 
 								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('yield').valid && recipeForm.get('yield').touched">
 				            		<span class="uk-margin-small-left uk-form-danger">
@@ -45,7 +44,7 @@
 							</div>
 							<div class="uk-margin-medium-top uk-card">
 								<label class="uk-form-label"><i uk-icon="clock" class="uk-margin-small-left uk-margin-small-right"></i>Время приготовления</label>
-								<input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="" formControlName="cookingTime" />
+								<input type="number" min="1" class="uk-margin-top uk-input uk-border-rounded" placeholder="в минутах" formControlName="cookingTime" />
 
 								<div class="uk-margin-small-top" *ngIf="!recipeForm.get('cookingTime').valid && recipeForm.get('cookingTime').touched">
 				            		<span class="uk-margin-small-left uk-form-danger">
@@ -54,7 +53,6 @@
 								</div>
 							</div>
 						</div>
-
 
 						<div class="uk-margin-medium-top">
 							<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Краткое описание рецепта</label>
@@ -69,7 +67,6 @@
 				          	</div>
 						</div>
 						
-
 						<div class="uk-margin-medium-top">
 							<h4 class="uk-padding-small uk-box-shadow-medium uk-border-rounded uk-text-bold"><i uk-icon="list" class="uk-padding-small"></i>Ингредиенты</h4>
 
@@ -155,6 +152,22 @@
 							</ng-select>
 				    	</ng-container>
 
+				    	<ng-container>
+				    		<div class="uk-margin-small-bottom uk-margin-medium-top">
+				    			<label class="uk-form-label"><i uk-icon="list" class="uk-margin-small-left uk-margin-small-right"></i>Кухни</label>
+				    		</div>
+			    			<ng-select [items]="cuisineList" 
+			    			   [virtualScroll]="true"
+			    			   placeholder="Выберите кухни"
+					           bindLabel="cuisineName" 
+					           bindValue="cuisineName" 
+					           [multiple]="true"
+					           [searchable]="true" 
+				               [clearable]="true"
+					           formControlName="cuisines">
+							</ng-select>
+				    	</ng-container>
+
 						<div class="uk-margin-medium-top uk-column-2-1">
 							<span class="uk-form-label"><i uk-icon="image" class="uk-margin-small-left uk-margin-small-right"></i>Фотография готового блюда</span>
 							<label class="uk-form-label uk-margin-medium-left uk-border-rounded custom-file-upload">
@@ -166,9 +179,8 @@
 						</div>
 
 						<div class="uk-margin-medium-top upload-add-button-column uk-flex uk-flex-center">
-							<button [disabled]="recipeForm.invalid" (click)="addRecipe()"class="uk-button uk-border-pill uk-button-secondary">Добавить рецепт</button>
+							<button [disabled]="recipeForm.invalid" (click)="addRecipe()" class="uk-button uk-border-pill uk-button-secondary">Добавить рецепт</button>
 						</div>
-						
 					</form>
 				</div>
 			</div>		

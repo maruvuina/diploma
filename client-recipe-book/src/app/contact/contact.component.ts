@@ -4,6 +4,7 @@ import { ContactService } from './shared/services/contact.service';
 import { ContactPayload } from './shared/contact-payload';
 import { throwError, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contact',
@@ -16,7 +17,8 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  constructor(private contactService: ContactService) { }
+  constructor(private contactService: ContactService, 
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
   	this.contactForm = new FormGroup({
@@ -34,7 +36,7 @@ export class ContactComponent implements OnInit, OnDestroy {
   	this.contactService.sendMessage(contactData)
     .pipe(takeUntil(this.destroy))
     .subscribe(data => {
-      console.log('sended message');
+      this.toastr.success("Сообщение отправлено.");
     }, error => {
       throwError(error);
     });
@@ -44,5 +46,4 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

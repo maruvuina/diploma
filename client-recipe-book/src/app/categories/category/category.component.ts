@@ -5,7 +5,6 @@ import { throwError, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
@@ -26,10 +25,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
   	private router: Router) {
   	this.categoryName = this.route.snapshot.queryParams['category']; 
   	this.config = {
-	    itemsPerPage: 2,
+	    itemsPerPage: 5,
 	    currentPage: 1,
 	    totalItems: 0
-	};
+	  };
   }
 
   ngOnInit(): void {
@@ -69,13 +68,16 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.getRecipesByCategory();
   }
 
-  byCategory(idRecipe: number) {
+  goToRecipe(idRecipe: number) {
     this.router.navigate(['/recipes', idRecipe]);
+  }
+
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

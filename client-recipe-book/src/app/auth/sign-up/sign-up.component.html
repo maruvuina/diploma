@@ -12,38 +12,32 @@
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="fullname">Имя Фамилия</label>
           <input id="fullname" class="uk-input uk-form-large uk-border-pill uk-text-center" type="text" placeholder="Иван Иванович" formControlName="fullname" name="fullname" />
-          
           <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('fullname').valid && signupForm.get('fullname').touched">
             <span class="uk-form-danger">Пожалуйста введите корректные имя и фамилию</span>
           </div>
-          
         </div>
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="email">Электронная почта</label>
-          <input id="email" class="uk-input uk-form-large uk-border-pill uk-text-center" type="email" placeholder="ivan.ivanovich@company.com" formControlName="email" name="email" pattern="^[a-z0-9._%+-]+\@[a-z0-9.-]+\.[a-z]{2,4}$"/>
-          
+          <input id="email" class="uk-input uk-form-large uk-border-pill uk-text-center" type="email" placeholder="ivan.ivanovich@company.com" formControlName="email" name="email"/>
           <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched">
             <span class="uk-form-danger">Пожалуйста введите корректный адрес электронной почты</span>
           </div>
-          
         </div>
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="password">Пароль</label>
-          <input id="password" class="uk-input uk-form-large uk-border-pill uk-text-center" type="password" placeholder="Минимум 8 символов" formControlName="password" name="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}"/>
-          
+          <input id="password" class="uk-input uk-form-large uk-border-pill uk-text-center" type="password" placeholder="Минимум 8 символов" formControlName="password" name="password"/>
           <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched">
             <span class="uk-form-danger">Пожалуйста введите корректный пароль</span>
           </div>
-          
         </div>
         <div class="uk-width-1-1 uk-text-center">
           <button [disabled]="signupForm.invalid" class="uk-button uk-border-pill uk-button-secondary uk-button-large button-login">Зарегистрироваться</button>
         </div>
-        <div class="uk-width-1-1 uk-margin uk-text-center">
-          <p class="uk-text-small uk-margin-remove">Вернуться на <a class="uk-link-border" [routerLink]="['/']">главную</a></p>
-        </div>
       </form>
 
+      <div class="uk-width-1-1 uk-margin uk-text-center">
+        <p class="uk-text-small uk-margin-remove">Вернуться на <a class="uk-link-border" [routerLink]="['/']">главную</a></p>
+      </div>
     </div>
   </div>
   
@@ -63,5 +57,4 @@
       </div>
     </div>
   </div>
-
 </div>

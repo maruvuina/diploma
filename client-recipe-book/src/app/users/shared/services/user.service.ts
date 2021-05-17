@@ -14,16 +14,16 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getUserAvatar(id: number): Observable<string> {
+    return this.httpClient.get<string>(API_USER + 'image/' + id);
+  }
+
   getById(id: number): Observable<UserModel> {
   	return this.httpClient.get<UserModel>(API_USER + id);
   }
 
   subscribe(id: number, userDetails: UserDetails): Observable<any> {
     return this.httpClient.post(API_USER + 'subscribe/' + id, userDetails);
-  }
-
-  unsubscribe(id: number): Observable<any> {
-    return this.httpClient.delete(API_USER + 'unsubscribe/' + id);
   }
 
   getFollowings(id: number, params: any): Observable<any> {
@@ -35,7 +35,10 @@ export class UserService {
   }
 
   update(id: number, formData: FormData): Observable<any> {
-    console.log('SERVICE UPDATE USER');
     return this.httpClient.post(API_USER + id, formData);
+  }
+
+  isSubscribed(idFollowing: number): Observable<boolean>  {
+    return this.httpClient.get<boolean>(API_USER + 'subscribe/' + idFollowing);
   }
 }

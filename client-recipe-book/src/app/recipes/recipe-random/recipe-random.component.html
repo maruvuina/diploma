@@ -3,7 +3,12 @@
 <div class="uk-container" *ngIf="isRecipeLoaded">
   <div data-uk-grid>
     <div class="uk-width-1-2@s">
-      <div><img [appRecipeImage]="recipe.idRecipe" class="uk-border-rounded-large image-recipe" alt="Recipe Image"></div>
+      <div class="uk-inline uk-light">
+        <img [appRecipeImage]="recipe.idRecipe" class="uk-border-rounded-large image-recipe" alt="Recipe Image">
+        <div class="uk-position-xsmall uk-position-top-right">
+          <app-like [recipe]="recipe"></app-like>  
+        </div>
+      </div>
     </div>
     <div class="uk-width-expand@s uk-flex uk-flex-middle">
       <div>
@@ -23,7 +28,7 @@
         <hr>
         <div data-uk-grid>
           <div class="uk-width-auto@s uk-text-small">
-            <p class="uk-margin-small-top uk-margin-remove-bottom">Автор: <a href="#">{{recipe.authorName}}</a></p>
+            <p class="uk-margin-small-top uk-margin-remove-bottom">Автор: <a class="author" (click)="goToAuthor(recipe.idAuthor)">{{recipe.authorName}}</a></p>
             <span class="uk-text-muted">{{recipe.createdDate}}</span>
           </div>
           
@@ -33,7 +38,7 @@
           </div>
 
           <div class="uk-width-expand@s uk-flex uk-flex-middle uk-flex-right@s">
-            <p class="uk-comment-meta uk-margin-remove-top">{{recipe.categoryName}}</p>
+            <p class="uk-comment-meta uk-margin-remove-top"><a class="uk-link-muted" [routerLink]="['/categories']" [queryParams]="{category:recipe.categoryName}">{{recipe.categoryName}}</a></p>
           </div>
         </div>
       </div>
@@ -68,7 +73,14 @@
         <h3 class="uk-margin-large-top">Теги</h3>
         <div class="uk-grid-column-small uk-grid-row-small" uk-grid>
           <div *ngFor="let tag of recipe.tags">
-            <div class="uk-label uk-label-light">{{tag.tagName}}</div>
+            <div class="uk-label uk-label-light"><a class="tag" [routerLink]="['/tags']" [queryParams]="{tag:tag.tagName}">{{tag.tagName}}</a></div>
+          </div>
+        </div>
+
+        <h3 class="uk-margin-large-top">Кухни</h3>
+        <div class="uk-grid-column-small uk-grid-row-small" uk-grid>
+          <div *ngFor="let cuisine of recipe.cuisines">
+            <div class="uk-label uk-label-light"><a class="tag" [routerLink]="['/cuisines']" [queryParams]="{cuisine:cuisine.cuisineName}">{{cuisine.cuisineName}}</a></div>
           </div>
         </div>
       </div>

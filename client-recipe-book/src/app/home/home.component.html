@@ -34,55 +34,61 @@
       <div class="uk-width-expand@m">
         <div class="uk-flex uk-flex-left">
           <div class="uk-width-expand@m">
-              
-
-                <div class="uk-flex uk-width-1-1">
-                  <div class="icon-search">
-                    <i uk-icon="search" class="uk-margin-small-left"></i> 
-                  </div>
-                  <div class="ng-autocomplete">         
-                    <ng-autocomplete 
-                        [data]="data" 
-                        [searchKeyword]="keyword" 
-                        (selected)='selectEvent($event)'
-                        (inputChanged)='onChangeSearch($event)' 
-                        (inputFocused)='onFocused($event)' 
-                        [itemTemplate]="itemTemplate" 
-                        (inputCleared)="searchCleared()"
-                        [notFoundTemplate]="notFoundTemplate" 
-                        [debounceTime]="600" 
-                        [isLoading]="isLoadingResult" 
-                        [minQueryLength]="1" 
-                        placeholder="Поиск"
-                    >
-                    </ng-autocomplete>
-                    <ng-template #itemTemplate let-item>
-
-                      <a [routerLink]="['recipes', item.idRecipe]">
-                        <div class="uk-flex">
-                          <div>
-                            <img [appRecipeImage]="[item.idRecipe]" class="uk-border-rounded uk-margin-small-right image-recipe" alt="Main Ingredient Picture" />
-                          </div>
-                          <div class="uk-margin-small-top">
-                            <span [innerHTML]="item.recipeName"></span>
-                          </div>
-                        </div>
-                      </a>
-
-                    </ng-template>
-                    <ng-template #notFoundTemplate let-notFound>
-                        {{errorMsg}}
-                    </ng-template>
-                  </div> 
-                </div>
-                       
-                       
-            </div>
+            <div class="uk-flex uk-width-1-1">
+              <div class="icon-search">
+                <i uk-icon="search" class="uk-margin-small-left"></i> 
+              </div>
+              <div class="ng-autocomplete">         
+                <ng-autocomplete 
+                    [data]="data" 
+                    [searchKeyword]="keyword" 
+                    (selected)='selectEvent($event)'
+                    (inputChanged)='onChangeSearch($event)' 
+                    (inputFocused)='onFocused($event)' 
+                    [itemTemplate]="itemTemplate" 
+                    (inputCleared)="searchCleared()"
+                    [notFoundTemplate]="notFoundTemplate" 
+                    [debounceTime]="600" 
+                    [isLoading]="isLoadingResult" 
+                    [minQueryLength]="1" 
+                    placeholder="Поиск"
+                >
+                </ng-autocomplete>
+                <ng-template #itemTemplate let-item>
+                  <a [routerLink]="['recipes', item.idRecipe]">
+                    <div class="uk-flex">
+                      <div>
+                        <img [appRecipeImage]="[item.idRecipe]" class="uk-border-rounded uk-margin-small-right image-recipe" alt="Main Ingredient Picture" />
+                      </div>
+                      <div class="uk-margin-small-top">
+                        <span [innerHTML]="item.recipeName"></span>
+                      </div>
+                    </div>
+                  </a>
+                </ng-template>
+                <ng-template #notFoundTemplate let-notFound>
+                    {{errorMsg}}
+                </ng-template>
+              </div> 
+            </div>            
+          </div>
         </div>
         <div class="uk-margin"> 
           <app-recipe-list></app-recipe-list>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<app-newsletter></app-newsletter>
+
+<div class="uk-container uk-margin-medium-top">
+  <h3>Кухни</h3>
+  <hr class=""/>
+  <div uk-grid class="uk-child-width-1-6 uk-text-center">
+    <div *ngFor="let cuisine of cuisines | async">
+      <a class="uk-link-muted" [routerLink]="['/cuisines']" [queryParams]="{cuisine:cuisine.cuisineName}">{{cuisine.cuisineName}}</a>
     </div>
   </div>
 </div>

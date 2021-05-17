@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RecipeService } from '../shared/services/recipe.service';
 import { RecipeModel } from '../shared/models/recipe-model';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -21,7 +21,8 @@ export class RecipeComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private recipeService: RecipeService, 
-  	private route: ActivatedRoute) { 
+  	private route: ActivatedRoute, 
+    private router: Router) { 
     this.id = +this.route.snapshot.paramMap.get('id');
     this.recipe = new RecipeModel();
     this.isRecipeLoaded = false;
@@ -38,6 +39,10 @@ export class RecipeComponent implements OnInit, OnDestroy {
       this.recipe = recipe;
       this.isRecipeLoaded = true;
     });
+  }
+
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
   }
 
   ngOnDestroy(): void {

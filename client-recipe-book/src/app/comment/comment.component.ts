@@ -8,6 +8,7 @@ import { throwError, ReplaySubject } from 'rxjs';
 import { AuthService } from '../auth/shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comment',
@@ -24,7 +25,8 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   commentPayload: CommentPayload;
 
-  _recipe: RecipeModel;
+  @Input()
+  recipe: RecipeModel;
 
   isReply: boolean = false;
 
@@ -38,7 +40,8 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   constructor(private commentService: CommentService, 
     private authService: AuthService, 
-    private toastr: ToastrService) { 
+    private toastr: ToastrService, 
+    private router: Router) { 
   	this.comments = [];
     this.commentForm = new FormGroup({
       text: new FormControl('', Validators.required)
@@ -49,19 +52,18 @@ export class CommentComponent implements OnInit, OnDestroy {
     };
   }
 
-  @Input()
-  set recipe(recipe: RecipeModel) {
-    this._recipe = recipe;
-  }
-
-  get recipe() { return this._recipe; }
-
   ngOnInit(): void {
   	this.comments = this.recipe.comments
     .filter(comment => comment.idParent == null);
   	if (this.comments.length != 0) {
   		this.isComments = true;		
   	}
+  }
+
+  add() { 
+    this.isAddComment = true;
+    this.isReply = false;
+    this.visibility = true;
   }
 
   addComment() {
@@ -75,6 +77,7 @@ export class CommentComponent implements OnInit, OnDestroy {
       }, error => {
         throwError(error);
       });
+      this.commentForm.reset();
     } else {
       this.toastr.warning("Только зарегистрированные пользователи могут комментировать.");
     }
@@ -95,37 +98,34 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.isAddComment = false;
     this.currentIdComment = idComment;
     this.visibility = false;
-    
-    // if (this.authService.isLoggedIn()) {
-    //   this.isReply = true;
-    // } else {
-    //   this.toastr.warning("Только зарегистрированные пользователи могут комментировать.");
-    // }
   }
 
   commentReply(idComment: number) {
-    this.commentPayload.content = this.commentForm.get('text').value;
-    this.commentPayload.idParent = idComment;
-    this.commentService.replyOnComment(this.recipe.idRecipe, this.commentPayload)
-    .pipe(takeUntil(this.destroy))
-    .subscribe(comment => {
-        this.commentForm.get('text').setValue('');
-        this.getCommentsForRecipe();
-      }, error => {
-        throwError(error);
-      });
+    if (this.authService.isLoggedIn()) {
+      this.commentPayload.content = this.commentForm.get('text').value;
+      this.commentPayload.idParent = idComment;
+      this.commentService.replyOnComment(this.recipe.idRecipe, this.commentPayload)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(comment => {
+          this.commentForm.get('text').setValue('');
+          this.getCommentsForRecipe();
+        }, error => {
+          throwError(error);
+        });
+      this.commentForm.reset();
+      this.isAddComment = true;
+      this.isReply = false;
+    } else {
+      this.toastr.warning("Только зарегистрированные пользователи могут комментировать.");
+    }
   }
 
-  add() { 
-    this.isAddComment = true;
-    this.isReply = false;
-    this.visibility = true;
+  goToAuthor(idAuthor: number) {
+    this.router.navigate(['/users', idAuthor]);
   }
 
   ngOnDestroy(): void {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
-
 }

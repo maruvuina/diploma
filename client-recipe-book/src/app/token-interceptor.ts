@@ -18,37 +18,30 @@ export class TokenInterceptor implements HttpInterceptor {
     
     constructor(public authService: AuthService) { }
 
-    intercept(request: HttpRequest<any>, 
-        next: HttpHandler):
+    intercept(request: HttpRequest<any>, next: HttpHandler):
         Observable<HttpEvent<any>> {
-
         // if (request.url.indexOf('refresh') !== -1 || 
         //     request.url.indexOf('login') !== -1 || 
         //     request.url.indexOf('contact') !== -1) {
         //     return next.handle(request);
         // }
         const jwtToken = this.authService.getJwtToken();
-
         if (jwtToken) {
           request = this.addToken(request, jwtToken);
         }
-
         return next.handle(request).pipe(catchError(error => {
-            if (error instanceof HttpErrorResponse
-                && error.status === 401) {
-                console.log("----------------------------------401------------------");
+            if (error instanceof HttpErrorResponse && error.status === 401) {
                 //const tokenExpired = new Date().getTime() >= this.authService.getExpirationTime();
                 return this.handleAuthErrors(request, next); 
             } else {
                 return throwError(error);
             }
-        }));    
+        }));
     }
 
     private addToken(request: HttpRequest<any>, jwtToken: string) {
         return request.clone({
-            headers: request.headers.set(TOKEN_HEADER_KEY,
-                'Bearer ' + jwtToken)
+            headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + jwtToken)
         });
     }
 
@@ -57,15 +50,11 @@ export class TokenInterceptor implements HttpInterceptor {
         if (!this.isTokenRefreshing) {
             this.isTokenRefreshing = true;
             this.refreshTokenSubject.next(null);
-            console.log("----------------------------------------handle---------------");
             return this.authService.refreshToken().pipe(
                 switchMap((refreshTokenResponse: LoginResponse) => {
                     this.isTokenRefreshing = false;
-                    console.log("----------> " + JSON.stringify(refreshTokenResponse));
-                    this.refreshTokenSubject
-                        .next(refreshTokenResponse.authenticationToken);
-                    return next.handle(this.addToken(request,
-                        refreshTokenResponse.authenticationToken));
+                    this.refreshTokenSubject.next(refreshTokenResponse.authenticationToken);
+                    return next.handle(this.addToken(request, refreshTokenResponse.authenticationToken));
                 })
             )    
         } else {
@@ -78,5 +67,4 @@ export class TokenInterceptor implements HttpInterceptor {
             );
         }
     }
-
 }
