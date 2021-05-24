@@ -29,7 +29,8 @@ export class RecipeDetailsListComponent implements OnInit, OnDestroy {
     this.config = {
       itemsPerPage: 5,
       currentPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      id: 'paginationRecipeDetailsList'
     };
    }
 

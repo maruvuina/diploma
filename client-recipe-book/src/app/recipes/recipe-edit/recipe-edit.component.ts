@@ -7,19 +7,23 @@ import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@ang
 import { throwError, Observable, ReplaySubject } from 'rxjs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { ComponentCanDeactivate } from '../../auth/exit.guard';
+
 
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
   styleUrls: ['./recipe-edit.component.css']
 })
-export class RecipeEditComponent implements OnInit, OnDestroy {
+export class RecipeEditComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
   id: number;
 
   recipeForm: FormGroup;
 
   categories: Observable<Array<CategoryModel>>;
+
+  saved: boolean = false;
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -59,6 +63,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   }
 
   updateRecipe() {
+    this.saved = true;
     let recipePayload = new RecipePayload();
     for (const field in this.recipeForm.controls) {
       if (this.recipeForm.controls[field].value === '') {
@@ -78,6 +83,14 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       throwError(error);
     });
     this.recipeForm.reset();
+  }
+
+  canDeactivate() : boolean | Observable<boolean> {
+    if(!this.saved) {
+      return confirm("Вы хотите покинуть страницу?");
+    } else {
+      return true;
+    }
   }
 
   ngOnDestroy(): void {

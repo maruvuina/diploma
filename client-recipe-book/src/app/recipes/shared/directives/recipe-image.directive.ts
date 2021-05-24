@@ -1,32 +1,32 @@
-import { Directive, OnInit, Input, OnDestroy } from '@angular/core';
+import { Directive, OnInit, Input, OnDestroy, HostBinding } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { takeUntil } from 'rxjs/operators';
 import { throwError, ReplaySubject } from 'rxjs';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { RecipeService } from '../../../recipes/shared/services/recipe.service';
 
-const API_RECIPES = 'http://localhost:8080/api/recipes/';
 
 @Directive({
-  selector: '[appRecipeImage]',
-  host: {
-    '[src]': 'sanitizedImageData'
-  }
+  selector: '[appRecipeImage]'
 })
 export class RecipeImageDirective implements OnInit, OnDestroy {
 
-  imageData: any;
+  imageData: string;
 
-  sanitizedImageData: any;
+  @HostBinding('src')
+  sanitizedImageData: SafeResourceUrl;
 
   @Input('appRecipeImage') recipeId: number;
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private httpClient: HttpClient, 
-  	private sanitizer: DomSanitizer) { }
+  	private sanitizer: DomSanitizer, 
+    private recipeService: RecipeService) { }
 
   ngOnInit() {        
-    this.httpClient.get(API_RECIPES + 'image/' + this.recipeId)
+    this.recipeService.getRecipeImage(this.recipeId)
       .pipe(takeUntil(this.destroy))
       .subscribe(
         data => {
@@ -41,5 +41,4 @@ export class RecipeImageDirective implements OnInit, OnDestroy {
     this.destroy.next(null);
     this.destroy.complete();
   }
-
 }

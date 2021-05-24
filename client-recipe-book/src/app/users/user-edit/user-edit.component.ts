@@ -3,7 +3,9 @@ import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@ang
 import { UserService } from '../shared/services/user.service';
 import { UserUpdate } from '../shared/models/user-update';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
+import { ComponentCanDeactivate } from '../../auth/exit.guard';
+
 
 function fileUploaded() {
   document.getElementById("uploadButton").addEventListener("click", function(){
@@ -23,13 +25,15 @@ function fileUploaded() {
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.css']
 })
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, ComponentCanDeactivate {
 
   selectedFile: File = null;
   
   userEditForm: FormGroup;
 
   id: number;
+
+  saved: boolean = false;
 
   constructor(private userService: UserService, 
     private route: ActivatedRoute, 
@@ -49,6 +53,7 @@ export class UserEditComponent implements OnInit {
   }
 
   edit() {
+    this.saved = true;
     let userUpdate = new UserUpdate();
     userUpdate.fullName = this.userEditForm.get('username').value;
     let formData = new FormData();
@@ -60,5 +65,13 @@ export class UserEditComponent implements OnInit {
     }, error => {
       throwError(error);
     });
+  }
+
+  canDeactivate() : boolean | Observable<boolean> {
+    if(!this.saved) {
+      return confirm("Вы хотите покинуть страницу?");
+    } else {
+      return true;
+    }
   }
 }

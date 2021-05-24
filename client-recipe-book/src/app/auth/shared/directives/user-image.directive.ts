@@ -1,13 +1,16 @@
-import { Directive, OnInit, Input, HostBinding } from '@angular/core';
+import { Directive, OnInit, OnDestroy, Input, HostBinding } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '../../../users/shared/services/user.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { takeUntil } from 'rxjs/operators';
+import { throwError, ReplaySubject } from 'rxjs';
+
 
 @Directive({
   selector: '[appUserImage]'
 })
-export class UserImageDirective implements OnInit {
+export class UserImageDirective implements OnInit, OnDestroy {
 
   imageData: string;
 
@@ -15,6 +18,8 @@ export class UserImageDirective implements OnInit {
   sanitizedImageData: SafeResourceUrl;
   
   @Input('appUserImage') userId: number;
+
+  destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private httpClient: HttpClient, 
   	private sanitizer: DomSanitizer, 
@@ -26,12 +31,17 @@ export class UserImageDirective implements OnInit {
 
   getUserAvatar() {
     this.userService.getUserAvatar(this.userId)
-      .pipe()
+      .pipe(takeUntil(this.destroy))
       .subscribe(
         data => {
           this.imageData = 'data:image/png;base64,' + data;
           this.sanitizedImageData = this.sanitizer.bypassSecurityTrustResourceUrl(this.imageData);
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next(null);
+    this.destroy.complete();
   }
 }

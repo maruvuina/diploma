@@ -31,7 +31,9 @@
 	        					<span class="uk-text-small">Количество подписок: </span>
 	                    		<span class="uk-text-medium"><strong>{{followingsCount}}</strong></span>
 	        				</div>
-	        				<app-subscribe [idFollowing]="user.id"></app-subscribe>
+	        				<div class="uk-margin-small-top">
+								<button class="uk-input uk-button uk-border-pill uk-button-primary" (click)="subscribe()">{{subscribeText}}</button>	
+							</div>
 		        		</div>
 		        	</div>
 			    </div>
@@ -48,13 +50,13 @@
 
 <div *ngIf="userLoaded" class="uk-section uk-section-muted uk-margin-large-top">
 	<div class="uk-container">
-		<app-followers [id]="id"></app-followers>
+		<app-followers [id]="id" #followersComponent></app-followers>
 	</div>
 </div>
 
 <div *ngIf="userLoaded" class="uk-section uk-section-muted uk-margin-large-top">
 	<div class="uk-container">
-		<app-followings [id]="id"></app-followings>
+		<app-followings [id]="id" #followingsComponent></app-followings>
 	</div>
 </div>
 

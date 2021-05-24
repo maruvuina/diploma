@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -7,37 +8,79 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
+  id: number;
+
   isProfile: boolean = true;
 
   isUsers: boolean = false;
 
   isRecipes: boolean = false;
 
-  constructor() { }
+  isTags: boolean = false;
+
+  isIngredients: boolean = false;
+
+  isCuisines: boolean = false;
+
+  switchCondition: string;
+
+  constructor(private route: ActivatedRoute) { 
+    this.id = +this.route.snapshot.paramMap.get('id');
+  }
 
   ngOnInit(): void {
   }
 
   changeAdminAppearance(value) {
-  	if (value == 'profile') {
-  		console.log("this.isProfile");
-  		console.log(value);
-  		this.isProfile = true;
-  		this.isUsers = false;
-  		this.isRecipes = false;
-  	} else if (value == 'users') {
-  		console.log("this.isUsers");
-  		console.log(value);
-  		this.isUsers = true;
-  		this.isProfile = false;
-  		this.isRecipes = false;
-  	} else if (value == 'recipes') {
-  		console.log("this.isRecipes");
-  		console.log(value);
-  		this.isRecipes = true;
-  		this.isUsers = false;
-  		this.isProfile = false;	
-  	}
+    switch (value) {
+      case "users":
+        this.isUsers = true;
+        this.isProfile = false;
+        this.isRecipes = false;
+        this.isTags = false;
+        this.isIngredients = false;
+        this.isCuisines = false;
+        break;
+      case "recipes":
+        this.isRecipes = true;
+        this.isUsers = false;
+        this.isProfile = false;
+        this.isTags = false;
+        this.isIngredients = false;
+        this.isCuisines = false;
+        break;
+      case "tags":
+        this.isTags = true;
+        this.isRecipes = false;
+        this.isUsers = false;
+        this.isProfile = false;
+        this.isIngredients = false;
+        this.isCuisines = false;
+        break;
+      case "ingredients":
+        this.isIngredients = true;
+        this.isRecipes = false;
+        this.isUsers = false;
+        this.isProfile = false;
+        this.isTags = false;
+        this.isCuisines = false;
+        break;
+      case "cuisines":
+        this.isCuisines = true;
+        this.isRecipes = false;
+        this.isUsers = false;
+        this.isProfile = false;
+        this.isTags = false;
+        this.isIngredients = false;
+        break;
+      default:
+        this.isProfile = true;
+        this.isUsers = false;
+        this.isRecipes = false;
+        this.isTags = false;
+        this.isIngredients = false;
+        this.isCuisines = false;
+        break;
+    }
   }
-
 }

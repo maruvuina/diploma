@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { UserDetails } from '../shared/models/user-details';
 import { UserService } from '../shared/services/user.service';
 import { takeUntil } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   config: any;
 
+  followersCount: number = 0;
+
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private userService: UserService, 
@@ -27,12 +29,21 @@ export class FollowersComponent implements OnInit, OnDestroy {
   	this.config = {
       itemsPerPage: 3,
       currentPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      id: 'paginationFollowers'
     }; 
   }
 
   ngOnInit(): void {
-  	this.getFollowers();
+    this.getFollowers();
+  }
+
+  updateFollowers() {
+    this.getFollowers();
+  }
+
+  getFollowersCount() {
+    return this.followersCount;
   }
 
   getRequestParams(page: number, pageSize: number): any {
@@ -55,10 +66,11 @@ export class FollowersComponent implements OnInit, OnDestroy {
       const { followers, totalItems } = response;
       let followersCount = followers.length;
       if (followersCount != 0) {
-        this.isFollowers = true; 
+        this.isFollowers = true;
+        this.followersCount = followersCount;
       }
       this.followers = followers;
-      this.config.totalItems = totalItems;      
+      this.config.totalItems = totalItems;   
     }, error => {
       throwError(error);
     });

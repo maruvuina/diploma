@@ -18,17 +18,12 @@
                         		<a class="uk-link-muted" (click)="goToAuthor(following.id)">{{following.fullName}}</a>
                         	</h5>
                     	</div>
-                        <div class="uk-text-small" uk-grid>
-                            <div class="uk-width-auto uk-flex uk-flex-middle">
-                                <app-subscribe [idFollowing]="following.id"></app-subscribe>
-                            </div>
-                        </div>
                     </div>
 				</div>
 			</div>
 		</div>	
 	</div>
 	<div class="uk-margin-small-top uk-text-small uk-flex uk-flex-center">
-	  <pagination-controls previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChangeFollowings($event)"></pagination-controls>
+	  <pagination-controls id="paginationFollowings" previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChangeFollowings($event)"></pagination-controls>
 	</div>
 </div>

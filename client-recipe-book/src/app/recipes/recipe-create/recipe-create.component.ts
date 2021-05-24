@@ -16,6 +16,7 @@ import { IngredientService } from '../shared/services/ingredient.service';
 import { throwError, Observable, of, ReplaySubject } from 'rxjs';
 import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
 import { takeUntil } from 'rxjs/operators';
+import { ComponentCanDeactivate } from '../../auth/exit.guard';
 
 
 function fileUploaded() {
@@ -36,7 +37,7 @@ function fileUploaded() {
   templateUrl: './recipe-create.component.html',
   styleUrls: ['./recipe-create.component.css']
 })
-export class RecipeCreateComponent implements OnInit, OnDestroy {
+export class RecipeCreateComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
   recipeForm: FormGroup;
 
@@ -59,6 +60,8 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
   tagList: Array<TagModel> = [];
 
   cuisineList: Array<CuisineModel> = [];
+
+  saved: boolean = false;
 
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -194,16 +197,15 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
   }
 
   addRecipe() {
+    this.saved = true;
     this.setMainRecipeInfo();
     this.setIngredients();
     this.setInstructions();
     this.setTags();
     this.setCuisines();
-    
     let formData = new FormData();
     formData.append("file", this.selectedFile, this.selectedFile.name);
     formData.append("recipeDto", JSON.stringify(this.recipePayload));
-
     this.recipeService.create(formData)
     .pipe(takeUntil(this.destroy))
     .subscribe(recipe => {
@@ -294,6 +296,14 @@ export class RecipeCreateComponent implements OnInit, OnDestroy {
           )
       }
     };
+  }
+
+  canDeactivate() : boolean | Observable<boolean> {
+    if(!this.saved) {
+      return confirm("Вы хотите покинуть страницу?");
+    } else {
+      return true;
+    }
   }
 
   ngOnDestroy(): void {

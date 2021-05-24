@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       fullname: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, 
-        Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}")])
+        Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}")])
     });
   }
 

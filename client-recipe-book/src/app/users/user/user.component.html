@@ -33,11 +33,11 @@
                         <span class="uk-text-small">Дата регистрации: </span>
                         <span class="uk-text-small"><strong>{{user.registrationDate}}</strong></span>
                         <br/>
-                        <span class="uk-text-small">Количество подписчиков: </span>
+                        <!-- <span class="uk-text-small">Количество подписчиков: </span>
                         <span class="uk-text-small"><strong>{{followersCount}}</strong></span>
                         <br/>
                         <span class="uk-text-small">Количество подписок: </span>
-                        <span class="uk-text-small"><strong>{{followignsCount}}</strong></span>
+                        <span class="uk-text-small"><strong>{{followignsCount}}</strong></span> -->
                     </div>
                 </div>
                 <hr>
@@ -81,7 +81,7 @@
     			</div>
 	        </div>
             <div class="uk-margin-small-top uk-text-small uk-flex uk-flex-center">
-              <pagination-controls previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+              <pagination-controls id="paginationUserRecipeList" previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
             </div>
     	</div>
     </div>

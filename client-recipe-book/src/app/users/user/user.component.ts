@@ -46,7 +46,8 @@ export class UserComponent implements OnInit, OnDestroy {
     this.config = {
       itemsPerPage: 3,
       currentPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      id: 'paginationUserRecipeList'
     };
   }
 

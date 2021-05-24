@@ -29,12 +29,21 @@ export class FollowingsComponent implements OnInit, OnDestroy {
   	this.config = {
       itemsPerPage: 3,
       currentPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      id: 'paginationFollowings'
     }; 
   }
 
   ngOnInit(): void {
   	this.getFollowings();
+  }
+
+  updateFollowings() {
+    this.getFollowings();
+  }
+
+  getFollowingsCount() {
+    return this.followingsCount;
   }
 
   getRequestParams(page: number, pageSize: number): any {
@@ -58,6 +67,7 @@ export class FollowingsComponent implements OnInit, OnDestroy {
       let followingsCount = followings.length;
       if (followingsCount != 0) {
         this.isFollowings = true;
+        this.followingsCount = followingsCount;
       }
       this.followings = followings;
       this.config.totalItems = totalItems;      

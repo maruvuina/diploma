@@ -85,7 +85,7 @@
 
 <div class="uk-container uk-margin-medium-top">
   <h3>Кухни</h3>
-  <hr class=""/>
+  <hr/>
   <div uk-grid class="uk-child-width-1-6 uk-text-center">
     <div *ngFor="let cuisine of cuisines | async">
       <a class="uk-link-muted" [routerLink]="['/cuisines']" [queryParams]="{cuisine:cuisine.cuisineName}">{{cuisine.cuisineName}}</a>

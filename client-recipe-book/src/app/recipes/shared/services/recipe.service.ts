@@ -62,4 +62,8 @@ export class RecipeService {
   update(id: number, recipePayload: RecipePayload): Observable<RecipeModel> {
     return this.httpClient.patch<RecipeModel>(API_RECIPES + id, recipePayload);
   }
+
+  getRecipeImage(idRecipe: number): Observable<string> {
+    return this.httpClient.get<string>(API_RECIPES + 'image/' + idRecipe);
+  }
 }

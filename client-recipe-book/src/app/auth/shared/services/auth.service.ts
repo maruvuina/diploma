@@ -94,13 +94,16 @@ export class AuthService {
       refreshToken: this.getRefreshToken(),
       username: this.getUserName()
     };
-    this.httpClient.post(API_AUTH + 'logout', refreshTokenPayload,
-      { responseType: 'text' })
+    this.httpClient.post(API_AUTH + 'logout', refreshTokenPayload)
       .subscribe(data => {
         console.log("logout---> " + data);
       }, error => {
         throwError(error);
       })
+    this.clearData();
+  }
+
+  private clearData() {
     this.localStorage.clear('authenticationToken');
     this.localStorage.clear('username');
     this.localStorage.clear('refreshToken');

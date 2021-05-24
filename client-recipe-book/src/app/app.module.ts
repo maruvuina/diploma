@@ -12,7 +12,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { AuthGuard } from './auth/auth.guard';
+import { ExitGuard } from './auth/exit.guard';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -43,7 +44,6 @@ import { RecipeAdminListComponent } from './recipes/recipe-admin-list/recipe-adm
 import { FollowersComponent } from './users/followers/followers.component';
 import { FollowingsComponent } from './users/followings/followings.component';
 import { RecipeDetailsListComponent } from './recipes/recipe-details-list/recipe-details-list.component';
-import { SubscribeComponent } from './users/subscribe/subscribe.component';
 import { TagComponent } from './tags/tag/tag.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { CuisineComponent } from './cuisines/cuisine/cuisine.component';
@@ -53,18 +53,27 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'recipes', component: RecipeCreateComponent },
+  { path: 'recipes', 
+    component: RecipeCreateComponent, 
+    canActivate: [AuthGuard],
+    canDeactivate: [ExitGuard] },
   { path: 'recipes/:id', component: RecipeComponent },
   { path: 'random-recipe', component: RecipeRandomComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'users/account/user/:id', component: UserComponent },
-  { path: 'users/account/admin/:id', component: AdminComponent },
-  { path: 'users/edit/:id', component: UserEditComponent },
-  { path: 'recipes/edit/:id', component: RecipeEditComponent },
+  { path: 'users/account/user/:id', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'users/account/admin/:id', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'users/edit/:id', 
+    component: UserEditComponent, 
+    canActivate: [AuthGuard],
+    canDeactivate: [ExitGuard] },
+  { path: 'recipes/edit/:id', 
+    component: RecipeEditComponent, 
+    canActivate: [AuthGuard],
+    canDeactivate: [ExitGuard] },
   { path: 'recipes/search/ingredient', component: RecipeSearchByIngredientComponent },
   { path: 'users/:id', component: UserShowComponent },
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin/:id', component: AdminComponent },
   { path: 'user-list', component: UserListComponent },
   { path: 'categories', component: CategoryComponent },
   { path: 'tags', component: TagComponent },
@@ -103,7 +112,6 @@ const appRoutes: Routes = [
     FollowersComponent,
     FollowingsComponent,
     RecipeDetailsListComponent,
-    SubscribeComponent,
     TagComponent,
     NewsletterComponent,
     CuisineComponent,

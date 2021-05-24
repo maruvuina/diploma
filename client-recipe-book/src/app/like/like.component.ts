@@ -44,13 +44,13 @@ export class LikeComponent implements OnInit, OnDestroy {
   }
 
   isLiked() {
-    let now = new Date().getTime();
-    if (this.authService.isLoggedIn() && !(now >= this.authService.getExpirationTime())) {
+    if (this.authService.isLoggedIn()) {
       this.likeService.isLiked(this.recipe.idRecipe)
       .pipe(takeUntil(this.destroy))
       .subscribe(isLiked => {
         if (isLiked) {
           this.isActive = true;
+          console.log("isLiked");
         } else {
           this.isActive = false;
         }
