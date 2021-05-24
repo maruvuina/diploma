@@ -31,7 +31,7 @@ public class CommentDto {
     @NotBlank(groups = {Marker.Response.class})
     private String createdDate;
 
-    @NotBlank(groups = {Marker.Request.class, Marker.Response.class})
+    @NotBlank
     private String content;
 
     @Nullable

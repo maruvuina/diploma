@@ -10,11 +10,13 @@ import by.bsu.recipebook.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+@Validated
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @RestController
@@ -30,7 +32,7 @@ public class AuthController {
     }
 
     @GetMapping("/accountVerification/{token}")
-    public ResponseEntity<String> verifyAccount(@PathVariable String token) throws ServiceException {
+    public ResponseEntity<String> verifyAccount(@PathVariable @NotBlank String token) throws ServiceException {
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account Activated Successfully", HttpStatus.OK);
     }
@@ -42,19 +44,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         return new ResponseEntity<>(authService.login(loginRequest), HttpStatus.OK);
     }
 
     @PostMapping("/refresh/token")
     public ResponseEntity<AuthenticationResponse> refreshTokens(
-            @Valid @RequestBody RefreshTokenRequest refreshTokenRequest) throws ServiceException {
-        System.out.println("refreshTokenRequest---> " + refreshTokenRequest.toString());
+            @RequestBody @Valid RefreshTokenRequest refreshTokenRequest) throws ServiceException {
         return new ResponseEntity<>(authService.refreshToken(refreshTokenRequest), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<String> logout(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
         return new ResponseEntity<>("Refresh Token Deleted Successfully.",
                 HttpStatus.OK);

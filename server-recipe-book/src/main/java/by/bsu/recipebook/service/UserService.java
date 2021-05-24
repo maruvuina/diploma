@@ -40,14 +40,11 @@ public class UserService {
 
     private final AuthService authService;
 
-    public String getUserAvatar(int id) {
-        String userAvatar = null;
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            String avatarLocation = userOptional.get().getAvatarLocation();
-            userAvatar = ImageService.get(avatarLocation);
-        }
-        return userAvatar;
+    @Transactional(readOnly = true)
+    public String getUserAvatar(int id) throws ServiceException {
+        User user = getUserById(id);
+        String avatarLocation = user.getAvatarLocation();
+        return ImageService.get(avatarLocation);
     }
 
     @Transactional(readOnly = true)
@@ -95,6 +92,8 @@ public class UserService {
     public Map<String, Object> getFollowers(int idUser, int page, int size) {
         Page<Followers> followersPage = followersRepository.findFollowers(idUser, PageRequest.of(page, size));
         List<UserDetailsDto> userDetailsDtoList = getFollowersDetailsDto(followersPage);
+        userDetailsDtoList.forEach(System.out::println);
+        System.out.println("getFollowers" + "\n");
         return MapResponse.getResponseAsMap("followers", userDetailsDtoList, followersPage);
     }
 
@@ -107,11 +106,16 @@ public class UserService {
     }
 
     private User getUserById(int id) throws ServiceException {
+        //        List<Followers> followers = user.getFollowers();
+//        if (followers != null) {
+//            followers.removeIf(follower -> !follower.isSubscribed());
+//            user.setFollowers(followers);
+//        }
         return userRepository
                 .findById(id)
                 .orElseThrow(
                         () -> new ServiceException(
-                                "Error occurs while trying to get user with such " + id));
+                                "Error occurs while trying to get user with id = " + id));
     }
 
     @Transactional
@@ -132,10 +136,9 @@ public class UserService {
     @Transactional
     public boolean isSubscribed(int idFollowing) throws ServiceException {
         User following = getUserById(idFollowing);
-        Followers followers = followersRepository
+        Followers follower = followersRepository
                 .isSubscribed(authService.getCurrentUser().getIdUser(),
                         following.getIdUser());
-        System.out.println(followers);
-        return followers != null;
+        return follower != null;
     }
 }

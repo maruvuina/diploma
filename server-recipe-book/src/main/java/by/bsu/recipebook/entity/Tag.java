@@ -22,7 +22,7 @@ public class Tag {
     @Column(name = "id_tag")
     private Integer idTag;
 
-    @NotBlank
+    @NotBlank(message = "Please check tag name.")
     @Column(name = "tag_name")
     private String tagName;
 

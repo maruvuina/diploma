@@ -158,22 +158,20 @@ public class RecipeService {
 
     @Transactional
     public void like(RecipeLikeDto recipeLikeDto) throws ServiceException {
-        if (authService.isLoggedIn()) {
-            Recipe recipe = getRecipeById(recipeLikeDto.getIdRecipe());
-            User currentUser = authService.getCurrentUser();
-            LikeType likeType = recipeLikeDto.getLikeType();
-            RecipeLike recipeLike;
-            Optional<RecipeLike> recipeLikeOptional = getRecipeLikeByRecipeAndUser(recipe, currentUser);
-            if (recipeLikeOptional.isEmpty()) {
-                recipeLike = recipeMapper.mapToRecipeLike(recipeLikeDto, currentUser, recipe);
-            } else {
-                recipeLike = recipeLikeOptional.get();
-                recipeLike.setLikeType(likeType);
-            }
-            recipeLikeRepository.save(recipeLike);
-            likeRecipe(recipe, likeType);
-            recipeRepository.save(recipe);
+        Recipe recipe = getRecipeById(recipeLikeDto.getIdRecipe());
+        User currentUser = authService.getCurrentUser();
+        LikeType likeType = recipeLikeDto.getLikeType();
+        RecipeLike recipeLike;
+        Optional<RecipeLike> recipeLikeOptional = getRecipeLikeByRecipeAndUser(recipe, currentUser);
+        if (recipeLikeOptional.isEmpty()) {
+            recipeLike = recipeMapper.mapToRecipeLike(recipeLikeDto, currentUser, recipe);
+        } else {
+            recipeLike = recipeLikeOptional.get();
+            recipeLike.setLikeType(likeType);
         }
+        recipeLikeRepository.save(recipeLike);
+        likeRecipe(recipe, likeType);
+        recipeRepository.save(recipe);
     }
 
     private void likeRecipe(Recipe recipe, LikeType likeType) {

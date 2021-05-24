@@ -1,6 +1,7 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.dto.CategoryDto;
+import by.bsu.recipebook.entity.Category;
 import by.bsu.recipebook.mapper.CategoryMapper;
 import by.bsu.recipebook.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,10 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void save(CategoryDto categoryDto) {
-        categoryRepository.save(categoryRepository.findByCategoryName(categoryDto.getCategoryName()));
+        Category category = categoryRepository
+                .findByCategoryName(categoryDto.getCategoryName());
+        categoryRepository.save(category);
     }
 }

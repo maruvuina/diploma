@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationEmail {
-    @NotBlank
+    @NotBlank(message = "Please check subject.")
     private String subject;
 
-    @NotBlank
+    @NotBlank(message = "Please check recipient.")
     private String recipient;
 
-    @NotBlank
+    @NotBlank(message = "Please check body.")
     private String body;
 }

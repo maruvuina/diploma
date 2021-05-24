@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 
 import static by.bsu.recipebook.constants.Constants.API_ACTIVATION_EMAIL;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -105,10 +104,12 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    @Transactional
     public boolean isUserActive(String username) {
         return userRepository.findByEmail(username).isActive();
     }
 
+    @Transactional
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
@@ -139,6 +140,7 @@ public class AuthService {
         return userRepository.findByEmail(principal.getUsername());
     }
 
+    @Transactional
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws ServiceException {
         String requestToken = refreshTokenRequest.getRefreshToken();
         if (!refreshTokenService.validateRefreshToken(requestToken)) {

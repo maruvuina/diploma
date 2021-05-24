@@ -1,6 +1,7 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.dto.IngredientDto;
+import by.bsu.recipebook.entity.Ingredient;
 import by.bsu.recipebook.mapper.IngredientMapper;
 import by.bsu.recipebook.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,10 @@ public class IngredientService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void save(IngredientDto ingredientDto) {
-        ingredientRepository.save(ingredientRepository.findByIngredientName(ingredientDto.getIngredientName()));
+        Ingredient ingredient = ingredientRepository
+                .findByIngredientName(ingredientDto.getIngredientName());
+        ingredientRepository.save(ingredient);
     }
 }

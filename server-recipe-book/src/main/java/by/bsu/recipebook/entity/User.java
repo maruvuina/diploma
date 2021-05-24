@@ -29,8 +29,6 @@ public class User {
     private String email;
 
     @ValidPassword
-    //@Min(value = 8, message = "Password should not be less than 8 characters.")
-    //@Max(value = 20, message = "Password should not be greater than 20 characters.")
     @Column(name = "password", nullable = false)
     private String password;
 
