@@ -15,5 +15,9 @@ export class CuisineService {
   getAll(): Observable<Array<CuisineModel>> {
     return this.httpClient.get<Array<CuisineModel>>(API_CUISINES);
   }
+
+  save(cuisine: CuisineModel): Observable<any> {
+    return this.httpClient.post(API_CUISINES, cuisine);
+  }
 }
 

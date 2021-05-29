@@ -1,6 +1,20 @@
 <app-nav></app-nav>
 
 <div class="uk-container">
+    <div>
+        <div *ngIf="isMailing">
+            <h4 class="uk-margin-remove-bottom uk-text-right">
+                <a class="uk-link-text" (click)="subscribeToNewsletter()">Отписаться</a>
+                <span> от рассылки.</span>
+            </h4>
+        </div>
+        <div *ngIf="!isMailing">
+            <h4 class="uk-margin-remove-bottom uk-text-right">
+                <a class="uk-link-text" (click)="subscribeToNewsletter()">Подписаться</a>
+                <span> на рассылку.</span>
+            </h4>
+        </div>
+    </div>
     <div data-uk-grid>
         <div class="uk-width-expand@s uk-flex uk-flex-middle">
             <div>
@@ -33,11 +47,11 @@
                         <span class="uk-text-small">Дата регистрации: </span>
                         <span class="uk-text-small"><strong>{{user.registrationDate}}</strong></span>
                         <br/>
-                        <!-- <span class="uk-text-small">Количество подписчиков: </span>
+                        <span class="uk-text-small">Количество подписчиков: </span>
                         <span class="uk-text-small"><strong>{{followersCount}}</strong></span>
                         <br/>
                         <span class="uk-text-small">Количество подписок: </span>
-                        <span class="uk-text-small"><strong>{{followignsCount}}</strong></span> -->
+                        <span class="uk-text-small"><strong>{{followingsCount}}</strong></span>
                     </div>
                 </div>
                 <hr>

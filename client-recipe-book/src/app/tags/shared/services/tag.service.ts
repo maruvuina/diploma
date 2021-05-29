@@ -15,4 +15,8 @@ export class TagService {
   getAll(): Observable<Array<TagModel>> {
     return this.httpClient.get<Array<TagModel>>(API_TAGS);
   }
+
+  save(tag: TagModel): Observable<any> {
+    return this.httpClient.post(API_TAGS, tag);
+  }
 }

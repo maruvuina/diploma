@@ -51,3 +51,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.uk-link-text {
+  text-decoration: underline;
+}

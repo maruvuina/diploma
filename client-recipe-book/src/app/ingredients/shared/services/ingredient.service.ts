@@ -19,4 +19,8 @@ export class IngredientService {
   getIngredientByIngredientNamePattern(pattern: string): Observable<Array<IngredientModel>> {
   	return this.httpClient.get<Array<IngredientModel>>(API_INGREDIENTS + 'name/' + pattern);
   }
+
+  save(ingredient: IngredientModel): Observable<any> {
+    return this.httpClient.post(API_INGREDIENTS, ingredient);
+  }
 }

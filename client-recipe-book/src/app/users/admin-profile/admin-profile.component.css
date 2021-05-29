@@ -32,8 +32,24 @@
   color: #fff;
 }
 
-.image-recipe,
 .image-follower {
 	width: 150px;
   height: 150px;
 }
+
+.image-recipe {
+  border-radius: 20px;
+  width: 279px;
+  height: 179px;
+}
+
+.link-edit {
+  color: #eb4a36;
+  text-decoration: none;
+}
+
+.link-edit:hover {
+  color: #4a4a4a;
+  text-decoration: none;
+}
+

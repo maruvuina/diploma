@@ -18,7 +18,7 @@ import { startWith, tap, delay } from 'rxjs/operators';
   templateUrl: './user-show.component.html',
   styleUrls: ['./user-show.component.css']
 })
-export class UserShowComponent implements OnInit, OnDestroy, AfterViewChecked  {
+export class UserShowComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   id: number;
 
@@ -28,7 +28,7 @@ export class UserShowComponent implements OnInit, OnDestroy, AfterViewChecked  {
 
   followersCount: number;
 
-  followingsCount: number = 0;
+  followingsCount: number;
 
   recipeCount: number = 0;
 
@@ -81,10 +81,6 @@ export class UserShowComponent implements OnInit, OnDestroy, AfterViewChecked  {
       let recipeCount = user.recipeList.length;
       if (recipeCount != 0) {
         this.recipeCount = recipeCount;
-      }
-      let followingsCount = user.followings.length;
-      if (followingsCount != 0) {
-        this.followingsCount = followingsCount;
       }
     });
   }

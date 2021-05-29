@@ -1,7 +1,7 @@
-import { IngredientModel } from './ingredient-model';
+import { IngredientModel } from '../../../ingredients/shared/models/ingredient-model';
 import { InstructionModel } from './instruction-model';
 import { CommentModel } from '../../../comment/shared/models/comment-model';
-import { TagModel } from '../../shared/models/tag-model';
+import { TagModel } from '../../../tags/shared/models/tag-model';
 import { CuisineModel } from '../../../cuisines/shared/models/cuisine-model';
 
 export class RecipeModel {

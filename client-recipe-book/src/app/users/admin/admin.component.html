@@ -42,7 +42,7 @@
 					  		</div>
 
 					  		<div *ngIf="isUsers">
-					  			<app-user-list></app-user-list>
+					  			<app-user-admin-list></app-user-admin-list>
 					  		</div>
 
 					  		<div *ngIf="isRecipes">
@@ -50,15 +50,15 @@
 					  		</div>
 
 					  		<div *ngIf="isTags">
-					  			tags
+					  			<app-tag-admin-list></app-tag-admin-list>
 					  		</div>
 
 					  		<div *ngIf="isIngredients">
-					  			ing
+					  			<app-ingredient-admin-list></app-ingredient-admin-list>
 					  		</div>
 
 					  		<div *ngIf="isCuisines">
-					  			cuisine
+					  			<app-cuisine-admin-list></app-cuisine-admin-list>
 					  		</div>
 					  	</div>
 					</div>

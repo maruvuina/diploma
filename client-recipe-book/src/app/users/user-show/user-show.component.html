@@ -32,7 +32,7 @@
 	                    		<span class="uk-text-medium"><strong>{{followingsCount}}</strong></span>
 	        				</div>
 	        				<div class="uk-margin-small-top">
-								<button class="uk-input uk-button uk-border-pill uk-button-primary" (click)="subscribe()">{{subscribeText}}</button>	
+								<button class="uk-input uk-button uk-border-pill uk-button-primary" (click)="subscribe()">{{subscribeText}}</button>
 							</div>
 		        		</div>
 		        	</div>
@@ -50,13 +50,13 @@
 
 <div *ngIf="userLoaded" class="uk-section uk-section-muted uk-margin-large-top">
 	<div class="uk-container">
-		<app-followers [id]="id" #followersComponent></app-followers>
+		<app-followers [id]="id"></app-followers>
 	</div>
 </div>
 
 <div *ngIf="userLoaded" class="uk-section uk-section-muted uk-margin-large-top">
 	<div class="uk-container">
-		<app-followings [id]="id" #followingsComponent></app-followings>
+		<app-followings [id]="id"></app-followings>
 	</div>
 </div>
 

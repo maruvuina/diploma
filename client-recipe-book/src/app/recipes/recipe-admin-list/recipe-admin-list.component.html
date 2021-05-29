@@ -46,13 +46,13 @@
 		                <th class="uk-table-expand">Название</th>
 		                <th class="uk-table-small">Автор</th>
 		                <th class="uk-width-small">Дата создания</th>
-		                <th class="uk-table-shrink">Удалить</th>
+		                <th class="uk-table-shrink">Действие</th>
 		            </tr>
 		        </thead>
 		        <tbody *ngFor="let recipe of recipes | paginate: config">
 		        	<tr>
 		                <td>
-		                	<a (click)="goToRecipe(recipe.idRecipe)"><img [appRecipeImage]="[recipe.idRecipe]" class="image-recipe uk-preserve-width uk-border-rounded" alt="Main Ingredient Picture"/></a>
+		                	<a (click)="goToRecipe(recipe.idRecipe)"><img [appRecipeImage]="[recipe.idRecipe]" class="image-recipe uk-preserve-width uk-border-rounded" alt="{{recipe.recipeName}}"/></a>
 		                	</td>
 		                <td class="uk-table-nowrap">
 		                	<a class="uk-link-muted" (click)="goToRecipe(recipe.idRecipe)">{{recipe.recipeName}}</a>
@@ -66,7 +66,7 @@
 		        </tbody>
 		    </table>
 		    <div class="uk-margin-large-top uk-text-small uk-flex uk-flex-center">
-			  <pagination-controls previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+			  <pagination-controls id="recipesAdmin" previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
 			</div>
 		</div>
 	</div>

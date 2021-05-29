@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, Validators, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { RecipeService } from '../shared/services/recipe.service';
-import { IngredientService } from '../shared/services/ingredient.service';
-import { IngredientModel } from '../shared/models/ingredient-model';
+import { IngredientService } from '../../ingredients/shared/services/ingredient.service';
+import { IngredientModel } from '../../ingredients/shared/models/ingredient-model';
 import { throwError, ReplaySubject } from 'rxjs';
 import { RecipeModel } from '../shared/models/recipe-model';
 import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-search-by-ingredient',

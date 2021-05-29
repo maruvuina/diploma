@@ -32,7 +32,8 @@ export class RecipeAdminListComponent implements OnInit, OnDestroy {
     this.config = {
       itemsPerPage: 9,
       currentPage: 1,
-      totalItems: 0
+      totalItems: 0,
+      id: 'recipesAdmin'
     };
    }
 
@@ -57,7 +58,9 @@ export class RecipeAdminListComponent implements OnInit, OnDestroy {
   getAllRecipes() {
     const params = this.getRequestParams(this.config.currentPage, 
       this.config.itemsPerPage, SortType.NotSort);
-      this.recipeService.getAll(params).subscribe(response => {
+      this.recipeService.getAll(params)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(response => {
       const { recipes, totalItems } = response;
       this.recipes = recipes;
       this.config.totalItems = totalItems;

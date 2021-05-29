@@ -1,0 +1,29 @@
+<div class="uk-overflow-auto">
+    <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
+        <thead>
+            <tr>
+                <th class="uk-table-shrink">Аватар</th>
+                <th class="uk-table-expand">Имя Фамилия</th>
+                <th class="uk-table-small">Электронная почта</th>
+                <th class="uk-width-small">Дата регистрации</th>
+                <th class="uk-table-shrink">Действие</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let user of users | paginate: config">
+        	<tr>
+                <td>
+                	<a (click)="goToUser(user.id)"><img [appUserImage]="[user.id]" class="image-user uk-preserve-width uk-border-circle" alt="{{user.fullName}}"/></a>
+                	</td>
+                <td class="uk-table-nowrap">
+                	<a class="uk-link-muted" (click)="goToUser(user.id)">{{user.fullName}}</a>
+                </td>
+                <!-- <td class="uk-table-nowrap">{{user.authorName}}</td>
+                <td class="uk-table-nowrap">{{user.createdDate}}</td> -->
+                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button">Удалить</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="uk-margin-large-top uk-text-small uk-flex uk-flex-center">
+	  <pagination-controls id="usersAdmin" previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+	</div>
+</div>

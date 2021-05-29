@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RecipeModel } from '../models/recipe-model';
-import { IngredientModel } from '../models/ingredient-model';
+import { IngredientModel } from '../../../ingredients/shared/models/ingredient-model';
 import { RecipePayload } from '../models/recipe-payload';
 
 const API_RECIPES = 'http://localhost:8080/api/recipes/';

@@ -18,6 +18,8 @@ export class TagComponent implements OnInit, OnDestroy {
 
   config: any;
 
+  isFounded: boolean;
+
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private recipeService: RecipeService, 
@@ -56,8 +58,13 @@ export class TagComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy))
       .subscribe(response => {
       const { recipes, totalItems } = response;
-      this.recipes = recipes;
-      this.config.totalItems = totalItems;
+      if (recipes.length != 0) {
+        this.isFounded = true;
+        this.recipes = recipes;
+        this.config.totalItems = totalItems;
+      } else {
+        this.isFounded = false;
+      }
     }, error => {
       throwError(error);
     });

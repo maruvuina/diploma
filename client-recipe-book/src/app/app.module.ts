@@ -48,6 +48,10 @@ import { TagComponent } from './tags/tag/tag.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { CuisineComponent } from './cuisines/cuisine/cuisine.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { TagAdminListComponent } from './tags/tag-admin-list/tag-admin-list.component';
+import { CuisineAdminListComponent } from './cuisines/cuisine-admin-list/cuisine-admin-list.component';
+import { IngredientAdminListComponent } from './ingredients/ingredient-admin-list/ingredient-admin-list.component';
+import { UserAdminListComponent } from './users/user-admin-list/user-admin-list.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -115,7 +119,11 @@ const appRoutes: Routes = [
     TagComponent,
     NewsletterComponent,
     CuisineComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    TagAdminListComponent,
+    CuisineAdminListComponent,
+    IngredientAdminListComponent,
+    UserAdminListComponent
   ],
   imports: [
     BrowserModule, 

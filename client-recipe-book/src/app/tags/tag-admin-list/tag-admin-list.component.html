@@ -1,0 +1,26 @@
+<div class="uk-overflow-auto">
+    <div class="uk-child-width-1-2@s uk-child-width-1-5@m" uk-grid="masonry: true">
+        <div *ngFor="let tag of tagList | paginate: config">
+            <div>
+                <div class="uk-flex uk-flex-center">{{tag.tagName}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-margin-large-top uk-text-small uk-flex uk-flex-center">
+	  <pagination-controls id="tagsAdmin" previousLabel="Назад" nextLabel="Далее" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+	</div>
+</div>
+
+<form [formGroup]="tagForm" novalidate>
+    <input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="Название" formControlName="tagName"/>
+    <div class="uk-margin-small-top" *ngIf="!tagForm.get('tagName').valid && tagForm.get('tagName').touched">
+        <span class="uk-margin-small-left uk-form-danger">
+            Что-то не так с названием :(
+        </span>
+    </div>
+    <div class="uk-margin-small-top uk-flex uk-flex-center uk-margin-medium-top">
+        <div>
+            <button [disabled]="tagForm.invalid" (click)="addTag()" class="uk-button uk-border-pill uk-button-secondary">Добавить</button>
+        </div>
+    </div>
+</form>
