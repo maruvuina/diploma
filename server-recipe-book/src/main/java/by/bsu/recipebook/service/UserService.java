@@ -92,8 +92,6 @@ public class UserService {
     public Map<String, Object> getFollowers(int idUser, int page, int size) {
         Page<Followers> followersPage = followersRepository.findFollowers(idUser, PageRequest.of(page, size));
         List<UserDetailsDto> userDetailsDtoList = getFollowersDetailsDto(followersPage);
-        userDetailsDtoList.forEach(System.out::println);
-        System.out.println("getFollowers" + "\n");
         return MapResponse.getResponseAsMap("followers", userDetailsDtoList, followersPage);
     }
 
@@ -106,11 +104,6 @@ public class UserService {
     }
 
     private User getUserById(int id) throws ServiceException {
-        //        List<Followers> followers = user.getFollowers();
-//        if (followers != null) {
-//            followers.removeIf(follower -> !follower.isSubscribed());
-//            user.setFollowers(followers);
-//        }
         return userRepository
                 .findById(id)
                 .orElseThrow(
@@ -140,5 +133,19 @@ public class UserService {
                 .isSubscribed(authService.getCurrentUser().getIdUser(),
                         following.getIdUser());
         return follower != null;
+    }
+
+    @Transactional
+    public boolean isMailing() {
+        return userRepository.isMailing(authService.getCurrentUser().getIdUser());
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getAll(int page, int size) {
+        Page<User> pageTuts = userRepository.findAll(PageRequest.of(page, size));
+        List<UserGetDto> userGetDtoList = pageTuts.getContent().stream()
+                .map(userMapper::mapToUserGetDto)
+                .collect(Collectors.toList());
+        return MapResponse.getResponseAsMap("users", userGetDtoList, pageTuts);
     }
 }

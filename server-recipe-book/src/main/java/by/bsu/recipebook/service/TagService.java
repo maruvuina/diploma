@@ -1,7 +1,6 @@
 package by.bsu.recipebook.service;
 
 import by.bsu.recipebook.dto.TagDto;
-import by.bsu.recipebook.entity.Tag;
 import by.bsu.recipebook.mapper.TagMapper;
 import by.bsu.recipebook.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class TagService {
 
     @Transactional
     public void save(TagDto tagDto) {
-        Tag tag = tagRepository.findByTagName(tagDto.getTagName());
-        tagRepository.save(tag);
+        tagRepository.save(tagMapper.mapToTag(tagDto));
     }
 }

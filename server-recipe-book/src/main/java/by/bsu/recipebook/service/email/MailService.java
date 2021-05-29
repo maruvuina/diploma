@@ -16,6 +16,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 
+import javax.transaction.Transactional;
+
 import static by.bsu.recipebook.constants.Constants.COMPANY_EMAIL;
 
 @Service
@@ -29,10 +31,12 @@ public class MailService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public void subscribeToNewsletter(EmailDto emailDto) {
         userRepository.subscribeToNewsletter(emailDto.getFromEmail());
     }
 
+    @Transactional
     public void unsubscribeToNewsletter(EmailDto emailDto) {
         userRepository.unsubscribeToNewsletter(emailDto.getFromEmail());
     }

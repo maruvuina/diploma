@@ -24,4 +24,9 @@ public class CuisineService {
                 .map(cuisineMapper::mapToCuisineDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void save(CuisineDto cuisineDto) {
+        cuisineRepository.save(cuisineMapper.mapToCuisine(cuisineDto));
+    }
 }

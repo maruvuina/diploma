@@ -14,4 +14,7 @@ public interface IngredientMapper {
     @Mapping(target = "ingredientName", expression= "java(ingredientAmount.getIngredient().getIngredientName())")
     @Mapping(target = "measureAmount", source = "ingredientAmount.measureAmount")
     IngredientDto mapToIngredientDto(IngredientAmount ingredientAmount);
+
+    @Mapping(target = "ingredientName", source = "ingredientDto.ingredientName")
+    Ingredient mapToIngredient(IngredientDto ingredientDto);
 }

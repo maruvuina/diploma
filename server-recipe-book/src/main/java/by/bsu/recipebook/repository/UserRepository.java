@@ -27,4 +27,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User as u " +
             "where u.active=true and u.idUser=:id")
     Optional<User> findById(@Param("id") Integer id);
+
+    @Query("select u.isMailing from User u where u.idUser=:id")
+    Boolean isMailing(@Param("id") Integer id);
 }

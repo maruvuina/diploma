@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/subscribe/{id}")
-    //@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> subscribe(@PathVariable("id") @Min(1) int idUser,
         @RequestBody @Validated({Marker.Request.class}) UserDetailsDto userDetailsDto) throws ServiceException {
         userService.subscribe(idUser, userDetailsDto);
@@ -75,5 +75,19 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> isSubscribed(@PathVariable("idFollowing") @Min(1) int idFollowing) throws ServiceException {
         return new ResponseEntity<>(userService.isSubscribed(idFollowing), HttpStatus.OK);
+    }
+
+    @GetMapping("/mailing")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Boolean> isMailing() {
+        return new ResponseEntity<>(userService.isMailing(), HttpStatus.OK);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Object>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return new ResponseEntity<>(userService.getAll(page, size), HttpStatus.OK);
     }
 }

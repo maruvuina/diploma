@@ -9,4 +9,7 @@ import org.mapstruct.Mapping;
 public interface CuisineMapper {
     @Mapping(target = "cuisineName", source = "cuisine.cuisineName")
     CuisineDto mapToCuisineDto(Cuisine cuisine);
+
+    @Mapping(target = "cuisineName", source = "cuisineDto.cuisineName")
+    Cuisine mapToCuisine(CuisineDto cuisineDto);
 }

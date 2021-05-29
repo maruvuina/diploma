@@ -9,4 +9,7 @@ import org.mapstruct.Mapping;
 public interface TagMapper {
     @Mapping(target = "tagName", source = "tag.tagName")
     TagDto mapToTagDto(Tag tag);
+
+    @Mapping(target = "tagName", source = "tagDto.tagName")
+    Tag mapToTag(TagDto tagDto);
 }
