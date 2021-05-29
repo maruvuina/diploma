@@ -50,7 +50,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserGetDto getById(int id) throws ServiceException {
         User user = getUserById(id);
-        return userMapper.mapToUserGetDto(user);
+        return userMapper.toUserGetDto(user);
     }
 
     @Transactional
@@ -84,7 +84,7 @@ public class UserService {
         return pageTuts
                 .getContent()
                 .stream()
-                .map(followers -> userMapper.mapToUserDetailsDto(followers.getTo()))
+                .map(followers -> userMapper.toUserDetailsDto(followers.getTo()))
                 .collect(Collectors.toList());
     }
 
@@ -99,7 +99,7 @@ public class UserService {
         return pageTuts
                 .getContent()
                 .stream()
-                .map(followers -> userMapper.mapToUserDetailsDto(followers.getFrom()))
+                .map(followers -> userMapper.toUserDetailsDto(followers.getFrom()))
                 .collect(Collectors.toList());
     }
 
@@ -144,7 +144,7 @@ public class UserService {
     public Map<String, Object> getAll(int page, int size) {
         Page<User> pageTuts = userRepository.findAll(PageRequest.of(page, size));
         List<UserGetDto> userGetDtoList = pageTuts.getContent().stream()
-                .map(userMapper::mapToUserGetDto)
+                .map(userMapper::toUserGetDto)
                 .collect(Collectors.toList());
         return MapResponse.getResponseAsMap("users", userGetDtoList, pageTuts);
     }

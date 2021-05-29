@@ -12,19 +12,23 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class CommentMapper {
-    @Mapping(target = "content", source = "commentDto.content")
-    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "recipe", source = "recipe")
+    @Mappings({
+            @Mapping(target = "content", source = "commentDto.content"),
+            @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())"),
+            @Mapping(target = "user", source = "user"),
+            @Mapping(target = "recipe", source = "recipe")
+    })
     public abstract Comment mapToComment(CommentDto commentDto, User user, Recipe recipe);
 
-    @Mapping(target = "idComment", source = "comment.idComment")
-    @Mapping(target = "idUser", expression = "java(comment.getUser().getIdUser())")
-    @Mapping(target = "username", expression = "java(comment.getUser().getFullName())")
-    @Mapping(target = "createdDate", expression = "java(getCreatedDate(comment))")
-    @Mapping(target = "content", expression = "java(comment.getContent())")
-    @Mapping(target = "idParent", ignore = true)
-    @Mapping(target = "children", expression = "java(getCommentChildren(comment))")
+    @Mappings({
+            @Mapping(target = "idComment", source = "comment.idComment"),
+            @Mapping(target = "idUser", expression = "java(comment.getUser().getIdUser())"),
+            @Mapping(target = "username", expression = "java(comment.getUser().getFullName())"),
+            @Mapping(target = "createdDate", expression = "java(getCreatedDate(comment))"),
+            @Mapping(target = "content", expression = "java(comment.getContent())"),
+            @Mapping(target = "idParent", ignore = true),
+            @Mapping(target = "children", expression = "java(getCommentChildren(comment))")
+    })
     public abstract CommentDto mapToCommentDto(Comment comment);
 
     @AfterMapping

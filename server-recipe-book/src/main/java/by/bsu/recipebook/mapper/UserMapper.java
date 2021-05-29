@@ -8,6 +8,7 @@ import by.bsu.recipebook.entity.User;
 import by.bsu.recipebook.util.FormatterPattern;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -21,21 +22,25 @@ public abstract class UserMapper {
     @Autowired
     private FollowersMapper followersMapper;
 
-    @Mapping(target = "email", source = "registerRequest.email")
-    @Mapping(target = "password", source = "registerRequest.password")
-    @Mapping(target = "fullName", source = "registerRequest.fullName")
-    @Mapping(target = "roles", source = "registerRequest.roles")
-    @Mapping(target = "avatarLocation", expression = "java(by.bsu.recipebook.constants.Constants.DEFAULT_AVATAR_LOCATION)")
-    @Mapping(target = "registrationDate", expression = "java(java.time.Instant.now())")
-    public abstract User mapToUser(RegisterRequest registerRequest);
+    @Mappings({
+            @Mapping(target = "email", source = "registerRequest.email"),
+            @Mapping(target = "password", source = "registerRequest.password"),
+            @Mapping(target = "fullName", source = "registerRequest.fullName"),
+            @Mapping(target = "roles", source = "registerRequest.roles"),
+            @Mapping(target = "avatarLocation", expression = "java(by.bsu.recipebook.constants.Constants.DEFAULT_AVATAR_LOCATION)"),
+            @Mapping(target = "registrationDate", expression = "java(java.time.Instant.now())")
+    })
+    public abstract User toUser(RegisterRequest registerRequest);
 
-    @Mapping(target = "id", source = "user.idUser")
-    @Mapping(target = "fullName", source = "user.fullName")
-    @Mapping(target = "recipeList", expression = "java(getRecipeList(user))")
-    @Mapping(target = "registrationDate", expression = "java(getRegistrationDate(user))")
-    @Mapping(target = "followers", expression = "java(getFollowers(user))")
-    @Mapping(target = "followings", expression = "java(getFollowings(user))")
-    public abstract UserGetDto mapToUserGetDto(User user);
+    @Mappings({
+            @Mapping(target = "id", source = "user.idUser"),
+            @Mapping(target = "fullName", source = "user.fullName"),
+            @Mapping(target = "recipeList", expression = "java(getRecipeList(user))"),
+            @Mapping(target = "registrationDate", expression = "java(getRegistrationDate(user))"),
+            @Mapping(target = "followers", expression = "java(getFollowers(user))"),
+            @Mapping(target = "followings", expression = "java(getFollowings(user))")
+    })
+    public abstract UserGetDto toUserGetDto(User user);
 
     List<UserDetailsDto> getFollowers(User user) {
         return user.getFollowers()
@@ -64,7 +69,9 @@ public abstract class UserMapper {
                 .format(user.getRegistrationDate());
     }
 
-    @Mapping(target = "id", source = "user.idUser")
-    @Mapping(target = "fullName", source = "user.fullName")
-    public abstract UserDetailsDto mapToUserDetailsDto(User user);
+    @Mappings({
+            @Mapping(target = "id", source = "user.idUser"),
+            @Mapping(target = "fullName", source = "user.fullName")
+    })
+    public abstract UserDetailsDto toUserDetailsDto(User user);
 }

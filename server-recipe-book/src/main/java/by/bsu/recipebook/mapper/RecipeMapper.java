@@ -43,18 +43,20 @@ public abstract class RecipeMapper {
     @Autowired
     private CuisineMapper cuisineMapper;
 
-    @Mapping(target = "recipeName", source = "recipePostDto.recipeName")
-    @Mapping(target = "cookingTime", source = "recipePostDto.cookingTime")
-    @Mapping(target = "yield", source = "recipePostDto.yield")
-    @Mapping(target = "mainPicture", source = "recipeMainPictureLocation")
-    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "author", source = "user")
-    @Mapping(target = "category", expression = "java(getCategory(recipePostDto))")
-    @Mapping(target = "announce", source = "recipePostDto.announce")
-    @Mapping(target = "instructions", ignore = true)
-    @Mapping(target = "ingredientAmountSet", ignore = true)
-    @Mapping(target = "tagSet", ignore = true)
-    @Mapping(target = "cuisineSet", ignore = true)
+    @Mappings({
+            @Mapping(target = "recipeName", source = "recipePostDto.recipeName"),
+            @Mapping(target = "cookingTime", source = "recipePostDto.cookingTime"),
+            @Mapping(target = "yield", source = "recipePostDto.yield"),
+            @Mapping(target = "mainPicture", source = "recipeMainPictureLocation"),
+            @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())"),
+            @Mapping(target = "author", source = "user"),
+            @Mapping(target = "category", expression = "java(getCategory(recipePostDto))"),
+            @Mapping(target = "announce", source = "recipePostDto.announce"),
+            @Mapping(target = "instructions", ignore = true),
+            @Mapping(target = "ingredientAmountSet", ignore = true),
+            @Mapping(target = "tagSet", ignore = true),
+            @Mapping(target = "cuisineSet", ignore = true)
+    })
     public abstract Recipe mapToRecipe(RecipePostDto recipePostDto, User user, String recipeMainPictureLocation);
 
     Category getCategory(RecipePostDto recipePostDto) {
@@ -93,21 +95,23 @@ public abstract class RecipeMapper {
                         recipe.addCuisine(cuisineRepository.findByCuisineName(o.getCuisineName())));
     }
 
-    @Mapping(target = "idRecipe", source = "recipe.idRecipe")
-    @Mapping(target = "recipeName", source = "recipe.recipeName")
-    @Mapping(target = "cookingTime", source = "recipe.cookingTime")
-    @Mapping(target = "yield", source = "recipe.yield")
-    @Mapping(target = "createdDate", expression = "java(getCreatedDate(recipe))")
-    @Mapping(target = "authorName", expression = "java(recipe.getAuthor().getFullName())")
-    @Mapping(target = "announce", source = "recipe.announce")
-    @Mapping(target = "categoryName", expression = "java(recipe.getCategory().getCategoryName())")
-    @Mapping(target = "ingredients", ignore = true)
-    @Mapping(target = "instructions", ignore = true)
-    @Mapping(target = "comments", ignore = true)
-    @Mapping(target = "tags", ignore = true)
-    @Mapping(target = "likesCount", source = "recipe.likeCount")
-    @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())")
-    @Mapping(target = "cuisines", ignore = true)
+    @Mappings({
+            @Mapping(target = "idRecipe", source = "recipe.idRecipe"),
+            @Mapping(target = "recipeName", source = "recipe.recipeName"),
+            @Mapping(target = "cookingTime", source = "recipe.cookingTime"),
+            @Mapping(target = "yield", source = "recipe.yield"),
+            @Mapping(target = "createdDate", expression = "java(getCreatedDate(recipe))"),
+            @Mapping(target = "authorName", expression = "java(recipe.getAuthor().getFullName())"),
+            @Mapping(target = "announce", source = "recipe.announce"),
+            @Mapping(target = "categoryName", expression = "java(recipe.getCategory().getCategoryName())"),
+            @Mapping(target = "ingredients", ignore = true),
+            @Mapping(target = "instructions", ignore = true),
+            @Mapping(target = "comments", ignore = true),
+            @Mapping(target = "tags", ignore = true),
+            @Mapping(target = "likesCount", source = "recipe.likeCount"),
+            @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())"),
+            @Mapping(target = "cuisines", ignore = true)
+    })
     public abstract RecipeGetDto mapToRecipeGetDto(Recipe recipe);
 
     String getCreatedDate(Recipe recipe) {
@@ -159,19 +163,23 @@ public abstract class RecipeMapper {
         recipeGetDto.setCuisines(cuisineDtoList);
     }
 
-    @Mapping(target = "idRecipe", source = "recipe.idRecipe")
-    @Mapping(target = "recipeName", source = "recipe.recipeName")
-    @Mapping(target = "announce", source = "recipe.announce")
-    @Mapping(target = "authorName", expression = "java(recipe.getAuthor().getFullName())")
-    @Mapping(target = "likesCount", source = "recipe.likeCount")
-    @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())")
+    @Mappings({
+            @Mapping(target = "idRecipe", source = "recipe.idRecipe"),
+            @Mapping(target = "recipeName", source = "recipe.recipeName"),
+            @Mapping(target = "announce", source = "recipe.announce"),
+            @Mapping(target = "authorName", expression = "java(recipe.getAuthor().getFullName())"),
+            @Mapping(target = "likesCount", source = "recipe.likeCount"),
+            @Mapping(target = "idAuthor", expression = "java(recipe.getAuthor().getIdUser())")
+    })
     public abstract RecipeDetailsDto mapToRecipeDetailsDto(Recipe recipe);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     public abstract void updateRecipe(RecipeUpdateDto recipeUpdateDto, @MappingTarget Recipe recipe);
 
-    @Mapping(target = "likeType", source = "recipeLikeDto.likeType")
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "recipe", source = "recipe")
+    @Mappings({
+            @Mapping(target = "likeType", source = "recipeLikeDto.likeType"),
+            @Mapping(target = "user", source = "user"),
+            @Mapping(target = "recipe", source = "recipe")
+    })
     public abstract RecipeLike mapToRecipeLike(RecipeLikeDto recipeLikeDto, User user, Recipe recipe);
 }

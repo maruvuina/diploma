@@ -116,7 +116,7 @@ public class AuthServiceTest {
                 new RegisterRequest(username, null, fullName, null);
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
         when(passwordEncoder.encode(anyString())).thenReturn("pass");
-        when(userMapper.mapToUser(any(RegisterRequest.class))).thenReturn(user);
+        when(userMapper.toUser(any(RegisterRequest.class))).thenReturn(user);
         AuthService spy = PowerMockito.spy(authService);
         PowerMockito.when(spy, method(AuthService.class, PRIVATE_METHOD_GENERATE_VERIFICATION_TOKEN, User.class))
                 .withArguments(any(User.class))

@@ -66,7 +66,7 @@ public class AuthService {
             Set<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByRoleName("ROLE_USER"));
             registerRequest.setRoles(roles);
-            User user = userMapper.mapToUser(registerRequest);
+            User user = userMapper.toUser(registerRequest);
             isActive = userRepository.save(user).isActive();
             String token = generateVerificationToken(user);
             String message = "Thank you for signing up to Recipe Book, please click on the below url to activate your account:\n " +
