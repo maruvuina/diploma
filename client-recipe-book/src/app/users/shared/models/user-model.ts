@@ -4,6 +4,7 @@ import { UserDetails } from '../models/user-details';
 export class UserModel {
 	id: number;
     fullName: string;
+    email: string;
     recipeList: Array<RecipeDetails>;
     registrationDate: string;
     followers: Array<UserDetails>;

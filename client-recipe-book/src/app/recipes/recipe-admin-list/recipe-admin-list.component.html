@@ -61,7 +61,7 @@
 		                	<a class="uk-link-muted" (click)="goToAuthor(recipe.idAuthor)">{{recipe.authorName}}</a>
 		                </td>
 		                <td class="uk-table-nowrap">{{recipe.createdDate}}</td>
-		                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button">Удалить</button></td>
+		                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button" (click)="deleteRecipe(recipe.idRecipe)">Удалить</button></td>
 		            </tr>
 		        </tbody>
 		    </table>

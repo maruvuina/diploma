@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SortType } from '../shared/models/sort-type-enum';
 import { throwError, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-recipe-admin-list',
@@ -28,9 +29,10 @@ export class RecipeAdminListComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private recipeService: RecipeService, 
-  	private router: Router) { 
+  	private router: Router, 
+    private toastr: ToastrService) { 
     this.config = {
-      itemsPerPage: 9,
+      itemsPerPage: 10,
       currentPage: 1,
       totalItems: 0,
       id: 'recipesAdmin'
@@ -57,7 +59,7 @@ export class RecipeAdminListComponent implements OnInit, OnDestroy {
 
   getAllRecipes() {
     const params = this.getRequestParams(this.config.currentPage, 
-      this.config.itemsPerPage, SortType.NotSort);
+      this.config.itemsPerPage, SortType.SortByCreatedDate_ASC);
       this.recipeService.getAll(params)
       .pipe(takeUntil(this.destroy))
       .subscribe(response => {
@@ -107,6 +109,15 @@ export class RecipeAdminListComponent implements OnInit, OnDestroy {
 
   goToRecipe(idRecipe: number) {
     this.router.navigate(['/recipes', idRecipe]);
+  }
+
+  deleteRecipe(id: number) {
+    this.recipeService.delete(id)
+    .pipe(takeUntil(this.destroy))
+    .subscribe(() => {
+      this.toastr.success("Рецепт удален.");
+      this.getAllRecipes();
+    });
   }
 
   ngOnDestroy(): void {

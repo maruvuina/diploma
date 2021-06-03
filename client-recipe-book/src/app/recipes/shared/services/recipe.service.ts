@@ -66,4 +66,12 @@ export class RecipeService {
   getRecipeImage(idRecipe: number): Observable<string> {
     return this.httpClient.get<string>(API_RECIPES + 'image/' + idRecipe);
   }
+
+  delete(id: number): Observable<any> {
+    return this.httpClient.delete<any>(API_RECIPES + id);
+  }
+
+  existsByTitle(title: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(API_RECIPES + 'existsByTitle/?title=' + title);
+  }
 }

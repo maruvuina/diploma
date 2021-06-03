@@ -13,8 +13,8 @@ import { CuisineService } from '../../cuisines/shared/services/cuisine.service';
 import { CuisineModel } from '../../cuisines/shared/models/cuisine-model';
 import { IngredientService } from '../../ingredients/shared/services/ingredient.service';
 import { throwError, Observable, of, ReplaySubject } from 'rxjs';
-import { AbstractControl, AsyncValidatorFn } from "@angular/forms";
-import { takeUntil } from 'rxjs/operators';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from "@angular/forms";
+import { takeUntil, map } from 'rxjs/operators';
 import { ComponentCanDeactivate } from '../../auth/exit.guard';
 
 
@@ -87,7 +87,11 @@ export class RecipeCreateComponent implements OnInit, OnDestroy, ComponentCanDea
   ngOnInit(): void {
   	fileUploaded();
     this.recipeForm = new FormGroup({
-      recipeName: new FormControl('', Validators.required),
+      recipeName: new FormControl('', { 
+        validators: [Validators.required], 
+        asyncValidators: [this.existingRecipeValidator()], 
+        updateOn: 'blur' 
+      }),
       cookingTime: new FormControl('', Validators.required),
       yield: new FormControl('', Validators.required),
       announce: new FormControl('', Validators.required),
@@ -268,32 +272,13 @@ export class RecipeCreateComponent implements OnInit, OnDestroy, ComponentCanDea
     return value === null || value.length === 0;
   }
 
-  existingRecipeValidator(initialRecipe: string = ""): AsyncValidatorFn {
-    return (
-      control: AbstractControl
-    ):
-      | Promise<{ [key: string]: any } | null>
-      | Observable<{ [key: string]: any } | null> => {
-      if (this.isEmptyInputValue(control.value)) {
-        return of(null);
-      } else if (control.value === initialRecipe) {
-        return of(null);
-      } else {
-        this.recipeService.getRecipeByName(control.value)
-        .pipe(takeUntil(this.destroy))
-          .subscribe(recipe => {
-              const name = recipe.recipeName;
-              console.log("name===> " + name);
-              if (name === control.value) {
-                return {'alreadyExist': true};
-              } else {
-                return null;
-              }
-            }, error => {
-              console.log(error);
-            } 
-          )
-      }
+  existingRecipeValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.recipeService.existsByTitle(control.value).pipe(
+        map(response => {
+          return response ? { recipeExists: true } : null;
+        })
+      );
     };
   }
 

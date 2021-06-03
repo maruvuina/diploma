@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors } from "@angular/forms";
 import { SignupRequestPayload } from '../shared/models/signup-request.payload';
 import { AuthService } from '../../auth/shared/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { throwError, ReplaySubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { throwError, ReplaySubject, Observable } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+import { UserService } from '../../users/shared/services/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +24,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, 
     private router: Router, 
-    private toastr: ToastrService) { 
+    private toastr: ToastrService, 
+    private userService: UserService) { 
   	this.signupRequestPayload = {
       fullname: '',
       email: '',
@@ -33,7 +36,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   	this.signupForm = new FormGroup({
       fullname: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email], 
+        asyncValidators: [this.existingEmailValidator()], 
+        updateOn: 'blur' 
+      }),
       password: new FormControl('', [Validators.required, 
         Validators.pattern("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}")])
     });
@@ -55,6 +62,16 @@ export class SignUpComponent implements OnInit, OnDestroy {
       throwError(error);
     });
     this.signupForm.reset();
+  }
+
+  existingEmailValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.userService.existsByEmail(control.value).pipe(
+        map(response => {
+          return response ? { emailExists: true } : null;
+        })
+      );
+    };
   }
 
   ngOnDestroy(): void {

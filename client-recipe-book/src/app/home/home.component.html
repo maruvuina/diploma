@@ -40,18 +40,18 @@
               </div>
               <div class="ng-autocomplete">         
                 <ng-autocomplete 
-                    [data]="data" 
-                    [searchKeyword]="keyword" 
-                    (selected)='selectEvent($event)'
-                    (inputChanged)='onChangeSearch($event)' 
-                    (inputFocused)='onFocused($event)' 
-                    [itemTemplate]="itemTemplate" 
-                    (inputCleared)="searchCleared()"
-                    [notFoundTemplate]="notFoundTemplate" 
-                    [debounceTime]="600" 
-                    [isLoading]="isLoadingResult" 
-                    [minQueryLength]="1" 
-                    placeholder="Поиск"
+                  [data]="data" 
+                  [searchKeyword]="keyword" 
+                  (selected)='selectEvent($event)'
+                  (inputChanged)='onChangeSearch($event)' 
+                  (inputFocused)='onFocused($event)' 
+                  [itemTemplate]="itemTemplate" 
+                  (inputCleared)="searchCleared()"
+                  [notFoundTemplate]="notFoundTemplate" 
+                  [debounceTime]="600" 
+                  [isLoading]="isLoadingResult" 
+                  [minQueryLength]="1" 
+                  placeholder="Поиск"
                 >
                 </ng-autocomplete>
                 <ng-template #itemTemplate let-item>

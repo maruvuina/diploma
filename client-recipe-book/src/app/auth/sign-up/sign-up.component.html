@@ -19,15 +19,15 @@
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="email">Электронная почта</label>
           <input id="email" class="uk-input uk-form-large uk-border-pill uk-text-center" type="email" placeholder="ivan.ivanovich@company.com" formControlName="email" name="email"/>
-          <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched">
-            <span class="uk-form-danger">Пожалуйста введите корректный адрес электронной почты</span>
+          <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched && signupForm.get('email').errors?.emailExists">
+            <span class="uk-form-danger">Такой адрес электронной почты уже есть</span>
           </div>
         </div>
         <div class="uk-width-1-1 uk-margin">
           <label class="uk-form-label" for="password">Пароль</label>
           <input id="password" class="uk-input uk-form-large uk-border-pill uk-text-center" type="password" placeholder="Минимум 8 символов" formControlName="password" name="password"/>
           <div class="not-valid uk-margin-small-top" *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched">
-            <span class="uk-form-danger">Пожалуйста введите корректный пароль</span>
+            <span class="uk-form-danger">Пожалуйста введите корректный паролью</span>
           </div>
         </div>
         <div class="uk-width-1-1 uk-text-center">

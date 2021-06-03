@@ -16,10 +16,26 @@ export class AuthGuard implements CanActivate {
   Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
   	const isAuthenticated = this.authService.isLoggedIn();
     if (isAuthenticated) {
-      return true;
-    } else {
+      const userRoles = this.authService.getRoles();
+      let regex = "ROLE_[A-Z]+";
+      let roles = Array.from(userRoles.matchAll(regex));
+      if (!route.data.role || route.data.role.length === 0) {
+        return true;
+      }
+      if (route.data.role.includes(roles)) {
+        return true;
+      } 
+      if (roles.length > 1) {
+        for (let i = 0; i < roles.length; i++) {
+          if (route.data.role.includes(roles[i])) {
+            return true;
+          }
+        }
+      }
       this.router.navigateByUrl('/login');
+      return false;
     }
-    return true;
+    this.router.navigateByUrl('/login');
+    return false;
   }
 }

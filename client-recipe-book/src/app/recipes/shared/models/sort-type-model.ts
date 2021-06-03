@@ -1,4 +1,6 @@
+import { SortType } from './sort-type-enum';
+
 export class SortTypeModel {
-	idSortType: number;
     description: string;
+    sortType: SortType;
 }

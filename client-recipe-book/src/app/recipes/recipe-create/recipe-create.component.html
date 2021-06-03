@@ -11,9 +11,9 @@
 							<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Название рецепта</label>
 							<input type="text" class="uk-margin-top uk-input uk-border-rounded" placeholder="Яблочная сказка" formControlName="recipeName" />
 
-							<div class="uk-margin-small-top" *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched">
+							<div class="uk-margin-small-top" *ngIf="!recipeForm.get('recipeName').valid && recipeForm.get('recipeName').touched && recipeForm.get('recipeName').errors?.recipeExists">
 				            	<span class="uk-margin-small-left uk-form-danger">
-				              		Что-то не так с названием рецепта :(
+				              		Рецепт с таким названием уже есть :(
 				            	</span>
 				          	</div>
 						</div>
@@ -57,7 +57,7 @@
 						<div class="uk-margin-medium-top">
 							<label class="uk-form-label"><i uk-icon="menu" class="uk-margin-small-left uk-margin-small-right"></i>Краткое описание рецепта</label>
 							<div class="uk-margin-small-top">
-                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="announce" rows="7"></textarea>
+                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="announce" rows="7" placeholder="Максимум 2500 символов"></textarea>
                         	</div>
 
 							<div class="uk-margin-small-top" *ngIf="!recipeForm.get('announce').valid && recipeForm.get('announce').touched">
@@ -123,7 +123,7 @@
 			                        		<h5 class="uk-margin-small-left uk-width-1-4 uk-text-bold">Шаг {{i + 1}}</h5>
 			                        	</div>
 			                        	<div>
-			                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="instructionStep" rows="7"></textarea>
+			                        		<textarea class="uk-border-rounded uk-width-1-1" formControlName="instructionStep" rows="7" placeholder="Максимум 2500 символов"></textarea>
 			                        	</div>
 
 			                        	<div class="uk-width-1-4">

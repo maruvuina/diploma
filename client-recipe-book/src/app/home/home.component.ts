@@ -7,6 +7,7 @@ import { CuisineService } from '../cuisines/shared/services/cuisine.service';
 import { throwError, Observable, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/shared/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -31,12 +32,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   constructor(private categoryService: CategoryService, 
   	private recipeService: RecipeService, 
-    private cuisineService: CuisineService) {
+    private cuisineService: CuisineService, 
+    private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.categories = this.getAllCategories();
     this.cuisines = this.getAllCuisines();
+    //this.authService.getRoles();
   }
 
   getAllCategories() {

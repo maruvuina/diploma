@@ -39,7 +39,6 @@
   border-radius: 10px !important;
 }
 
-
 .uk-select {
   background-color: #e9351f;
   border-color: #eb4a36;
@@ -64,4 +63,8 @@ a {
 a:hover {
   color: #000;
   text-decoration: none;
+}
+
+.uk-select:not([multiple]):not([size]) {
+  background-image: url(data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23fff%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23fff%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A);
 }

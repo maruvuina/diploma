@@ -13,6 +13,7 @@ import { AuthService } from '../../auth/shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { FollowersComponent } from '../../users/followers/followers.component';
 import { FollowingsComponent } from '../../users/followings/followings.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -53,7 +54,8 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewChecked {
   	private route: ActivatedRoute, 
     private recipeService: RecipeService, 
     private authService: AuthService, 
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private router: Router) {
   	this.id = +this.route.snapshot.paramMap.get('id');
     this.config = {
       itemsPerPage: 3,
@@ -76,17 +78,31 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewChecked {
     }, 3000);
   }
 
+  private loadUser(user) {
+    this.user = user;
+    this.userLoaded = true;
+    let recipesCount = user.recipeList.length;
+    if (recipesCount != 0) {
+      this.isRecipes = true;
+      this.recipesCount = recipesCount;
+    }
+  }
+
   getUserById() {
     this.userService.getById(this.id)
     .pipe(takeUntil(this.destroy))
     .subscribe(user => {
-      this.user = user;
-      this.userLoaded = true;
-      let recipesCount = user.recipeList.length;
-      if (recipesCount != 0) {
-        this.isRecipes = true;
-        this.recipesCount = recipesCount;
+      if (this.authService.isLoggedIn()) {
+        if (this.authService.getUserName() === user.email) {
+          this.loadUser(user);
+      } else {
+        this.router.navigateByUrl('users/' + this.id);
+        }
+      } else {
+        this.loadUser(user);
       }
+    }, error => {
+      this.router.navigateByUrl('**');
     });
   }
 

@@ -4,6 +4,7 @@ import { UserService } from '../shared/services/user.service';
 import { Router } from '@angular/router';
 import { throwError, ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-admin-list',
@@ -19,9 +20,10 @@ export class UserAdminListComponent implements OnInit, OnDestroy {
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(private userService: UserService, 
-    private router: Router) { 
+    private router: Router, 
+    private toastr: ToastrService) { 
     this.config = {
-      itemsPerPage: 9,
+      itemsPerPage: 10,
       currentPage: 1,
       totalItems: 0,
       id: 'usersAdmin'
@@ -64,6 +66,15 @@ export class UserAdminListComponent implements OnInit, OnDestroy {
 
   goToUser(idUser: number) {
     this.router.navigate(['/users', idUser]);
+  }
+
+  deleteUser(id: number) {
+    this.userService.delete(id)
+    .pipe(takeUntil(this.destroy))
+    .subscribe(() => {
+      this.toastr.success("Пользователь удален.");
+      this.getAllUsers();
+    });
   }
 
   ngOnDestroy(): void {

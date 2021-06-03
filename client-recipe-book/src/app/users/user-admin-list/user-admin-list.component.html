@@ -4,8 +4,6 @@
             <tr>
                 <th class="uk-table-shrink">Аватар</th>
                 <th class="uk-table-expand">Имя Фамилия</th>
-                <th class="uk-table-small">Электронная почта</th>
-                <th class="uk-width-small">Дата регистрации</th>
                 <th class="uk-table-shrink">Действие</th>
             </tr>
         </thead>
@@ -17,9 +15,7 @@
                 <td class="uk-table-nowrap">
                 	<a class="uk-link-muted" (click)="goToUser(user.id)">{{user.fullName}}</a>
                 </td>
-                <!-- <td class="uk-table-nowrap">{{user.authorName}}</td>
-                <td class="uk-table-nowrap">{{user.createdDate}}</td> -->
-                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button">Удалить</button></td>
+                <td><button class="uk-button uk-button-danger uk-border-rounded" type="button" (click)="deleteUser(user.id)">Удалить</button></td>
             </tr>
         </tbody>
     </table>

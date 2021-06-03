@@ -60,4 +60,12 @@ export class UserService {
   getAll(params: any): Observable<any> {
     return this.httpClient.get<any>(API_USERS, { params });
   }
+
+  delete(id: number): Observable<any> {
+    return this.httpClient.delete<any>(API_USERS + id);
+  }
+
+  existsByEmail(email: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(API_USERS + 'existsByEmail/?email=' + email);
+  }
 }

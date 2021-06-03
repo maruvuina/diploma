@@ -65,19 +65,35 @@ const appRoutes: Routes = [
   { path: 'random-recipe', component: RecipeRandomComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'users/account/user/:id', component: UserComponent, canActivate: [AuthGuard] },
-  { path: 'users/account/admin/:id', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'users/account/user/:id', 
+    component: UserComponent, 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'ROLE_USER'
+    } 
+  },
+  { path: 'users/account/admin/:id', 
+    component: AdminComponent, 
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'ROLE_ADMIN'
+    } 
+  },
   { path: 'users/edit/:id', 
     component: UserEditComponent, 
-    canActivate: [AuthGuard],
-    canDeactivate: [ExitGuard] },
+    canActivate: [AuthGuard], 
+    data: {
+      role: 'ROLE_USER'
+    },
+    canDeactivate: [ExitGuard] 
+  },
   { path: 'recipes/edit/:id', 
     component: RecipeEditComponent, 
     canActivate: [AuthGuard],
-    canDeactivate: [ExitGuard] },
+    canDeactivate: [ExitGuard] 
+  },
   { path: 'recipes/search/ingredient', component: RecipeSearchByIngredientComponent },
   { path: 'users/:id', component: UserShowComponent },
-  { path: 'admin/:id', component: AdminComponent },
   { path: 'user-list', component: UserListComponent },
   { path: 'categories', component: CategoryComponent },
   { path: 'tags', component: TagComponent },

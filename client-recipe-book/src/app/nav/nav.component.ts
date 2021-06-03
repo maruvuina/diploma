@@ -27,7 +27,29 @@ export class NavComponent implements OnInit {
   }
 
   goToUserProfile() {
-    this.router.navigateByUrl('/users/account/user/' + this.idUser);
+    const userRoles = this.authService.getRoles();
+    let regex = "ROLE_[A-Z]+";
+    let matches = userRoles.matchAll(regex);
+    let roles = [];
+    for (const match of matches) {
+      roles.push(match + '');
+    }
+    if (roles.length == 1) {
+      switch(roles[0]) {
+        case 'ROLE_USER':
+          this.router.navigateByUrl('/users/account/user/' + this.idUser);
+          break;
+        case 'ROLE_ADMIN':
+          this.router.navigateByUrl('/users/account/admin/' + this.idUser);
+          break; 
+        default:
+          break; 
+      }
+    } else {
+      if (roles.includes('ROLE_ADMIN')) {
+        this.router.navigateByUrl('/users/account/admin/' + this.idUser);
+      }
+    }
   }
 
   logout() {
