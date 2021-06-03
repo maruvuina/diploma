@@ -162,4 +162,9 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService
                 .getRecipesByCuisine(cuisineName, page, size), HttpStatus.OK);
     }
+
+    @GetMapping("/existsByTitle")
+    public ResponseEntity<Boolean> existsByTitle(@RequestParam(value = "title") @NotBlank String title) {
+        return new ResponseEntity<>(recipeService.existsByTitle(title), HttpStatus.OK);
+    }
 }

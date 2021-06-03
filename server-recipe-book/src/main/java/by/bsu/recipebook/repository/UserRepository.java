@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+    @Query("select u from User u where u.email=:email and u.active=true")
     User findByEmail(String email);
 
     boolean existsByEmail(String email);
@@ -23,10 +25,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("update User as u set u.isMailing = false where u.email = ?1")
     void unsubscribeToNewsletter(String email);
 
+    @Nonnull
     @Override
     @Query("select u from User as u " +
             "where u.active=true and u.idUser=:id")
-    Optional<User> findById(@Param("id") Integer id);
+    Optional<User> findById(@Param("id") @Nonnull Integer id);
 
     @Query("select u.isMailing from User u where u.idUser=:id")
     Boolean isMailing(@Param("id") Integer id);

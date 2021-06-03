@@ -148,4 +148,9 @@ public class UserService {
                 .collect(Collectors.toList());
         return MapResponse.getResponseAsMap("users", userGetDtoList, pageTuts);
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

@@ -90,4 +90,9 @@ public class UserController {
             @RequestParam(defaultValue = "3") int size) {
         return new ResponseEntity<>(userService.getAll(page, size), HttpStatus.OK);
     }
+
+    @GetMapping("/existsByEmail")
+    public ResponseEntity<Boolean> existsByEmail(@RequestParam(value = "email") @NotBlank String email) {
+        return new ResponseEntity<>(userService.existsByEmail(email), HttpStatus.OK);
+    }
 }

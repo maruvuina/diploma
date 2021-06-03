@@ -16,6 +16,10 @@ public class CustomUserDetails implements UserDetails {
 
     private String password;
 
+    private boolean accountNonLocked;
+
+    private boolean enabled;
+
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
@@ -23,6 +27,8 @@ public class CustomUserDetails implements UserDetails {
         customUserDetails.idUser = user.getIdUser();
         customUserDetails.username = user.getEmail();
         customUserDetails.password = user.getPassword();
+        customUserDetails.accountNonLocked = user.isActive();
+        customUserDetails.enabled = user.isAuthorise();
         customUserDetails.grantedAuthorities = user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
@@ -56,7 +62,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
@@ -66,28 +72,23 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomUserDetails{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", grantedAuthorities=" + grantedAuthorities +
-                '}';
+        return enabled;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)  {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CustomUserDetails that = (CustomUserDetails) o;
-        return Objects.equals(idUser, that.idUser) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(grantedAuthorities, that.grantedAuthorities);
+        return accountNonLocked == that.accountNonLocked && enabled == that.enabled && Objects.equals(idUser, that.idUser) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(grantedAuthorities, that.grantedAuthorities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, username, password, grantedAuthorities);
+        return Objects.hash(idUser, username, password, accountNonLocked, enabled, grantedAuthorities);
     }
 }

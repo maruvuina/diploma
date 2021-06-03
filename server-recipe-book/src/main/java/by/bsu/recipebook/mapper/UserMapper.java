@@ -35,6 +35,7 @@ public abstract class UserMapper {
     @Mappings({
             @Mapping(target = "id", source = "user.idUser"),
             @Mapping(target = "fullName", source = "user.fullName"),
+            @Mapping(target = "email", source = "user.email"),
             @Mapping(target = "recipeList", expression = "java(getRecipeList(user))"),
             @Mapping(target = "registrationDate", expression = "java(getRegistrationDate(user))"),
             @Mapping(target = "followers", expression = "java(getFollowers(user))"),

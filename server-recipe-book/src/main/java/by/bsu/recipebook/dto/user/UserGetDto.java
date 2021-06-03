@@ -21,6 +21,9 @@ public class UserGetDto {
     @NotBlank
     private String fullName;
 
+    @NotBlank
+    private String email;
+
     @Valid
     private List<RecipeDetailsDto> recipeList = new ArrayList<>();
 

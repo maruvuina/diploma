@@ -28,13 +28,9 @@ import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
-        prePostEnabled = true)
-public class SpringWebSecurityApplicationConfigure extends WebSecurityConfigurerAdapter {
-
+public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
 
     private final UserDetailsService userDetailsService;
@@ -82,6 +78,8 @@ public class SpringWebSecurityApplicationConfigure extends WebSecurityConfigurer
                 .antMatchers(HttpMethod.GET, "/api/users/followings/{id}/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/image/{id}")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/existsByEmail/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/recipes/**")
                 .permitAll()

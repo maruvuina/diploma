@@ -283,4 +283,9 @@ public class RecipeService {
         List<RecipeDetailsDto> recipeDetailsDtoList = getRecipeDetailsDto(pageTuts);
         return MapResponse.getResponseAsMap("recipes", recipeDetailsDtoList, pageTuts);
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsByTitle(String title) {
+        return recipeRepository.existsByRecipeName(title);
+    }
 }

@@ -8,8 +8,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.schema.ModelPropertyBuilderPlugin;
 import springfox.documentation.spi.schema.contexts.ModelPropertyContext;
 
+import javax.annotation.Nonnull;
 import javax.validation.constraints.Email;
 import java.util.Optional;
+
 
 import static springfox.bean.validators.plugins.Validators.annotationFromBean;
 
@@ -18,7 +20,7 @@ import static springfox.bean.validators.plugins.Validators.annotationFromBean;
 public class EmailAnnotationPlugin implements ModelPropertyBuilderPlugin {
 
     @Override
-    public boolean supports(DocumentationType delimiter) {
+    public boolean supports(@Nonnull DocumentationType delimiter) {
         return true;
     }
 
