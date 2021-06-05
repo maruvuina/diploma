@@ -24,15 +24,6 @@ import java.util.List;
 @EnableWebMvc
 @Configuration
 public class MvcConfigure implements WebMvcConfigurer {
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/js")
-                .addResourceLocations("classpath:/static/css")
-                .addResourceLocations("classpath:/static/assets")
-                .addResourceLocations("classpath:/static/img");
-    }
-
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();

@@ -12,13 +12,11 @@ import javax.annotation.Nonnull;
 import javax.validation.constraints.Email;
 import java.util.Optional;
 
-
 import static springfox.bean.validators.plugins.Validators.annotationFromBean;
 
 @Component
 @Order(Validators.BEAN_VALIDATOR_PLUGIN_ORDER)
 public class EmailAnnotationPlugin implements ModelPropertyBuilderPlugin {
-
     @Override
     public boolean supports(@Nonnull DocumentationType delimiter) {
         return true;
