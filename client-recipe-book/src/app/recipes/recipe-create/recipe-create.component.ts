@@ -284,7 +284,7 @@ export class RecipeCreateComponent implements OnInit, OnDestroy, ComponentCanDea
 
   canDeactivate() : boolean | Observable<boolean> {
     if(!this.saved) {
-      return confirm("Вы хотите покинуть страницу?");
+      return confirm("Вы хотите покинуть страницу? Данные не сохранятся.");
     } else {
       return true;
     }

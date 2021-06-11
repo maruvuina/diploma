@@ -87,7 +87,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   canDeactivate() : boolean | Observable<boolean> {
     if(!this.saved) {
-      return confirm("Вы хотите покинуть страницу?");
+      return confirm("Вы хотите покинуть страницу? Данные не сохранятся.");
     } else {
       return true;
     }
