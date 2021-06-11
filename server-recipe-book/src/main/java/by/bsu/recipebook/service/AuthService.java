@@ -1,5 +1,6 @@
 package by.bsu.recipebook.service;
 
+import by.bsu.recipebook.config.AppConfig;
 import by.bsu.recipebook.mapper.UserMapper;
 import by.bsu.recipebook.config.service.CustomUserDetails;
 import by.bsu.recipebook.config.jwt.JwtProvider;
@@ -34,8 +35,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static by.bsu.recipebook.constants.Constants.API_ACTIVATION_EMAIL;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -57,26 +56,27 @@ public class AuthService {
 
     private final RefreshTokenService refreshTokenService;
 
+    private final AppConfig appConfig;
+
     @Transactional
     public boolean signup(RegisterRequest registerRequest) throws ServiceException {
         String email = registerRequest.getEmail();
-        boolean isActive;
         if (!userRepository.existsByEmail(email)) {
             registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             Set<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByRoleName("ROLE_USER"));
             registerRequest.setRoles(roles);
             User user = userMapper.toUser(registerRequest);
-            isActive = userRepository.save(user).isActive();
+            userRepository.save(user);
             String token = generateVerificationToken(user);
             String message = "Thank you for signing up to Recipe Book, please click on the below url to activate your account:\n " +
-                    API_ACTIVATION_EMAIL + "/" + token;
+                    appConfig.getAppUrl() + "/api/auth/accountVerification/" + token;
             mailService.sendMail(new NotificationEmail("Please Activate your account",
                     user.getEmail(), message));
         } else {
             throw new ServiceException("User with '" + email + "' already exists.");
         }
-        return isActive;
+        return false;
     }
 
     private String generateVerificationToken(User user) {

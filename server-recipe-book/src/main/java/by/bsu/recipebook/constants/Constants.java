@@ -3,8 +3,6 @@ package by.bsu.recipebook.constants;
 import java.io.File;
 
 public class Constants {
-    public static final String API_ACTIVATION_EMAIL = "http://localhost:8080/api/auth/accountVerification";
-
     public static final String COMPANY_EMAIL = "recipe.book@gmail.com";
 
     public static final String AUTHORIZATION = "Authorization";
