@@ -1,6 +1,5 @@
 package by.bsu.recipebook.service;
 
-import by.bsu.recipebook.config.AppConfig;
 import by.bsu.recipebook.mapper.UserMapper;
 import by.bsu.recipebook.config.service.CustomUserDetails;
 import by.bsu.recipebook.config.jwt.JwtProvider;
@@ -56,8 +55,6 @@ public class AuthService {
 
     private final RefreshTokenService refreshTokenService;
 
-    private final AppConfig appConfig;
-
     @Transactional
     public boolean signup(RegisterRequest registerRequest) throws ServiceException {
         String email = registerRequest.getEmail();
@@ -70,7 +67,7 @@ public class AuthService {
             userRepository.save(user);
             String token = generateVerificationToken(user);
             String message = "Thank you for signing up to Recipe Book, please click on the below url to activate your account:\n " +
-                    appConfig.getAppUrl() + "/api/auth/accountVerification/" + token;
+                    "http://localhost:4200/api/auth/accountVerification/" + token;
             mailService.sendMail(new NotificationEmail("Please Activate your account",
                     user.getEmail(), message));
         } else {
